@@ -72,11 +72,11 @@ public class Player : MonoBehaviour {
         if (Input.GetKey(KeyCode.D)) {
             if (body.velocity.x < maxSpeed) {
                 if (inAir) {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
+                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
                 } else if (isGliding) {
                     body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * glideSlow), body.velocity.y);
                 } else {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
+                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
                 }
             }
         }
@@ -84,11 +84,11 @@ public class Player : MonoBehaviour {
         if (Input.GetKey(KeyCode.A)) {
             if (-body.velocity.x < maxSpeed) {
                 if (inAir) {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
+                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
                 } else if (isGliding) {
                     body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * glideSlow), body.velocity.y);
                 } else {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
+                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
                 }
             }
         }
