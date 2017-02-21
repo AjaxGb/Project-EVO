@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -39,6 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Far BG
+    uniqueID: 3562112059
+    locked: 0
+  - name: Close - Behind Player
+    uniqueID: 3971777833
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Close - In Front of Player
+    uniqueID: 1825987275
     locked: 0

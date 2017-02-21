@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class SpriteActivatable : MonoBehaviour, IActivatable {
+public class HighlightedActivatable : MonoBehaviour {
 
 	public float highlightDistance = 3f;
 	public Animator highlightAnimator;
