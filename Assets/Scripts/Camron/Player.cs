@@ -78,8 +78,20 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (  !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) {
-            //drag here
+        if (  !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !inAir ) {
+            //if player is moving left, add velocity to the right, but stop at 0
+            if (body.velocity.x < 0) {
+                body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
+                if (body.velocity.x > 0) {
+                    body.velocity = new Vector2(0, body.velocity.y);
+                }
+            //if player is moving right, add velocity to the left, but stop at 0
+            } else if (body.velocity.x > 0) {
+                body.velocity = new Vector2(body.velocity.x - walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
+                if (body.velocity.x < 0) {
+                    body.velocity = new Vector2(0, body.velocity.y);
+                }
+            }
         }
 
         //glide
