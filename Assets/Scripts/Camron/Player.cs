@@ -24,9 +24,24 @@ public class Player : MonoBehaviour {
     private Rigidbody2D body;
     public GroundCheck gc;
 
+    private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
+    public float PlayerHealth
+    {
+        get { return _playerHealth; }
+        set
+        {
+            _playerHealth = value;
+            HealthBar.Amount = value;
+        }
+    }
+    public UIAttributeBar HealthBar;
+
 	// Use this for initialization
 	void Start () {
         body = GetComponent<Rigidbody2D>();
+
+        PlayerHealth = 100f;
+
 	}
 	
 	// Update is called once per frame
@@ -111,6 +126,17 @@ public class Player : MonoBehaviour {
             isGliding = false;
         }
 
+    
+    }
+
+    //Enemy Contact
+
+    void OnCollisionEnter2D(Collision2D collThing) {
+        if (collThing.gameObject.tag == "Enemy") { //If the thing collided with is tagged as an enemy
+
+            //Subtract one health from the player and update the UI Amount value
+            PlayerHealth -= 1;
+        }
     }
 
 }
