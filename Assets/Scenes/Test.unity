@@ -645,7 +645,7 @@ Prefab:
     - target: {fileID: 114000010307283596, guid: ffab4fee09bae8c48a92dd67e2b9aff5,
         type: 2}
       propertyPath: labelFormat
-      value: '{0:F1}%'
+      value: '{0:F0}%'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ffab4fee09bae8c48a92dd67e2b9aff5, type: 2}
