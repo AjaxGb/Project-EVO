@@ -457,6 +457,7 @@ MonoBehaviour:
   canJump: 1
   isGliding: 0
   HealthBar: {fileID: 922621740}
+  ManaBar: {fileID: 1830196334}
 --- !u!1 &743592620
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,6 +1230,12 @@ MonoBehaviour:
   target: {fileID: 741677636}
   smoothTime: 0.15
   maxSpeed: 1000
+--- !u!114 &1830196334 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114000010307283596, guid: ffab4fee09bae8c48a92dd67e2b9aff5,
+    type: 2}
+  m_PrefabInternal: {fileID: 745343673}
+  m_Script: {fileID: 11500000, guid: c88a1ddc0e88e8040a6ffecb45649e1e, type: 3}
 --- !u!1 &2119131659 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000014110853282, guid: 5c40319448f574a438faac10f5ae2c5f,

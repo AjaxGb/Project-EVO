@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     private Rigidbody2D body;
 	private Activatable currActivatable;
 
+    public UIAttributeBar HealthBar;
     private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
     public float PlayerHealth
     {
@@ -34,7 +35,16 @@ public class Player : MonoBehaviour {
             HealthBar.Amount = value;
         }
     }
-    public UIAttributeBar HealthBar;
+
+	public UIAttributeBar ManaBar;
+	private float _playerMana;
+	public float PlayerMana {
+		get { return _playerMana; }
+		set {
+			_playerMana = value;
+			ManaBar.Amount = value;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +52,7 @@ public class Player : MonoBehaviour {
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
 
         PlayerHealth = 100f;
+		PlayerMana = 100f;
 	}
 	
 	// Update is called once per frame
@@ -57,11 +68,6 @@ public class Player : MonoBehaviour {
 
     void FixedUpdate() {
 		if (Time.timeScale == 0) return;
-		
-
-        if (isGliding && body.velocity.y < -glideFallSpeed) {
-            body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
-        }
 
         //double jump
         if (Input.GetKeyDown(KeyCode.Space) && canJump && InAir && hasDoubleJump) {
@@ -117,25 +123,28 @@ public class Player : MonoBehaviour {
             }
         }
 
-        //glide
-        if (Input.GetKey(KeyCode.LeftShift) && InAir) {
+		//glide
+		bool glideKeyHeld = Input.GetKey(KeyCode.LeftShift);
+		if (glideKeyHeld && InAir && PlayerMana > 0) {
             //if the glide has just started
             if (!isGliding) {
-                
+                isGliding = true;
             }
 
-            isGliding = true;
+			if (body.velocity.y < -glideFallSpeed) {
+				body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
+				PlayerMana -= 0.5f;
+			}
         } else {
             //if the glide has just ended:
             if (isGliding) {
-                
+				isGliding = false;
             }
 
-            isGliding = false;
+			// Check if key is still held to prevent flickering
+			if (!(glideKeyHeld && InAir)) PlayerMana += 0.1f;
         }
-
-    
-    }
+	}
 
 	private void UpdateActivatable() {
 		// Check all activators, highlight nearest one in range
