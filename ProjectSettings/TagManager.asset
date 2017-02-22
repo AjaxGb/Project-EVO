@@ -52,3 +52,9 @@ TagManager:
   - name: Close - In Front of Player
     uniqueID: 1825987275
     locked: 0
+  - name: Overlay
+    uniqueID: 4183847267
+    locked: 0
+  - name: Menu
+    uniqueID: 2437258813
+    locked: 0

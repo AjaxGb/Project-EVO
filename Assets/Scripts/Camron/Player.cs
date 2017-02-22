@@ -47,7 +47,13 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Time.timeScale == 0) return;
+
 		UpdateActivatable();
+		if (currActivatable && Input.GetButtonDown("Activate") && currActivatable.CanActivate) {
+			currActivatable.Activate(this);
+
+		}
 	}
 
     void FixedUpdate() {
@@ -139,6 +145,7 @@ public class Player : MonoBehaviour {
 		Activatable nearest = null;
 		float sqrDistToNearest = Mathf.Infinity;
 		foreach (Activatable a in Activatable.allInScene) {
+			if (!a.CanActivate) continue;
 			float sqrHighlightDist = a.highlightDistance * a.highlightDistance;
 			float sqrDistToPlayer = ((Vector2)this.transform.position - (Vector2)a.transform.position).sqrMagnitude;
 			if (sqrDistToPlayer < sqrHighlightDist && sqrDistToPlayer < sqrDistToNearest) {
