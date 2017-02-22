@@ -42,7 +42,6 @@ public class Player : MonoBehaviour {
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
 
         PlayerHealth = 100f;
-
 	}
 	
 	// Update is called once per frame
