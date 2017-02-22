@@ -997,7 +997,7 @@ Prefab:
     - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
       propertyPath: script.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1034,11 +1034,46 @@ Prefab:
     - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
       propertyPath: script.Array.data[2].text
-      value: Now go find <b><color=#a52a2aff>The Thing</color></b>.
+      value: But I'm afraid that you are mistaken.
       objectReference: {fileID: 0}
     - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
       propertyPath: script.Array.data[2].duration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114658586478087852, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: m_Text
+      value: Hahahahahaha
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[3].text
+      value: <size=35><b>WE</b></size>
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[3].duration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[4].text
+      value: will be quite unaffected by your little dispute.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[4].duration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[5].text
+      value: Take care, now!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[5].duration
       value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
