@@ -448,8 +448,8 @@ MonoBehaviour:
   groundLayers:
     serializedVersion: 2
     m_Bits: 4294967039
-  canJump: 0
-  inAir: 0
+  canJump: 1
+  inAir: 1
   isGliding: 0
   HealthBar: {fileID: 922621740}
 --- !u!1 &743592620
