@@ -20,12 +20,12 @@ public abstract class Activatable : MonoBehaviour {
 	public abstract void Activate(Player p);
 
 	// Use this for initialization
-	protected void Start() {
+	protected virtual void Start() {
 		allInScene.Add(this);
 	}
 
 	// Cleanup when destroyed
-	protected void OnDestroy() {
+	protected virtual void OnDestroy() {
 		allInScene.Remove(this);
 	}
 }
