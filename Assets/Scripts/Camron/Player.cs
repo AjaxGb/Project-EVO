@@ -23,6 +23,7 @@ public class Player : MonoBehaviour {
     public bool isGliding;
     private Rigidbody2D body;
 	private Activatable currActivatable;
+    int playerLayer;
 
     private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
     public float PlayerHealth
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour {
 	void Start () {
         body = GetComponent<Rigidbody2D>();
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
-
+        playerLayer = LayerMask.NameToLayer("Player");
         PlayerHealth = 100f;
 	}
 	
@@ -71,8 +72,13 @@ public class Player : MonoBehaviour {
         } 
         //first jump
         else if (Input.GetKey(KeyCode.Space) && !InAir) {
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
-            canJump = hasDoubleJump;
+            if (Input.GetKey(KeyCode.S)) {
+                //drop thru platform
+                canJump = hasDoubleJump;
+            } else {
+                body.velocity = new Vector2(body.velocity.x, jumpForce);
+                canJump = hasDoubleJump;
+            }
         }
 
         //left and right movement
@@ -118,7 +124,7 @@ public class Player : MonoBehaviour {
         }
 
         //glide
-        if (Input.GetKey(KeyCode.LeftShift) && InAir) {
+        if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide) {
             //if the glide has just started
             if (!isGliding) {
                 

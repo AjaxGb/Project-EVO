@@ -281,7 +281,7 @@ PlatformEffector2D:
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
+  m_SurfaceArc: 90
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasDoubleJump: 1
-  hasGlide: 0
+  hasGlide: 1
   inAirSlow: 0.9
   glideSlow: 0.3
   glideFallSpeed: 2
@@ -1123,6 +1123,11 @@ Prefab:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 50000013998845672, guid: 960aa08d434f27941bfdb1cad1fa6c04,
+        type: 2}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 5965a84f971bbdb42a897d09e7045b7a, type: 2}
     m_RemovedComponents:
     - {fileID: 114000011473787706, guid: 960aa08d434f27941bfdb1cad1fa6c04, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 960aa08d434f27941bfdb1cad1fa6c04, type: 2}
