@@ -72,12 +72,14 @@ public class UIAttributeBar : MonoBehaviour {
 	}
 	
 	private void UpdateFillWidth() {
+		if (fill == null) return;
 		Vector2 fillSize = fill.rectTransform.sizeDelta;
 		fillSize.x = Mathf.InverseLerp(minAmount, maxAmount, amount) * maxFillWidth;
 		fill.rectTransform.sizeDelta = fillSize;
 	}
 
 	private void UpdateLabel() {
-		label.text = String.Format(labelFormat, amount, minAmount, maxAmount);
+		if (label == null) return;
+		label.text = string.Format(labelFormat, amount, minAmount, maxAmount);
 	}
 }
