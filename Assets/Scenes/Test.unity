@@ -445,7 +445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasDoubleJump: 0
   hasGlide: 0
-  inAirSlow: 0.00001
+  inAirSlow: 0.2
   glideSlow: 0.3
   glideFallSpeed: 2
   jumpForce: 10

@@ -77,25 +77,25 @@ public class Player : MonoBehaviour {
         //right
         if (Input.GetKey(KeyCode.D)) {
             if (body.velocity.x < maxSpeed) {
-                if (inAir) {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
+				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+				if (inAir) {
+					scaledAccel *= inAirSlow;
                 } else if (isGliding) {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * glideSlow), body.velocity.y);
-                } else {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
+					scaledAccel *= glideSlow;
                 }
-            }
+				body.velocity = new Vector2(body.velocity.x + scaledAccel, body.velocity.y);
+			}
         }
         //left
         if (Input.GetKey(KeyCode.A)) {
-            if (-body.velocity.x < maxSpeed) {
-                if (inAir) {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
-                } else if (isGliding) {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * glideSlow), body.velocity.y);
-                } else {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
-                }
+            if (body.velocity.x > maxSpeed) {
+				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+				if (inAir) {
+					scaledAccel *= inAirSlow;
+				} else if (isGliding) {
+					scaledAccel *= glideSlow;
+				}
+				body.velocity = new Vector2(body.velocity.x - scaledAccel, body.velocity.y);
             }
         }
 
