@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
 
@@ -25,6 +23,7 @@ public class Player : MonoBehaviour {
     public bool inAir;
     public bool isGliding;
     private Rigidbody2D body;
+	private Activatable currActivatable;
 
     private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
     public float PlayerHealth
@@ -48,7 +47,7 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		UpdateActivatable();
 	}
 
     void FixedUpdate() {
@@ -134,6 +133,29 @@ public class Player : MonoBehaviour {
 
     
     }
+
+	private void UpdateActivatable() {
+		// Check all activators, highlight nearest one in range
+		Activatable nearest = null;
+		float sqrDistToNearest = Mathf.Infinity;
+		foreach (Activatable a in Activatable.allInScene) {
+			float sqrHighlightDist = a.highlightDistance * a.highlightDistance;
+			float sqrDistToPlayer = ((Vector2)this.transform.position - (Vector2)a.transform.position).sqrMagnitude;
+			if (sqrDistToPlayer < sqrHighlightDist && sqrDistToPlayer < sqrDistToNearest) {
+				nearest = a;
+				sqrDistToNearest = sqrDistToPlayer;
+			}
+		}
+		if (nearest != currActivatable) {
+			if (currActivatable != null) {
+				currActivatable.Highlighted = false;
+			}
+			currActivatable = nearest;
+			if (currActivatable != null) {
+				currActivatable.Highlighted = true;
+			}
+		}
+	}
 
     //Enemy Contact
 

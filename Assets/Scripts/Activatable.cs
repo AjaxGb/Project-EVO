@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class HighlightedActivatable : MonoBehaviour {
+public class Activatable : MonoBehaviour {
 
 	public float highlightDistance = 3f;
 	public Animator highlightAnimator;
 
 	private static int animationShowId = Animator.StringToHash("Shown");
+	public static List<Activatable> allInScene = new List<Activatable>();
 	
 	public bool Highlighted {
 		get { return highlightAnimator.GetBool(animationShowId); }
@@ -18,14 +20,12 @@ public class HighlightedActivatable : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
+		allInScene.Add(this);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		float sqrHighlightDist = highlightDistance * highlightDistance;
-		Vector3 distToPlayer = EvoCharacter.inst.transform.position - transform.position;
-		Highlighted = distToPlayer.sqrMagnitude < sqrHighlightDist;
-		Debug.DrawRay(transform.position, distToPlayer.normalized * highlightDistance, Color.white);
+
+	// Cleanup when destroyed
+	void OnDestroy() {
+		allInScene.Remove(this);
 	}
 }
