@@ -445,17 +445,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasDoubleJump: 0
   hasGlide: 0
-  inAirSlow: 0
-  glideSlow: 0
-  glideFallSpeed: 0
+  inAirSlow: 0.00001
+  glideSlow: 0.3
+  glideFallSpeed: 2
   jumpForce: 10
-  maxSpeed: 100
-  walkingAcceleration: 50
-  walkingDecceleration: 0
-  canJump: 1
+  maxSpeed: 10
+  walkingAcceleration: 40
+  walkingDecceleration: 20
+  groundDistance: 1
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967039
+  canJump: 0
   inAir: 0
   isGliding: 0
-  gc: {fileID: 741677632}
   HealthBar: {fileID: 922621740}
 --- !u!1001 &745343673
 Prefab:
@@ -855,6 +858,10 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000010955491418, guid: 960aa08d434f27941bfdb1cad1fa6c04, type: 2}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 960aa08d434f27941bfdb1cad1fa6c04, type: 2}
