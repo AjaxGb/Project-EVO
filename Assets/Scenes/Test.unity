@@ -440,7 +440,7 @@ MonoBehaviour:
   maxSpeed: 10
   walkingAcceleration: 40
   walkingDecceleration: 20
-  groundDistance: 1
+  groundDistance: 0.55
   groundLayers:
     serializedVersion: 2
     m_Bits: 4294967039
