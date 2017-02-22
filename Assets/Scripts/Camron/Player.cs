@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : MonoBehaviour {
 
@@ -9,20 +7,23 @@ public class Player : MonoBehaviour {
     public bool hasGlide;
 
     //movement variables
-    public float inAirSlow;
-    public float glideSlow;
-    public float glideFallSpeed;
-    public float jumpForce;
-    public float maxSpeed;
-    public float walkingAcceleration;
-    public float walkingDecceleration;
+    public float inAirSlow = 0.5f;
+    public float glideSlow = 0.3f;
+    public float glideFallSpeed = 2f;
+    public float jumpForce = 10f;
+    public float maxSpeed = 10f;
+    public float walkingAcceleration = 40f;
+    public float walkingDecceleration = 20f;
+
+	public float groundDistance = 1.0f;
+	public LayerMask groundLayers;
 
     //other stuff
     public bool canJump = true;
     public bool inAir;
     public bool isGliding;
     private Rigidbody2D body;
-    public GroundCheck gc;
+	private Activatable currActivatable;
 
     private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
     public float PlayerHealth
@@ -46,10 +47,14 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		UpdateActivatable();
 	}
 
     void FixedUpdate() {
+		if (Time.timeScale == 0) return;
+
+		// TODO: Add more raycasts to sides.
+		inAir = !Physics2D.Raycast(transform.position, Vector2.down, groundDistance, groundLayers);
 
         if (isGliding && body.velocity.y < -glideFallSpeed) {
             body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
@@ -71,25 +76,25 @@ public class Player : MonoBehaviour {
         //right
         if (Input.GetKey(KeyCode.D)) {
             if (body.velocity.x < maxSpeed) {
-                if (inAir) {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
+				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+				if (inAir) {
+					scaledAccel *= inAirSlow;
                 } else if (isGliding) {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime * glideSlow), body.velocity.y);
-                } else {
-                    body.velocity = new Vector2(body.velocity.x + (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
+					scaledAccel *= glideSlow;
                 }
-            }
+				body.velocity = new Vector2(body.velocity.x + scaledAccel, body.velocity.y);
+			}
         }
         //left
         if (Input.GetKey(KeyCode.A)) {
-            if (-body.velocity.x < maxSpeed) {
-                if (inAir) {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * inAirSlow), body.velocity.y);
-                } else if (isGliding) {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime * glideSlow), body.velocity.y);
-                } else {
-                    body.velocity = new Vector2(body.velocity.x - (walkingAcceleration * Time.fixedDeltaTime), body.velocity.y);
-                }
+            if (body.velocity.x > -maxSpeed) {
+				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+				if (inAir) {
+					scaledAccel *= inAirSlow;
+				} else if (isGliding) {
+					scaledAccel *= glideSlow;
+				}
+				body.velocity = new Vector2(body.velocity.x - scaledAccel, body.velocity.y);
             }
         }
 
@@ -128,6 +133,29 @@ public class Player : MonoBehaviour {
 
     
     }
+
+	private void UpdateActivatable() {
+		// Check all activators, highlight nearest one in range
+		Activatable nearest = null;
+		float sqrDistToNearest = Mathf.Infinity;
+		foreach (Activatable a in Activatable.allInScene) {
+			float sqrHighlightDist = a.highlightDistance * a.highlightDistance;
+			float sqrDistToPlayer = ((Vector2)this.transform.position - (Vector2)a.transform.position).sqrMagnitude;
+			if (sqrDistToPlayer < sqrHighlightDist && sqrDistToPlayer < sqrDistToNearest) {
+				nearest = a;
+				sqrDistToNearest = sqrDistToPlayer;
+			}
+		}
+		if (nearest != currActivatable) {
+			if (currActivatable != null) {
+				currActivatable.Highlighted = false;
+			}
+			currActivatable = nearest;
+			if (currActivatable != null) {
+				currActivatable.Highlighted = true;
+			}
+		}
+	}
 
     //Enemy Contact
 
