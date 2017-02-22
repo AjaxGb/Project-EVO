@@ -88,7 +88,7 @@ public class Player : MonoBehaviour {
         }
         //left
         if (Input.GetKey(KeyCode.A)) {
-            if (body.velocity.x > maxSpeed) {
+            if (body.velocity.x > -maxSpeed) {
 				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
 				if (inAir) {
 					scaledAccel *= inAirSlow;
