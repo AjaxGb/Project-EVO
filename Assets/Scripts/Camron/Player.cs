@@ -55,7 +55,7 @@ public class Player : MonoBehaviour {
 		if (Time.timeScale == 0) return;
 
 		// TODO: Add more raycasts to sides.
-		inAir = Physics2D.Raycast(transform.position, Vector2.down, groundDistance, groundLayers);
+		inAir = !Physics2D.Raycast(transform.position, Vector2.down, groundDistance, groundLayers);
 
         if (isGliding && body.velocity.y < -glideFallSpeed) {
             body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
