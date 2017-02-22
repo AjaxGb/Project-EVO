@@ -15,12 +15,11 @@ public class Player : MonoBehaviour {
     public float walkingAcceleration = 40f;
     public float walkingDecceleration = 20f;
 
-	public float groundDistance = 1.0f;
-	public LayerMask groundLayers;
+	public GroundCheck groundCheck;
 
     //other stuff
+	public bool InAir { get { return groundCheck.InAir; } }
     public bool canJump = true;
-    public bool inAir;
     public bool isGliding;
     private Rigidbody2D body;
 	private Activatable currActivatable;
@@ -40,6 +39,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         body = GetComponent<Rigidbody2D>();
+		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
 
         PlayerHealth = 100f;
 
@@ -65,13 +65,13 @@ public class Player : MonoBehaviour {
         }
 
         //double jump
-        if (Input.GetKeyDown(KeyCode.Space) && canJump && inAir && hasDoubleJump) {
+        if (Input.GetKeyDown(KeyCode.Space) && canJump && InAir && hasDoubleJump) {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = false;
             
         } 
         //first jump
-        else if (Input.GetKey(KeyCode.Space) && !inAir) {
+        else if (Input.GetKey(KeyCode.Space) && !InAir) {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = hasDoubleJump;
         }
@@ -81,7 +81,7 @@ public class Player : MonoBehaviour {
         if (Input.GetKey(KeyCode.D)) {
             if (body.velocity.x < maxSpeed) {
 				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
-				if (inAir) {
+				if (InAir) {
 					scaledAccel *= inAirSlow;
                 } else if (isGliding) {
 					scaledAccel *= glideSlow;
@@ -93,7 +93,7 @@ public class Player : MonoBehaviour {
         if (Input.GetKey(KeyCode.A)) {
             if (body.velocity.x > -maxSpeed) {
 				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
-				if (inAir) {
+				if (InAir) {
 					scaledAccel *= inAirSlow;
 				} else if (isGliding) {
 					scaledAccel *= glideSlow;
@@ -102,7 +102,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (  !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !inAir ) {
+        if (  !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !InAir ) {
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
                 body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour {
         }
 
         //glide
-        if (Input.GetKey(KeyCode.LeftShift) && inAir) {
+        if (Input.GetKey(KeyCode.LeftShift) && InAir) {
             //if the glide has just started
             if (!isGliding) {
                 
