@@ -56,7 +56,6 @@ public class SceneLoader : MonoBehaviour {
 			return;
 		}
 		SceneInfo si = SceneInfo.allScenes[scene.buildIndex];
-		Debug.Log("Scene Loaded", si);
 		if (si != null) {
 			si.file = scene;
 		}
