@@ -129,14 +129,9 @@ public class Player : MonoBehaviour {
             }
         }
 
-<<<<<<< HEAD
-        //glide
-        if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide) {
-=======
 		//glide
 		bool glideKeyHeld = Input.GetKey(KeyCode.LeftShift);
-		if (glideKeyHeld && InAir && PlayerMana > 0) {
->>>>>>> 5dc1692ce47ea3b3592ff4251b84fe3988f7773d
+		if (glideKeyHeld && InAir && hasGlide && PlayerMana > 0) {
             //if the glide has just started
             if (!isGliding) {
                 isGliding = true;
