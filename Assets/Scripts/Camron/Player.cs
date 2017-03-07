@@ -12,8 +12,8 @@ public class Player : MonoBehaviour {
     public float glideFallSpeed = 2f;
     public float jumpForce = 10f;
     public float maxSpeed = 10f;
-    public float walkingAcceleration = 40f;
-    public float walkingDecceleration = 20f;
+    public float walkingAcceleration;
+    public float walkingDecceleration;
 
 	public GroundCheck groundCheck;
 
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour {
 		if (Time.timeScale == 0) return;
 
 		UpdateActivatable();
-		if (currActivatable && Input.GetButtonDown("Activate") && currActivatable.CanActivate) {
+		if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate) {
 			currActivatable.Activate(this);
 
 		}
@@ -71,14 +71,14 @@ public class Player : MonoBehaviour {
         if (Time.timeScale == 0) return;
 
         //double jump
-        if (Input.GetKeyDown(KeyCode.Space) && canJump && InAir && hasDoubleJump) {
+        if (Input.GetButtonDown("Jump") && canJump && InAir && hasDoubleJump) {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = false;
 
         }
         //first jump
-        else if (Input.GetKey(KeyCode.Space) && !InAir) {
-            if (Input.GetKey(KeyCode.S)) {
+        else if (Input.GetButton("Jump") && !InAir) {
+            if (Input.GetAxis("Vertical") < 0) {
                 //drop thru platform
                 canJump = hasDoubleJump;
             } else {
@@ -89,7 +89,7 @@ public class Player : MonoBehaviour {
 
         //left and right movement
         //right
-        if (Input.GetKey(KeyCode.D)) {
+        if (Input.GetAxis("Horizontal") > 0) {
             if (body.velocity.x < maxSpeed) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
                 if (InAir) {
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour {
             }
         }
         //left
-        if (Input.GetKey(KeyCode.A)) {
+        if (Input.GetAxis("Horizontal") < 0) {
             if (body.velocity.x > -maxSpeed) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
                 if (InAir) {
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !InAir) {
+        if (Input.GetAxis("Horizontal") == 0 && !InAir) {
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
                 body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
@@ -130,17 +130,17 @@ public class Player : MonoBehaviour {
         }
 
         //glide
-        if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide) {
+        if (Input.GetButton("Glide") && InAir && hasGlide) {
             //glide
 
-            if (Input.GetKey(KeyCode.LeftShift) && InAir && PlayerMana > 0) {
+            if (Input.GetButton("Glide") && InAir && PlayerMana > 0) {
                 //if the glide has just started
                 if (!isGliding) {
                     isGliding = true;
                 }
 
                 //glide
-                if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide && PlayerMana > 0) {
+                if (Input.GetButton("Glide") && InAir && hasGlide && PlayerMana > 0) {
                     //if the glide has just started
                     if (!isGliding) {
                         isGliding = true;
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour {
                     }
 
                     // Check if key is still held to prevent flickering
-                    if (!(Input.GetKey(KeyCode.LeftShift) && InAir)) PlayerMana += 0.1f;
+                    if (!(Input.GetButton("Glide") && InAir)) PlayerMana += 0.1f;
                 }
             }
         }

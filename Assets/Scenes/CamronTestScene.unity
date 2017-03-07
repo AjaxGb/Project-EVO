@@ -619,8 +619,8 @@ MonoBehaviour:
   glideFallSpeed: 0
   jumpForce: 5
   maxSpeed: 5
-  walkingAcceleration: 20
-  walkingDecceleration: 20
+  walkingAcceleration: 40
+  walkingDecceleration: 40
   groundCheck: {fileID: 0}
   canJump: 1
   isGliding: 0
