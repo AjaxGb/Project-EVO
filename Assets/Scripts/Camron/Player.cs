@@ -150,11 +150,11 @@ public class Player : MonoBehaviour {
 
             //climb up or down
             if (Input.GetAxis("Vertical") > 0) {
-                body.velocity = new Vector2(body.velocity.x, climbSpeed);
+                body.velocity = new Vector2(0/*body.velocity.x*/, climbSpeed);
             } else if (Input.GetAxis("Vertical") < 0) {
-                body.velocity = new Vector2(body.velocity.x, -climbSpeed);
+                body.velocity = new Vector2(0, -climbSpeed);
             } else {
-                body.velocity = new Vector2(body.velocity.x, 0);
+                body.velocity = new Vector2(0, 0);
             }
         } else if (isClimbing){
             endClimb();
