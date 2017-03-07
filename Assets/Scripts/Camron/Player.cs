@@ -53,6 +53,7 @@ public class Player : MonoBehaviour {
 			ManaBar.Amount = value;
 		}
 	}
+    private bool upAxisInUse;
 
 	// Use this for initialization
 	void Start () {
@@ -69,10 +70,14 @@ public class Player : MonoBehaviour {
 		if (Time.timeScale == 0) return;
 
 		UpdateActivatable();
-		if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate) {
-			currActivatable.Activate(this);
-
-		}
+        if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
+            currActivatable.Activate(this);
+            upAxisInUse = transform;
+        } else {
+            if (upAxisInUse) {
+                upAxisInUse = false;
+            }
+        }
 	}
 
     void FixedUpdate() {
