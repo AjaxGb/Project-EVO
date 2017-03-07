@@ -14,11 +14,16 @@ public class Player : MonoBehaviour {
     public float maxSpeed = 10f;
     public float walkingAcceleration;
     public float walkingDecceleration;
+    public float climbSpeed;
 
-	public GroundCheck groundCheck;
+    public GroundCheck groundCheck;
+    public GroundCheck leftCheck;
+    public GroundCheck rightCheck;
 
     //other stuff
 	public bool InAir { get { return groundCheck.InAir; } }
+    public bool leftClimb { get { return !leftCheck.InAir; } }
+    public bool rightClimb { get { return !rightCheck.InAir; } }
     public bool canJump = true;
     public bool isGliding;
     private Rigidbody2D body;
@@ -129,38 +134,24 @@ public class Player : MonoBehaviour {
             }
         }
 
-        //glide
-        if (Input.GetButton("Glide") && InAir && hasGlide) {
-            //glide
-
-            if (Input.GetButton("Glide") && InAir && PlayerMana > 0) {
-                //if the glide has just started
-                if (!isGliding) {
-                    isGliding = true;
-                }
-
-                //glide
-                if (Input.GetButton("Glide") && InAir && hasGlide && PlayerMana > 0) {
-                    //if the glide has just started
-                    if (!isGliding) {
-                        isGliding = true;
-                    }
-
-
-                    if (body.velocity.y < -glideFallSpeed) {
-                        body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
-                        PlayerMana -= 0.5f;
-                    }
-                } else {
-                    //if the glide has just ended:
-                    if (isGliding) {
-                        isGliding = false;
-                    }
-
-                    // Check if key is still held to prevent flickering
-                    if (!(Input.GetButton("Glide") && InAir)) PlayerMana += 0.1f;
-                }
+        //glide or wall climb
+        if (Input.GetButton("Glide") && InAir && hasGlide && PlayerMana > 0) {
+            //if the glide has just started
+            if (!isGliding) {
+                isGliding = true;
             }
+            if (body.velocity.y < -glideFallSpeed) {
+                body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
+                PlayerMana -= 0.5f;
+            }
+        } else {
+            //if the glide has just ended:
+            if (isGliding) {
+                isGliding = false;
+            }
+
+            // Check if key is still held to prevent flickering
+            if (!(Input.GetButton("Glide") && InAir)) PlayerMana += 0.1f;
         }
     }
 
