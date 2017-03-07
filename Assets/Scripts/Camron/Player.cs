@@ -211,16 +211,6 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-    //Enemy Contact
-
-    void OnCollisionEnter2D(Collision2D collThing) {
-        if (collThing.gameObject.tag == "Enemy") { //If the thing collided with is tagged as an enemy
-
-            //Subtract one health from the player and update the UI Amount value
-            PlayerHealth -= 1;
-        }
-    }
-
     public void endGlide() {
         isGliding = false;
     }
