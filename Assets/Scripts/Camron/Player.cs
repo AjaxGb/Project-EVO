@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     public float glideSlow = 0.3f;
     public float glideFallSpeed = 2f;
     public float jumpForce = 10f;
+    private float gravityScale;
     public float maxSpeed = 10f;
     public float walkingAcceleration;
     public float walkingDecceleration;
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour {
     public bool rightClimb { get { return !rightCheck.InAir; } }
     public bool canJump = true;
     public bool isGliding;
+    public bool isClimbing;
     private Rigidbody2D body;
 	private Activatable currActivatable;
     int playerLayer;
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         body = GetComponent<Rigidbody2D>();
+        gravityScale = body.gravityScale;
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
         playerLayer = LayerMask.NameToLayer("Player");
         PlayerHealth = 100f;
@@ -82,11 +85,14 @@ public class Player : MonoBehaviour {
 
         }
         //first jump
-        else if (Input.GetButton("Jump") && !InAir) {
+        else if (Input.GetButton("Jump") && (!InAir || isClimbing)  ) {
             if (Input.GetAxis("Vertical") < 0) {
                 //drop thru platform
                 canJump = hasDoubleJump;
             } else {
+                if (isClimbing) {
+                    endClimb();
+                }
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 canJump = hasDoubleJump;
             }
@@ -134,8 +140,28 @@ public class Player : MonoBehaviour {
             }
         }
 
-        //glide or wall climb
-        if (Input.GetButton("Glide") && InAir && hasGlide && PlayerMana > 0) {
+        //wall climb
+        if (  Input.GetButton("Glide") && ((leftClimb && (Input.GetAxis("Horizontal") < 0 || isClimbing)) || (rightClimb && (Input.GetAxis("Horizontal") > 0 || isClimbing)))  ) {
+            //if the climb just started
+            if (!isClimbing) {
+                body.gravityScale = 0;
+                isClimbing = true;
+            }
+
+            //climb up or down
+            if (Input.GetAxis("Vertical") > 0) {
+                body.velocity = new Vector2(body.velocity.x, climbSpeed);
+            } else if (Input.GetAxis("Vertical") < 0) {
+                body.velocity = new Vector2(body.velocity.x, -climbSpeed);
+            } else {
+                body.velocity = new Vector2(body.velocity.x, 0);
+            }
+        } else if (isClimbing){
+            endClimb();
+        }
+
+        //in air gliding 
+        if (  Input.GetButton("Glide") && InAir && hasGlide && PlayerMana > 0 && !isClimbing  ) {
             //if the glide has just started
             if (!isGliding) {
                 isGliding = true;
@@ -144,15 +170,12 @@ public class Player : MonoBehaviour {
                 body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
                 PlayerMana -= 0.5f;
             }
-        } else {
-            //if the glide has just ended:
-            if (isGliding) {
-                isGliding = false;
-            }
-
-            // Check if key is still held to prevent flickering
-            if (!(Input.GetButton("Glide") && InAir)) PlayerMana += 0.1f;
+        } else if(isGliding) {
+            //glide ended
+            endGlide();
         }
+        // Check if key is still held to prevent flickering
+        if (!(Input.GetButton("Glide") && InAir)) PlayerMana += 0.1f;
     }
 
 	private void UpdateActivatable() {
@@ -187,6 +210,15 @@ public class Player : MonoBehaviour {
             //Subtract one health from the player and update the UI Amount value
             PlayerHealth -= 1;
         }
+    }
+
+    public void endGlide() {
+        isGliding = false;
+    }
+
+    public void endClimb() {
+        isClimbing = false;
+        body.gravityScale = gravityScale;
     }
 
 }
