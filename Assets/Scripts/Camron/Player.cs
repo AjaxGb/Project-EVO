@@ -132,25 +132,34 @@ public class Player : MonoBehaviour {
         //glide
         if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide) {
             //glide
-            bool glideKeyHeld = Input.GetKey(KeyCode.LeftShift);
-            if (glideKeyHeld && InAir && PlayerMana > 0) {
+
+            if (Input.GetKey(KeyCode.LeftShift) && InAir && PlayerMana > 0) {
                 //if the glide has just started
                 if (!isGliding) {
                     isGliding = true;
                 }
 
-                if (body.velocity.y < -glideFallSpeed) {
-                    body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
-                    PlayerMana -= 0.5f;
-                }
-            } else {
-                //if the glide has just ended:
-                if (isGliding) {
-                    isGliding = false;
-                }
+                //glide
+                if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide && PlayerMana > 0) {
+                    //if the glide has just started
+                    if (!isGliding) {
+                        isGliding = true;
+                    }
 
-                // Check if key is still held to prevent flickering
-                if (!(glideKeyHeld && InAir)) PlayerMana += 0.1f;
+
+                    if (body.velocity.y < -glideFallSpeed) {
+                        body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
+                        PlayerMana -= 0.5f;
+                    }
+                } else {
+                    //if the glide has just ended:
+                    if (isGliding) {
+                        isGliding = false;
+                    }
+
+                    // Check if key is still held to prevent flickering
+                    if (!(Input.GetKey(KeyCode.LeftShift) && InAir)) PlayerMana += 0.1f;
+                }
             }
         }
     }
