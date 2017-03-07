@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d9519bcc8586314fa76488624547072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 947310626}
   smoothTime: 0.15
   maxSpeed: 1000
 --- !u!1 &291860153
@@ -493,6 +493,16 @@ Prefab:
       propertyPath: ManaBar
       value: 
       objectReference: {fileID: 2070819707}
+    - target: {fileID: 50300527818490130, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+        type: 2}
+      propertyPath: m_GravityScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114793396646658712, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+        type: 2}
+      propertyPath: jumpForce
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
   m_IsPrefabParent: 0
@@ -502,6 +512,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 947310624}
   m_Script: {fileID: 11500000, guid: 943eedbbbf5a27346b88de05cf55577d, type: 3}
+--- !u!4 &947310626 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4920866708028526, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+    type: 2}
+  m_PrefabInternal: {fileID: 947310624}
 --- !u!114 &1157830461 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000010307283596, guid: ffab4fee09bae8c48a92dd67e2b9aff5,
