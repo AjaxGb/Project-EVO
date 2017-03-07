@@ -72,12 +72,10 @@ public class Player : MonoBehaviour {
 		UpdateActivatable();
         if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
-            upAxisInUse = transform;
-        } else {
-            if (upAxisInUse) {
-                upAxisInUse = false;
-            }
-        }
+            upAxisInUse = true;
+        } else if (Input.GetAxis("Vertical") <= 0) {
+			upAxisInUse = false;
+		}
 	}
 
     void FixedUpdate() {
