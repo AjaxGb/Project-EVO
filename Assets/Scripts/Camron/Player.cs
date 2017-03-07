@@ -146,6 +146,7 @@ public class Player : MonoBehaviour {
             if (!isClimbing) {
                 body.gravityScale = 0;
                 isClimbing = true;
+                canJump = hasDoubleJump;
             }
 
             //climb up or down
