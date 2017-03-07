@@ -77,6 +77,9 @@ public class Player : MonoBehaviour {
 
     void FixedUpdate() {
         if (Time.timeScale == 0) return;
+        if (!InAir) {
+            canJump = true;
+        }
 
         //double jump
         if (Input.GetButtonDown("Jump") && canJump && InAir && hasDoubleJump) {
