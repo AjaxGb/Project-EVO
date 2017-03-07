@@ -1,0 +1,10 @@
+diff a/Assets/Sprites/Character/boss2 - wings.png.meta b/Assets/Sprites/Character/boss2 - wings.png.meta	(rejected hunks)
+@@ -40,7 +40,7 @@
+   alignment: 0
+   spritePivot: {x: 0.5, y: 0.5}
+   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+-  spritePixelsToUnits: 100
++  spritePixelsToUnits: 300
+   alphaUsage: 1
+   alphaIsTransparency: 1
+   spriteTessellationDetail: -1

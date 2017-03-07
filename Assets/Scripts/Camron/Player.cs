@@ -68,14 +68,14 @@ public class Player : MonoBehaviour {
 	}
 
     void FixedUpdate() {
-		if (Time.timeScale == 0) return;
+        if (Time.timeScale == 0) return;
 
         //double jump
         if (Input.GetKeyDown(KeyCode.Space) && canJump && InAir && hasDoubleJump) {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = false;
-            
-        } 
+
+        }
         //first jump
         else if (Input.GetKey(KeyCode.Space) && !InAir) {
             if (Input.GetKey(KeyCode.S)) {
@@ -91,36 +91,36 @@ public class Player : MonoBehaviour {
         //right
         if (Input.GetKey(KeyCode.D)) {
             if (body.velocity.x < maxSpeed) {
-				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
-				if (InAir) {
-					scaledAccel *= inAirSlow;
+                float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+                if (InAir) {
+                    scaledAccel *= inAirSlow;
                 } else if (isGliding) {
-					scaledAccel *= glideSlow;
+                    scaledAccel *= glideSlow;
                 }
-				body.velocity = new Vector2(body.velocity.x + scaledAccel, body.velocity.y);
-			}
+                body.velocity = new Vector2(body.velocity.x + scaledAccel, body.velocity.y);
+            }
         }
         //left
         if (Input.GetKey(KeyCode.A)) {
             if (body.velocity.x > -maxSpeed) {
-				float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
-				if (InAir) {
-					scaledAccel *= inAirSlow;
-				} else if (isGliding) {
-					scaledAccel *= glideSlow;
-				}
-				body.velocity = new Vector2(body.velocity.x - scaledAccel, body.velocity.y);
+                float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+                if (InAir) {
+                    scaledAccel *= inAirSlow;
+                } else if (isGliding) {
+                    scaledAccel *= glideSlow;
+                }
+                body.velocity = new Vector2(body.velocity.x - scaledAccel, body.velocity.y);
             }
         }
 
-        if (  !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !InAir ) {
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !InAir) {
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
                 body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
                 if (body.velocity.x > 0) {
                     body.velocity = new Vector2(0, body.velocity.y);
                 }
-            //if player is moving right, add velocity to the left, but stop at 0
+                //if player is moving right, add velocity to the left, but stop at 0
             } else if (body.velocity.x > 0) {
                 body.velocity = new Vector2(body.velocity.x - walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
                 if (body.velocity.x < 0) {
@@ -129,33 +129,31 @@ public class Player : MonoBehaviour {
             }
         }
 
-<<<<<<< HEAD
         //glide
         if (Input.GetKey(KeyCode.LeftShift) && InAir && hasGlide) {
-=======
-		//glide
-		bool glideKeyHeld = Input.GetKey(KeyCode.LeftShift);
-		if (glideKeyHeld && InAir && PlayerMana > 0) {
->>>>>>> 5dc1692ce47ea3b3592ff4251b84fe3988f7773d
-            //if the glide has just started
-            if (!isGliding) {
-                isGliding = true;
-            }
+            //glide
+            bool glideKeyHeld = Input.GetKey(KeyCode.LeftShift);
+            if (glideKeyHeld && InAir && PlayerMana > 0) {
+                //if the glide has just started
+                if (!isGliding) {
+                    isGliding = true;
+                }
 
-			if (body.velocity.y < -glideFallSpeed) {
-				body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
-				PlayerMana -= 0.5f;
-			}
-        } else {
-            //if the glide has just ended:
-            if (isGliding) {
-				isGliding = false;
-            }
+                if (body.velocity.y < -glideFallSpeed) {
+                    body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
+                    PlayerMana -= 0.5f;
+                }
+            } else {
+                //if the glide has just ended:
+                if (isGliding) {
+                    isGliding = false;
+                }
 
-			// Check if key is still held to prevent flickering
-			if (!(glideKeyHeld && InAir)) PlayerMana += 0.1f;
+                // Check if key is still held to prevent flickering
+                if (!(glideKeyHeld && InAir)) PlayerMana += 0.1f;
+            }
         }
-	}
+    }
 
 	private void UpdateActivatable() {
 		// Check all activators, highlight nearest one in range
