@@ -230,4 +230,20 @@ public class Player : MonoBehaviour {
         body.gravityScale = gravityScale;
     }
 
+
+
+    public float TakeDamage(float d) {
+        d = Mathf.Min(d, PlayerHealth);
+        PlayerHealth -= d;
+        if (PlayerHealth <= 0) {
+            OnDeath();
+        }
+        return d;
+    }
+
+    public void OnDeath() {
+
+
+    }
+
 }
