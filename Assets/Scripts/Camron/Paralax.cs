@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class Paralax : MonoBehaviour {
 
-    public Rigidbody2D cBody;
+    public GameObject camera;
     public float scale;
-    private Rigidbody2D body;
+    Vector2 lastPos;
 
 	// Use this for initialization
 	void Start () {
-		
+        lastPos = camera.transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        body = GetComponent<Rigidbody2D>();	
+        transform.position = (lastPos - (Vector2)camera.transform.position) * scale;
 	}
 
-    void FixedUpdate() {
-        body.velocity = new Vector2(-scale * cBody.velocity.x, -scale * cBody.velocity.y);
-    }
+
 
 }
