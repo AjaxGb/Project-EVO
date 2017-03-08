@@ -558,6 +558,11 @@ Prefab:
       propertyPath: script.Array.data[1].duration
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: highlightDistance
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
   m_IsPrefabParent: 0
