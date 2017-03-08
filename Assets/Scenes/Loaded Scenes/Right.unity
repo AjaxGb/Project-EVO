@@ -170,6 +170,70 @@ SpriteRenderer:
   m_Color: {r: 0.33265716, g: 1, b: 0.30882353, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &722786044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 722786045}
+  - component: {fileID: 722786046}
+  m_Layer: 0
+  m_Name: FR_rock1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &722786045
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 722786044}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 18.209412, y: -7.0086775, z: 0}
+  m_LocalScale: {x: 1.1686449, y: 1.1686449, z: 1.1686449}
+  m_Children: []
+  m_Father: {fileID: 1497049943}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &722786046
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 722786044}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -323189463
+  m_SortingOrder: -1
+  m_Sprite: {fileID: 21300000, guid: 824972c9e8d18df43901b213615901aa, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
 --- !u!1001 &876131649
 Prefab:
   m_ObjectHideFlags: 0
@@ -339,6 +403,7 @@ Transform:
   - {fileID: 1323479195}
   - {fileID: 1548867853}
   - {fileID: 876131650}
+  - {fileID: 722786045}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -349,6 +414,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1497049943}
     m_Modifications:
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
       propertyPath: m_LocalPosition.x
       value: -0.47
@@ -381,10 +451,15 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 212091940292981002, guid: 99f849a76a952ce46bf64fd02959d4bd,
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
-      propertyPath: m_SortingOrder
-      value: -1
+      propertyPath: script.Array.data[2].text
+      value: This is just an Alpha.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[2].duration
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
