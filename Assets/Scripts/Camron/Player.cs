@@ -255,6 +255,7 @@ public class Player : MonoBehaviour, IKillable {
     }
 
     public float TakeDamage(float d) {
+		if (!IsAlive) return 0;
         d = Mathf.Min(d, PlayerHealth);
         PlayerHealth -= d;
         if (PlayerHealth <= 0) {
@@ -264,6 +265,7 @@ public class Player : MonoBehaviour, IKillable {
     }
 
 	public void Kill() {
+		if (!IsAlive) return;
 		PlayerHealth = 0;
 		OnDeath();
 	}
@@ -276,7 +278,7 @@ public class Player : MonoBehaviour, IKillable {
 			currActivatable.Highlighted = false;
 			currActivatable = null;
 		}
-		animator.SetBool("isidle", false);
+		//animator.SetBool("isidle", true);
 		body.freezeRotation = false;
 		body.gravityScale = gravityScale;
 		var mat = body.sharedMaterial;
