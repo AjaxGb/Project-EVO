@@ -209,9 +209,9 @@ public class Player : MonoBehaviour, IKillable {
             }
             if (body.velocity.y < -glideFallSpeed) {
                 body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
-                PlayerMana -= 0.5f;
             }
-        } else if(isGliding) {
+			PlayerMana -= 0.5f;
+		} else if(isGliding) {
             //glide ended
             endGlide();
         }
