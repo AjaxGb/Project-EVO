@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBackAndForth : MonoBehaviour {
+public class EnemyBackAndForth : MonoBehaviour, IKillable {
 
     Rigidbody2D enemyRB;
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
@@ -65,6 +65,10 @@ public class EnemyBackAndForth : MonoBehaviour {
 
             SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage equal to Enemy Strength
         }
-        
     }
+
+	public void Kill() {
+		// TODO: health, particle effects, etc.
+		Destroy(gameObject);
+	}
 }

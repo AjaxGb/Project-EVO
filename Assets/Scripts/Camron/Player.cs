@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IKillable {
 
     //upgrades
     public bool hasDoubleJump;
@@ -45,6 +45,14 @@ public class Player : MonoBehaviour {
             HealthBar.Amount = value;
         }
     }
+	private float _maxHealth;
+	public float MaxHealth {
+		get { return _maxHealth; }
+		set {
+			_maxHealth = value;
+			HealthBar.MaxAmount = value;
+		}
+	}
 
 	public UIAttributeBar ManaBar;
 	private float _playerMana;
@@ -55,7 +63,16 @@ public class Player : MonoBehaviour {
 			ManaBar.Amount = value;
 		}
 	}
-    private bool upAxisInUse;
+	private float _maxMana;
+	public float MaxMana {
+		get { return _maxMana; }
+		set {
+			_maxMana = value;
+			ManaBar.MaxAmount = value;
+		}
+	}
+
+	private bool upAxisInUse;
 
 	// Use this for initialization
 	void Start () {
@@ -63,8 +80,10 @@ public class Player : MonoBehaviour {
         gravityScale = body.gravityScale;
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
         playerLayer = LayerMask.NameToLayer("Player");
-        PlayerHealth = 100f;
-		PlayerMana = 100f;
+		MaxHealth = 100f;
+		MaxMana = 100f;
+		PlayerHealth = MaxHealth;
+		PlayerMana = MaxMana;
 	}
 	
 	// Update is called once per frame
@@ -74,7 +93,6 @@ public class Player : MonoBehaviour {
 			DeathTime -= Time.deltaTime;
 			if (DeathTime <= 0) {
 				DeathTime = 0;
-				transform.position = SceneLoader.inst.currScene.root.respawnPoint;
 				OnRespawn();
 			}
 		}
@@ -243,21 +261,40 @@ public class Player : MonoBehaviour {
         return d;
     }
 
+	public void Kill() {
+		PlayerHealth = 0;
+		OnDeath();
+	}
+
     public void OnDeath() {
-		DeathTime = 5.0f; // Wait 5 seconds before respawn
+		DeathTime = 3.0f; // Wait 3 seconds before respawn
+		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 1);
+		SceneLoader.inst.cameraFollow.target = null;
 		if (currActivatable != null) {
 			currActivatable.Highlighted = false;
 			currActivatable = null;
 		}
 		body.freezeRotation = false;
-    }
+		body.gravityScale = gravityScale;
+		var mat = body.sharedMaterial;
+		mat.friction = 1;
+		body.sharedMaterial = mat;
+	}
 
 	public void OnRespawn() {
 		body.freezeRotation = true;
 		body.rotation = 0;
 		body.velocity = Vector2.zero;
 		body.angularVelocity = 0;
+		var mat = body.sharedMaterial;
+		mat.friction = 0;
+		body.sharedMaterial = mat;
+		PlayerHealth = MaxHealth;
+		PlayerMana = MaxMana;
+		transform.position = SceneLoader.inst.currScene.root.respawnPoint;
+		SceneLoader.inst.cameraFollow.target = this.transform;
 		SceneLoader.inst.cameraFollow.WarpToTarget();
+		ScreenTint.inst.RemoveAllTints();
 	}
 
 }

@@ -80,6 +80,8 @@ public class SceneLoader : MonoBehaviour {
 
 	private SceneInfo GetCurrScene() {
 		SceneInfo curr = currScene;
+		if (!player.IsAlive) return curr;
+
 		while (!curr.bounds.Contains(player.transform.position)) {
 			bool currChanged = false;
 			foreach (SceneInfo adj in curr.adjacentScenes) {
