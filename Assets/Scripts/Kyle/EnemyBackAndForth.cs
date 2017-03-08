@@ -35,11 +35,17 @@ public class EnemyBackAndForth : MonoBehaviour {
         Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 1.1f); //Debug statement, draw the line beneath the position
         bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 1.1f, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
 
-        Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.5f ); //Debug statement, draw the line horizontal from the position
-        bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.5f, enemyMask); //Similar to above, now check for blocks such as walls
+        Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f ); //Debug statement, draw the line horizontal from the position
+        bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f, enemyMask); //Similar to above, now check for blocks such as walls. Much shorter line
 
-        //No ground ahead, turn enemy around
+        //No ground ahead underneath, turn enemy around
         if (!isGrounded) {
+            Vector3 currRot = enemyTransform.eulerAngles;
+            currRot.y += 180;
+            enemyTransform.eulerAngles = currRot;
+        }
+
+        if (isBlocked) { //In this check, if line meets something indicating blockage, turn around
             Vector3 currRot = enemyTransform.eulerAngles;
             currRot.y += 180;
             enemyTransform.eulerAngles = currRot;
