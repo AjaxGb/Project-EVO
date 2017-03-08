@@ -17,6 +17,8 @@ public class SceneInfo : ScriptableObject {
 
 	[NonSerialized]
 	public Scene file;
+	[NonSerialized]
+	public SceneRoot root;
 
 	public void OnEnable() {
 		if (buildIndex >= 0) {

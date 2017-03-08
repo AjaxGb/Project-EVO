@@ -6,10 +6,12 @@ public class SceneLoader : MonoBehaviour {
 	public static SceneLoader inst;
 
 	public Player player;
+	public CameraFollow cameraFollow;
 	public SceneInfo currScene;
 	public bool warpToSpawn = true;
 
 	private HashSet<SceneInfo> _activeScenes = new HashSet<SceneInfo>();
+	private HashSet<SceneInfo> _justLoaded   = new HashSet<SceneInfo>();
 
 	// START
 	private void Start() {
@@ -22,6 +24,16 @@ public class SceneLoader : MonoBehaviour {
 
 	// UPDATE
 	public void Update() {
+		if (_justLoaded.Count != 0) {
+			foreach (SceneInfo si in _justLoaded) {
+				si.root = si.file.GetRootGameObjects()[0].GetComponent<SceneRoot>();
+				if (!si.root) {
+					Debug.LogError("Scene \"" + si.name + "\" does not contain a SceneRoot!");
+				}
+			}
+			_justLoaded.Clear();
+		}
+		
 		if (!currScene.file.isLoaded) {
 			player.gameObject.SetActive(false);
 			if (!_activeScenes.Contains(currScene)) {
@@ -33,11 +45,11 @@ public class SceneLoader : MonoBehaviour {
 			player.gameObject.SetActive(true);
 		}
 		if (warpToSpawn) {
-			SceneRoot root = currScene.file.GetRootGameObjects()[0].GetComponent<SceneRoot>();
-			if (root) {
-				player.transform.position = root.respawnPoint;
+			if (currScene.root) {
+				player.transform.position = currScene.root.respawnPoint;
+				cameraFollow.WarpToTarget();
 			} else {
-				Debug.LogError("Scene does not contain a SceneRoot!");
+				Debug.LogError("Scene \"" + currScene.name + "\" does not contain a SceneRoot!");
 			}
 			warpToSpawn = false;
 			return;
@@ -57,6 +69,7 @@ public class SceneLoader : MonoBehaviour {
 		}
 		SceneInfo si = SceneInfo.allScenes[scene.buildIndex];
 		if (si != null) {
+			_justLoaded.Add(si);
 			si.file = scene;
 		}
 	}
