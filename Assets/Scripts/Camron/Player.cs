@@ -21,7 +21,9 @@ public class Player : MonoBehaviour {
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
 
-    //other stuff
+	//other stuff
+	public float DeathTime { get; private set; }
+	public bool IsAlive { get { return DeathTime == 0; } }
 	public bool InAir { get { return groundCheck.InAir; } }
     public bool leftClimb { get { return !leftCheck.InAir; } }
     public bool rightClimb { get { return !rightCheck.InAir; } }
@@ -68,6 +70,14 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Time.timeScale == 0) return;
+		if (!IsAlive) {
+			DeathTime -= Time.deltaTime;
+			if (DeathTime <= 0) {
+				DeathTime = 0;
+				transform.position = SceneLoader.inst.currScene.root.respawnPoint;
+				OnRespawn();
+			}
+		}
 
 		UpdateActivatable();
         if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
@@ -79,7 +89,8 @@ public class Player : MonoBehaviour {
 	}
 
     void FixedUpdate() {
-        if (Time.timeScale == 0) return;
+        if (Time.timeScale == 0 || !IsAlive) return;
+
         if (!InAir) {
             canJump = true;
         }
@@ -223,8 +234,6 @@ public class Player : MonoBehaviour {
         body.gravityScale = gravityScale;
     }
 
-
-
     public float TakeDamage(float d) {
         d = Mathf.Min(d, PlayerHealth);
         PlayerHealth -= d;
@@ -235,8 +244,20 @@ public class Player : MonoBehaviour {
     }
 
     public void OnDeath() {
-
-
+		DeathTime = 5.0f; // Wait 5 seconds before respawn
+		if (currActivatable != null) {
+			currActivatable.Highlighted = false;
+			currActivatable = null;
+		}
+		body.freezeRotation = false;
     }
+
+	public void OnRespawn() {
+		body.freezeRotation = true;
+		body.rotation = 0;
+		body.velocity = Vector2.zero;
+		body.angularVelocity = 0;
+		SceneLoader.inst.cameraFollow.WarpToTarget();
+	}
 
 }
