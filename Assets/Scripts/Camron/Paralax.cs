@@ -15,7 +15,7 @@ public class Paralax : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = (lastPos - (Vector2)camera.transform.position) * scale;
+        transform.position = ((Vector2)camera.transform.position - lastPos) * scale;
 	}
 
 

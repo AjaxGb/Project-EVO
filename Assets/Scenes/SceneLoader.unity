@@ -352,6 +352,7 @@ MonoBehaviour:
   target: {fileID: 947310626}
   smoothTime: 0.15
   maxSpeed: 1000
+  smooth: 1
 --- !u!1 &234796579
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,6 +509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 947310625}
+  cameraFollow: {fileID: 147613764}
   currScene: {fileID: 11400000, guid: ff4c7851224d2d648a59a95026e38c41, type: 2}
   warpToSpawn: 1
 --- !u!4 &291860155
@@ -602,7 +604,7 @@ GameObject:
   - component: {fileID: 947310625}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
