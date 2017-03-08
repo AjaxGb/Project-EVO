@@ -263,6 +263,9 @@ public class Player : MonoBehaviour, IKillable {
 		if (!IsAlive) return 0;
         d = Mathf.Min(d, PlayerHealth);
         PlayerHealth -= d;
+		if (d > 0) {
+			ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 0.3f, true, true);
+		}
         if (PlayerHealth <= 0) {
             OnDeath();
         }

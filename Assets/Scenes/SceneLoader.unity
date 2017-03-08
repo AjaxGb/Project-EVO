@@ -416,7 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 947310625}
   cameraFollow: {fileID: 147613764}
-  currScene: {fileID: 11400000, guid: ff4c7851224d2d648a59a95026e38c41, type: 2}
+  currScene: {fileID: 11400000, guid: 87c1956145b26a04aa370f17d5277d69, type: 2}
   warpToSpawn: 1
 --- !u!4 &291860155
 Transform:

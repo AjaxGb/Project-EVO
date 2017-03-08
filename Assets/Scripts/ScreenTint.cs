@@ -10,17 +10,19 @@ public class ScreenTint : MonoBehaviour {
 	
 	private Dictionary<ulong, Graphic> tints = new Dictionary<ulong, Graphic>();
 	private class Fade {
-		public Fade(Color start, Color end, float duration, bool destroy) {
+		public Fade(Color start, Color end, float duration, bool pingpong, bool destroy) {
 			this.start = start;
 			this.end = end;
 			this.progress = 0;
 			this.duration = duration;
+			this.pingpong = pingpong;
 			this.destroy = destroy;
 		}
 		public Color start;
 		public Color end;
 		public float progress;
 		public float duration;
+		public bool pingpong;
 		public bool destroy;
 	}
 	private Dictionary<ulong, Fade> fades = new Dictionary<ulong, Fade>();
@@ -58,41 +60,41 @@ public class ScreenTint : MonoBehaviour {
 		}
 	}
 
-	public ulong StartFade(Color start, Color end, float time, bool removeTintAfterwards = false) {
+	public ulong StartFade(Color start, Color end, float time, bool pingPong = false, bool removeWhenDone = false) {
 		ulong id = NextID();
 		Graphic g = MakeTintGraphic(start);
 		tints.Add(id, g);
-		fades.Add(id, new Fade(start, end, time, removeTintAfterwards));
+		fades.Add(id, new Fade(start, end, pingPong ? time / 2 : time, pingPong, removeWhenDone));
 		return id;
 	}
 
-	public ulong StartFade(float startAlpha, Color end, float time, bool removeTintAfterwards = false) {
+	public ulong StartFade(float startAlpha, Color end, float time, bool pingPong = false, bool removeWhenDone = false) {
 		Color start = end;
 		start.a = startAlpha;
-		return StartFade(start, end, time, removeTintAfterwards);
+		return StartFade(start, end, pingPong ? time / 2 : time, pingPong, removeWhenDone);
 	}
 
-	public ulong StartFade(Color start, float endAlpha, float time, bool removeTintAfterwards = false) {
+	public ulong StartFade(Color start, float endAlpha, float time, bool pingPong = false, bool removeWhenDone = false) {
 		Color end = start;
 		end.a = endAlpha;
-		return StartFade(start, end, time, removeTintAfterwards);
+		return StartFade(start, end, pingPong ? time / 2 : time, pingPong, removeWhenDone);
 	}
 
-	public void FadeTint(ulong id, Color target, float time, bool removeTintAfterwards = false) {
+	public void FadeTint(ulong id, Color target, float time, bool pingPong = false, bool removeWhenDone = false) {
 		Graphic g;
 		if (tints.TryGetValue(id, out g)) {
-			fades[id] = new Fade(g.color, target, time, removeTintAfterwards);
+			fades[id] = new Fade(g.color, target, pingPong ? time / 2 : time, pingPong, removeWhenDone);
 		} else {
 			throw new ArgumentException("Tint ID not in use", "id");
 		}
 	}
 
-	public void FadeTint(ulong id, float targetAlpha, float time, bool removeTintAfterwards = false) {
+	public void FadeTint(ulong id, float targetAlpha, float time, bool pingPong = false, bool removeWhenDone = false) {
 		Graphic g;
 		if (tints.TryGetValue(id, out g)) {
 			Color target = g.color;
 			target.a = targetAlpha;
-			fades[id] = new Fade(g.color, target, time, removeTintAfterwards);
+			fades[id] = new Fade(g.color, target, pingPong ? time / 2 : time, pingPong, removeWhenDone);
 		} else {
 			throw new ArgumentException("Tint ID not in use", "id");
 		}
@@ -138,6 +140,15 @@ public class ScreenTint : MonoBehaviour {
 
 			f.progress += Time.deltaTime;
 			if (f.progress >= f.duration) {
+				if (f.pingpong) {
+					g.color = f.end;
+					Color temp = f.start;
+					f.start = f.end;
+					f.end = temp;
+					f.progress = 0;
+					f.pingpong = false;
+					continue;
+				}
 				if (f.destroy) {
 					RemoveTintNotFade(id);
 				} else {
