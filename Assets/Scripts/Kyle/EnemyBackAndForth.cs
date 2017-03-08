@@ -53,10 +53,11 @@ public class EnemyBackAndForth : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D TouchedThing) {
         if (TouchedThing.gameObject.tag == "Player" ) {
-            Debug.Log("Player collision");
+            //Debug.Log("Player collision");
 
             //TouchedThing.gameObject.GetComponent<Player>().TakeDamage(DamageStrength); //Simpler call on Player component in absence of Sceneloader during testing
-            SceneLoader.inst.player.TakeDamage(DamageStrength);
+
+            SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage equal to Enemy Strength
         }
         
     }
