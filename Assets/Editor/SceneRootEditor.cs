@@ -148,9 +148,10 @@ public class SceneRootEditor : Editor {
 			yMax = Handles.Slider(yMax, Vector2.up,   boundHandleSize * HandleUtility.GetHandleSize(yMax), Handles.DotCap, 0);
 		}
 		if (EditorGUI.EndChangeCheck()) {
-			Undo.RecordObject(sceneInfoInst, "Free Move Scene Bounds");
+			sceneInfoObject.Update();
 			rect.Set(xMin.x, yMin.y, xMax.x - xMin.x, yMax.y - yMin.y);
-			sceneInfoInst.bounds = rect;
+			boundsProp.rectValue = rect;
+			sceneInfoObject.ApplyModifiedProperties();
 			this.Repaint();
 		}
 
@@ -166,8 +167,9 @@ public class SceneRootEditor : Editor {
 			respawn = Handles.Slider2D(respawn, Vector3.forward, Vector2.up, Vector2.left, respawnHandleSize, Handles.CircleHandleCap, 0);
 		}
 		if (EditorGUI.EndChangeCheck()) {
-			Undo.RecordObject(targetRoot, "Free Move Respawn Point");
-			targetRoot.respawnPoint = respawn;
+			serializedObject.Update();
+			respawnPointProp.vector2Value = respawn;
+			serializedObject.ApplyModifiedProperties();
 			this.Repaint();
 		}
 	}

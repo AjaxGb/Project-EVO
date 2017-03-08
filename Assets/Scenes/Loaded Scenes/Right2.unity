@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: 87c1956145b26a04aa370f17d5277d69, type: 2}
-  respawnPoint: {x: 59.407024, y: 3.862883}
+  respawnPoint: {x: 50.92157, y: -0.64501476}
 --- !u!4 &1224205357
 Transform:
   m_ObjectHideFlags: 0

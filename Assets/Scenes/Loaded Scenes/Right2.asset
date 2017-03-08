@@ -15,9 +15,9 @@ MonoBehaviour:
   buildIndex: 4
   bounds:
     serializedVersion: 2
-    x: 7.1707687
-    y: -5
-    width: 8.564133
-    height: 10
+    x: 42.11521
+    y: -47.301468
+    width: 241.22147
+    height: 72.9924
   adjacentScenes:
   - {fileID: 11400000, guid: fe144c9c0c074e34dadb13f059a8d7c2, type: 2}

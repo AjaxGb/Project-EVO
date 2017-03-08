@@ -15,10 +15,10 @@ MonoBehaviour:
   buildIndex: 1
   bounds:
     serializedVersion: 2
-    x: -3.5076222
-    y: -3.2781096
-    width: 6.9247437
-    height: 9.519545
+    x: -4.714282
+    y: -36.581867
+    width: 18.750069
+    height: 55.85531
   adjacentScenes:
   - {fileID: 11400000, guid: c92da665e3c626349bcf8787095b6b6f, type: 2}
   - {fileID: 11400000, guid: fe144c9c0c074e34dadb13f059a8d7c2, type: 2}
