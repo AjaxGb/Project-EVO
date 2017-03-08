@@ -118,7 +118,7 @@ public class Player : MonoBehaviour {
         //left and right movement
         //right
         if (Input.GetAxis("Horizontal") > 0) {
-            GetComponent<Animator>().SetBool("isidle", false);
+            //GetComponent<Animator>().SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = false;
             if (body.velocity.x < maxSpeed) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour {
         }
         //left
         if (Input.GetAxis("Horizontal") < 0) {
-            GetComponent<Animator>().SetBool("isidle", false);
+            //GetComponent<Animator>().SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = true;
             if (body.velocity.x > -maxSpeed) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
@@ -146,7 +146,7 @@ public class Player : MonoBehaviour {
         }
 
         if (Input.GetAxis("Horizontal") == 0 && !InAir) {
-            GetComponent<Animator>().SetBool("isidle",true);
+            //GetComponent<Animator>().SetBool("isidle",true);
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
                 body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
