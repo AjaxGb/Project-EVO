@@ -32,6 +32,7 @@ public class Player : MonoBehaviour, IKillable {
     public bool isClimbing;
     private Rigidbody2D body;
 	private Activatable currActivatable;
+	private Animator animator;
     int playerLayer;
 
     public UIAttributeBar HealthBar;
@@ -77,6 +78,7 @@ public class Player : MonoBehaviour, IKillable {
 	// Use this for initialization
 	void Start () {
         body = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
         gravityScale = body.gravityScale;
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
         playerLayer = LayerMask.NameToLayer("Player");
@@ -136,7 +138,7 @@ public class Player : MonoBehaviour, IKillable {
         //left and right movement
         //right
         if (Input.GetAxis("Horizontal") > 0) {
-            GetComponent<Animator>().SetBool("isidle", false);
+            animator.SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = false;
             if (body.velocity.x < maxSpeed) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
@@ -150,7 +152,7 @@ public class Player : MonoBehaviour, IKillable {
         }
         //left
         if (Input.GetAxis("Horizontal") < 0) {
-            GetComponent<Animator>().SetBool("isidle", false);
+            animator.SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = true;
             if (body.velocity.x > -maxSpeed) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
@@ -164,7 +166,7 @@ public class Player : MonoBehaviour, IKillable {
         }
 
         if (Input.GetAxis("Horizontal") == 0 && !InAir) {
-            GetComponent<Animator>().SetBool("isidle",true);
+			animator.SetBool("isidle",true);
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
                 body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
@@ -274,6 +276,7 @@ public class Player : MonoBehaviour, IKillable {
 			currActivatable.Highlighted = false;
 			currActivatable = null;
 		}
+		animator.SetBool("isidle", false);
 		body.freezeRotation = false;
 		body.gravityScale = gravityScale;
 		var mat = body.sharedMaterial;
