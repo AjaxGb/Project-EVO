@@ -416,7 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 947310625}
   cameraFollow: {fileID: 147613764}
-  currScene: {fileID: 11400000, guid: 87c1956145b26a04aa370f17d5277d69, type: 2}
+  currScene: {fileID: 11400000, guid: ff4c7851224d2d648a59a95026e38c41, type: 2}
   warpToSpawn: 1
 --- !u!4 &291860155
 Transform:
@@ -1256,6 +1256,22 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &1572892734 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1676983488533832, guid: 67231aa2af76e02499f312b9db36e7ec,
+    type: 2}
+  m_PrefabInternal: {fileID: 404042732}
+--- !u!114 &1572892735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1572892734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2cdf58b6073f24e9e334f2a5a2823f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1647659640
 GameObject:
   m_ObjectHideFlags: 0
