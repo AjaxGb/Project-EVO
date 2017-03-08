@@ -10,6 +10,8 @@ public class EnemyBackAndForth : MonoBehaviour {
     float enemyWidth, enemyHeight;
     public float speed = -1; //Movement speed of enemy, adjustable. Negative for left, positive for right. Default to moving left at 1 speed
 
+    public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
+
 	// Use this for initialization
 	void Start () {
         enemyTransform = this.transform;
@@ -28,11 +30,12 @@ public class EnemyBackAndForth : MonoBehaviour {
     void FixedUpdate() {
 
         //Only move forward if there is ground ahead, ergo not at the edge
-        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth + Vector2.up * enemyHeight; //Check on the far left of the sprite, vertical center. Cast a line from that position
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down); //Debug statement, draw the line beneath the position
-        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
+        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth + Vector2.up * enemyHeight; //Origin of Linecast will be top left corner. Cast lines from that position
 
-        Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() *0.5f ); //Debug statement, draw the line beneath the position
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 1.1f); //Debug statement, draw the line beneath the position
+        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 1.1f, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
+
+        Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.5f ); //Debug statement, draw the line horizontal from the position
         bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.5f, enemyMask); //Similar to above, now check for blocks such as walls
 
         //No ground ahead, turn enemy around
@@ -46,5 +49,16 @@ public class EnemyBackAndForth : MonoBehaviour {
         Vector2 enemyVelo = enemyRB.velocity;
         enemyVelo.x = enemyTransform.right.x * speed;
         enemyRB.velocity = enemyVelo;
+    }
+
+    void OnCollisionEnter2D(Collision2D TouchedThing) {
+        if (TouchedThing.gameObject.tag == "Player" ) {
+            //Debug.Log("Player collision");
+
+            //TouchedThing.gameObject.GetComponent<Player>().TakeDamage(DamageStrength); //Simpler call on Player component in absence of Sceneloader during testing
+
+            SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage equal to Enemy Strength
+        }
+        
     }
 }

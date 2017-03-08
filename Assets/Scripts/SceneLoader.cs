@@ -17,9 +17,11 @@ public class SceneLoader : MonoBehaviour {
 	private void Start() {
 		inst = this;
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);
-		_activeScenes.Add(currScene);
-		EnsureAdjacency();
+		if (currScene != null) {
+			SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);
+			_activeScenes.Add(currScene);
+			EnsureAdjacency();
+		}
 	}
 
 	// UPDATE
@@ -33,7 +35,9 @@ public class SceneLoader : MonoBehaviour {
 			}
 			_justLoaded.Clear();
 		}
-		
+
+		if (currScene == null) return;
+
 		if (!currScene.file.isLoaded) {
 			player.gameObject.SetActive(false);
 			if (!_activeScenes.Contains(currScene)) {
