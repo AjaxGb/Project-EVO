@@ -97,6 +97,28 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 2124627546}
   m_Script: {fileID: 11500000, guid: c88a1ddc0e88e8040a6ffecb45649e1e, type: 3}
+--- !u!1 &135772510 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1462255093818318, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+    type: 2}
+  m_PrefabInternal: {fileID: 498726449}
+--- !u!95 &135772516
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 135772510}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 59697b012c13a3e4c8c092ef3f71e138, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &257336201 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1529344791851454, guid: 96aee7c5dc1e73c46a103e16c96d8169,
@@ -140,6 +162,11 @@ Prefab:
     - target: {fileID: 4752046673342634, guid: e80febc0149b7ac4abbc9499e46df917, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212318615048020696, guid: e80febc0149b7ac4abbc9499e46df917,
+        type: 2}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e80febc0149b7ac4abbc9499e46df917, type: 2}
@@ -308,6 +335,11 @@ Prefab:
       propertyPath: m_Size.y
       value: 14.297478
       objectReference: {fileID: 0}
+    - target: {fileID: 114793396646658712, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+        type: 2}
+      propertyPath: climbSpeed
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
   m_IsPrefabParent: 0
@@ -449,7 +481,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
+  m_SortingLayerID: -732855237
   m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 25043b0d180fbb74282988cb51eeac39, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
