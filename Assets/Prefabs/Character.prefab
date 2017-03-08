@@ -285,7 +285,7 @@ MonoBehaviour:
   hasGlide: 1
   inAirSlow: 0.8
   glideSlow: 0.3
-  glideFallSpeed: 0
+  glideFallSpeed: 0.8
   jumpForce: 10
   maxSpeed: 5
   walkingAcceleration: 40
