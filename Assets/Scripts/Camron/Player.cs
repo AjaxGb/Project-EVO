@@ -33,6 +33,7 @@ public class Player : MonoBehaviour, IKillable {
 	public PhysicsMaterial2D deathPhysMaterial;
 	private PhysicsMaterial2D alivePhysMaterial;
     private Rigidbody2D body;
+	private Collider2D collider;
 	private Activatable currActivatable;
 	private Animator animator;
     int playerLayer;
@@ -79,7 +80,8 @@ public class Player : MonoBehaviour, IKillable {
 
 	// Use this for initialization
 	void Start () {
-        body = GetComponent<Rigidbody2D>();
+		body = GetComponent<Rigidbody2D>();
+		collider = GetComponent<Collider2D>();
 		alivePhysMaterial = body.sharedMaterial;
 		animator = GetComponent<Animator>();
         gravityScale = body.gravityScale;
@@ -281,10 +283,12 @@ public class Player : MonoBehaviour, IKillable {
 			currActivatable.Highlighted = false;
 			currActivatable = null;
 		}
-		//animator.SetBool("isidle", true);
+		animator.SetBool("isidle", true);
 		body.freezeRotation = false;
 		body.gravityScale = gravityScale;
-		body.sharedMaterial = deathPhysMaterial;
+		collider.sharedMaterial = deathPhysMaterial;
+		collider.enabled = false;
+		collider.enabled = true;
 	}
 
 	public void OnRespawn() {
@@ -292,7 +296,9 @@ public class Player : MonoBehaviour, IKillable {
 		body.rotation = 0;
 		body.velocity = Vector2.zero;
 		body.angularVelocity = 0;
-		body.sharedMaterial = alivePhysMaterial;
+		collider.sharedMaterial = alivePhysMaterial;
+		collider.enabled = false;
+		collider.enabled = true;
 		PlayerHealth = MaxHealth;
 		PlayerMana = MaxMana;
 		transform.position = SceneLoader.inst.currScene.root.respawnPoint;
