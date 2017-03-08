@@ -218,7 +218,7 @@ public class Player : MonoBehaviour, IKillable {
             endGlide();
         }
         // Check if key is still held to prevent flickering
-        if (!(Input.GetButton("Glide") && InAir)) PlayerMana += 0.1f;
+        if (!(Input.GetButton("Glide") && InAir) || isClimbing) PlayerMana += 0.1f;
     }
 
 	private void UpdateActivatable() {
