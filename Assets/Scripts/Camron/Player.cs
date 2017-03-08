@@ -280,7 +280,7 @@ public class Player : MonoBehaviour, IKillable {
 
     public void OnDeath() {
 		DeathTime = 3.0f; // Wait 3 seconds before respawn
-		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 1);
+		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.4f), 1);
 		SceneLoader.inst.cameraFollow.target = null;
 		if (currActivatable != null) {
 			currActivatable.Highlighted = false;
