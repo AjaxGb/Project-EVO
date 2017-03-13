@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour {
 	public static SceneLoader inst;
+	public const int buildIndex = 0;
+	public static SceneInfo overrideStartScene = null;
 
 	public Player player;
 	public CameraFollow cameraFollow;
@@ -17,6 +19,11 @@ public class SceneLoader : MonoBehaviour {
 	private void Start() {
 		inst = this;
 		SceneManager.sceneLoaded += OnSceneLoaded;
+
+		if (overrideStartScene != null) {
+			currScene = overrideStartScene;
+			overrideStartScene = null;
+		}
 		if (currScene != null) {
 			SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);
 			_activeScenes.Add(currScene);
