@@ -1,10 +1,39 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneInfo : ScriptableObject {
-	public static SceneInfo[] allScenes = { };
+[Serializable]
+public class SceneAdjacency : IComparable<SceneAdjacency>, IEquatable<SceneAdjacency> {
+	public int toBI;
+	public Vector2 connectionPoint;
+
+	public SceneAdjacency(int bi, Vector2 cp) {
+		toBI = bi;
+		connectionPoint = cp;
+	}
+
+	public override string ToString() {
+		SceneInfo si;
+		if (SceneInfo.scenesByBI.TryGetValue(toBI, out si)) {
+			return si + " : " + connectionPoint;
+		} else {
+			return "[" + toBI + "] !!NULL!! : " + connectionPoint;
+		}
+	}
+
+	public int CompareTo(SceneAdjacency other) {
+		return this.toBI - other.toBI;
+	}
+
+	public bool Equals(SceneAdjacency other) {
+		return this.toBI == other.toBI;
+	}
+}
+
+public class SceneInfo : ScriptableObject, IComparable<SceneInfo> {
+	public static readonly Dictionary<int, SceneInfo> scenesByBI = new Dictionary<int, SceneInfo>();
+	public static readonly List<SceneInfo> allScenes = new List<SceneInfo>();
 
 	[HideInInspector]
 	public string sceneName;
@@ -13,7 +42,7 @@ public class SceneInfo : ScriptableObject {
 	[HideInInspector]
 	public Rect bounds = new Rect(-5, -5, 10, 10);
 	[HideInInspector]
-	public SceneInfo[] adjacentScenes;
+	public List<SceneAdjacency> adjacentScenes = new List<SceneAdjacency>();
 
 	[NonSerialized]
 	public Scene file;
@@ -24,17 +53,37 @@ public class SceneInfo : ScriptableObject {
 		if (buildIndex >= 0) {
 			file = SceneManager.GetSceneByBuildIndex(buildIndex);
 
-			if (allScenes.Length <= buildIndex) {
-				Array.Resize(ref allScenes, buildIndex + 1);
+			SceneInfo val;
+			if (scenesByBI.TryGetValue(buildIndex, out val) && val != this) {
+				Debug.LogWarningFormat(this, "\"{0}\" claims to have the same buildIndex ({1}) as \"{2}\"", name, buildIndex, val.name);
+			} else {
+				scenesByBI[buildIndex] = this;
+				allScenes.AddSorted(this);
 			}
-			if (allScenes[buildIndex] != null && allScenes[buildIndex] != this) {
-				Debug.Log('"' + sceneName + "\" claims to have the same buildIndex (" + buildIndex + ") as \"" + allScenes[buildIndex].sceneName + '"');
+		} else {
+			Debug.LogWarningFormat(this, "SceneInfo \"{0}\" is not initialized", name);
+		}
+	}
+
+	public void OnDisable() {
+		if (buildIndex >= 0) {
+			SceneInfo val;
+			if (!scenesByBI.TryGetValue(buildIndex, out val) || val != this) {
+				Debug.LogWarningFormat(this, "\"{0}\" claims to have the same buildIndex ({1}) as \"{2}\"", name, buildIndex, val.name);
+			} else {
+				scenesByBI.Remove(buildIndex);
+				allScenes.RemoveSorted(this);
 			}
-			allScenes[buildIndex] = this;
+		} else {
+			Debug.LogWarningFormat(this, "SceneInfo \"{0}\" is not initialized", name);
 		}
 	}
 
 	public override string ToString() {
 		return "[" + buildIndex + "] " + sceneName;
+	}
+
+	public int CompareTo(SceneInfo other) {
+		return this.buildIndex - other.buildIndex;
 	}
 }

@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: ff4c7851224d2d648a59a95026e38c41, type: 2}
-  respawnPoint: {x: 4.941396, y: 2.4011807}
+  respawnPoint: {x: 4.747612, y: 2.7887497}
 --- !u!4 &1084267207
 Transform:
   m_ObjectHideFlags: 0
@@ -423,7 +423,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1084267205}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.03058829, y: -0.19867776, z: 0}
+  m_LocalPosition: {x: 142.9, y: -27.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 161506021}
@@ -683,6 +683,6 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0.3382702, y: -7.2365036}
+  m_Offset: {x: 1.2102737, y: -7.2365036}
   serializedVersion: 2
-  m_Size: {x: 18.209278, y: 11.064266}
+  m_Size: {x: 28.09227, y: 11.064266}

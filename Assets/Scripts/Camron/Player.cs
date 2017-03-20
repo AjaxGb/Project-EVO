@@ -304,7 +304,7 @@ public class Player : MonoBehaviour, IKillable {
 		collider.enabled = true;
 		PlayerHealth = MaxHealth;
 		PlayerMana = MaxMana;
-		transform.position = SceneLoader.inst.currScene.root.respawnPoint;
+		transform.position = SceneLoader.inst.currScene.root.WorldSpaceRespawnPoint;
 		SceneLoader.inst.cameraFollow.target = this.transform;
 		SceneLoader.inst.cameraFollow.WarpToTarget();
 		ScreenTint.inst.RemoveAllTints();

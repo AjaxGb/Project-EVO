@@ -20,7 +20,7 @@ public class CameraFollow : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update() {
+	void LateUpdate() {
 		Vector3 newPos;
 		if (target == null) {
 			newPos = transform.position;

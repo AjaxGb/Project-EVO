@@ -1,36 +1,25 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [CustomEditor(typeof(SceneInfo))]
 public class SceneInfoEditor : Editor {
 
-	SerializedProperty buildIndexProp;
-	SerializedProperty sceneNameProp;
-	SerializedProperty boundsProp;
-	SerializedProperty adjacentScenesProp;
+	new SceneInfo target;
 
 	private void OnEnable() {
-		buildIndexProp = serializedObject.FindProperty("buildIndex");
-		sceneNameProp = serializedObject.FindProperty("sceneName");
-		boundsProp = serializedObject.FindProperty("bounds");
-		adjacentScenesProp = serializedObject.FindProperty("adjacentScenes");
+		target = (SceneInfo)base.target;
 	}
 
 	public override void OnInspectorGUI() {
-		EditorGUILayout.LabelField(new GUIContent("Build Index"), new GUIContent(buildIndexProp.intValue.ToString()));
-		EditorGUILayout.LabelField(new GUIContent("Scene Name"), new GUIContent(sceneNameProp.stringValue));
-		EditorGUILayout.LabelField(new GUIContent("Bounds"), new GUIContent(boundsProp.rectValue.ToString()));
-		EditorGUILayout.PrefixLabel("Adjacent Scenes (" + adjacentScenesProp.arraySize + "):");
-		foreach (SerializedProperty p in adjacentScenesProp) {
-			SceneInfo adj = (SceneInfo)p.objectReferenceValue;
-			if (adj == null) {
-				EditorGUILayout.LabelField("    NULL (WILL CAUSE ERRORS!)");
-			} else {
-				EditorGUILayout.LabelField("    " + adj.ToString());
-			}
+		EditorGUILayout.LabelField(new GUIContent("Build Index"), new GUIContent(target.buildIndex.ToString()));
+		EditorGUILayout.LabelField(new GUIContent("Scene Name"), new GUIContent(target.sceneName));
+		EditorGUILayout.LabelField(new GUIContent("Bounds"), new GUIContent(target.bounds.ToString()));
+		EditorGUILayout.PrefixLabel("Adjacent Scenes (" + target.adjacentScenes.Count + "):");
+		foreach (SceneAdjacency adj in target.adjacentScenes) {
+			EditorGUILayout.LabelField("    " + adj.ToString());
 		}
 	}
 }
@@ -48,9 +37,7 @@ public class SceneRootEditor : Editor {
 	SerializedProperty sceneNameProp;
 	SerializedProperty buildIndexProp;
 	SerializedProperty boundsProp;
-	SerializedProperty adjacentScenesProp;
-	ReorderableList adjacentList;
-
+	List<SceneAdjacency> adjacentScenesList;
 
 	void OnEnable() {
 		targetRoot = (SceneRoot)target;
@@ -77,7 +64,7 @@ public class SceneRootEditor : Editor {
 		sceneNameProp = sceneInfoObject.FindProperty("sceneName");
 		buildIndexProp = sceneInfoObject.FindProperty("buildIndex");
 		boundsProp = sceneInfoObject.FindProperty("bounds");
-		adjacentScenesProp = sceneInfoObject.FindProperty("adjacentScenes");
+		adjacentScenesList = sceneInfoInst.adjacentScenes;
 
 		sceneInfoObject.Update();
 		if (scene.buildIndex < 0) {
@@ -89,13 +76,12 @@ public class SceneRootEditor : Editor {
 		buildIndexProp.intValue = scene.buildIndex;
 		sceneInfoObject.ApplyModifiedPropertiesWithoutUndo();
 		sceneInfoInst.OnEnable();
-
-		adjacentList = new ReorderableList(sceneInfoObject, adjacentScenesProp, true, true, true, true);
-		adjacentList.drawHeaderCallback = DrawAdjacentHeader;
-		adjacentList.drawElementCallback = DrawAdjacentItem;
-		adjacentList.onAddDropdownCallback = AddAdjacentItemMenu;
-
 		serializedObject.ApplyModifiedPropertiesWithoutUndo();
+		
+		connectionLabelStyle.normal.textColor = connectionLableColor;
+		connectionLabelStyle.normal.background = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Sprites/UI/bar1 fill.png");
+		connectionLabelStyle.border = new RectOffset(5, 5, 5, 5);
+		connectionLabelStyle.alignment = TextAnchor.MiddleCenter;
 	}
 
 	public override void OnInspectorGUI() {
@@ -112,10 +98,74 @@ public class SceneRootEditor : Editor {
 		}
 		EditorGUILayout.EndHorizontal();
 
-		adjacentList.DoLayoutList();
+		EditorGUILayout.LabelField("Adjacent Scenes");
+		SceneAdjacency testAdj = new SceneAdjacency(0, Vector2.zero);
+		bool needSort = false;
+		for (int i = 0; i < adjacentScenesList.Count; ++i) {
+			SceneInfo newInfo, oldInfo;
+			Vector2 point;
+			EditorGUILayout.BeginHorizontal();
+			{
+				if (GUILayout.Button("-")) {
+					adjacentScenesList.RemoveAt(i);
+					if (i >= adjacentScenesList.Count) break;
+				}
+				SceneAdjacency adj = adjacentScenesList[i];
+				oldInfo = SceneInfo.scenesByBI[adj.toBI];
+				EditorGUI.BeginChangeCheck();
+				EditorGUILayout.BeginVertical();
+				{
+					newInfo = EditorGUILayout.ObjectField("Scene Info", oldInfo, typeof(SceneInfo), false) as SceneInfo;
+					point = EditorGUILayout.Vector2Field("Connection Point", adj.connectionPoint);
+				}
+				EditorGUILayout.EndVertical();
+				testAdj.toBI = newInfo.buildIndex;
+				if (EditorGUI.EndChangeCheck() && newInfo != sceneInfoInst && (newInfo == oldInfo || !adjacentScenesList.Contains(testAdj))) {
+					adj.toBI = newInfo.buildIndex;
+					adj.connectionPoint = point;
+					needSort = true;
+				}
+			}
+			EditorGUILayout.EndHorizontal();
+			EditorGUILayout.Space();
+		}
+		if (needSort) {
+			adjacentScenesList.Sort();
+			EditorUtility.SetDirty(sceneInfoInst);
+		}
+		EditorGUILayout.BeginHorizontal();
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
+		EditorGUILayout.Space();
+		if (GUILayout.Button("+")) {
+			GenericMenu menu = new GenericMenu();
+			foreach (SceneInfo si in SceneInfo.allScenes) {
+				testAdj.toBI = si.buildIndex;
+				if (si == sceneInfoInst || adjacentScenesList.ContainsSorted(testAdj)) {
+					menu.AddDisabledItem(new GUIContent(si.ToString()));
+				} else {
+					menu.AddItem(new GUIContent(si.ToString()), false, AddAdjacentItemClick, si);
+				}
+			}
+			menu.ShowAsContext();
+		}
+		EditorGUILayout.EndHorizontal();
+		EditorGUILayout.Space();
 
 		serializedObject.ApplyModifiedProperties();
 		sceneInfoObject.ApplyModifiedProperties();
+
+		if (GUILayout.Button("Arrange all loaded scenes correctly")) {
+			Dictionary<SceneInfo, Vector2> worldPositions = new Dictionary<SceneInfo, Vector2>();
+			SceneLoader.CalculateAllScenePositions(worldPositions, sceneInfoInst, targetRoot.transform.position);
+			for (int i = 0; i < SceneManager.sceneCount; ++i) {
+				Scene s = SceneManager.GetSceneAt(i);
+				SceneInfo si;
+				if (SceneInfo.scenesByBI.TryGetValue(s.buildIndex, out si)) {
+					s.GetRootGameObjects()[0].transform.position = worldPositions[si];
+				}
+			}
+		}
 	}
 
 	public static readonly Color boundsHandleColor   = new Color(0, 0.5f, 1, 1.0f);
@@ -126,10 +176,16 @@ public class SceneRootEditor : Editor {
 	public static readonly Color respawnHandleColorBG = new Color(1, 0, 0, 0.1f);
 	public const float respawnHandleSize = 1f;
 
+	public static readonly Color connectionHandleColor  = new Color(1, 1, 0, 1.0f);
+	public static readonly Color connectionLableColor   = new Color(1, 1, 1, 0.8f);
+	public static readonly Color connectionLableColorBG = new Color(0, 0, 0, 0.2f);
+	public static readonly GUIStyle connectionLabelStyle = new GUIStyle();
+	public const float connectionHandleSize = 1f;
+
 	public void OnSceneGUI() {
 
 		// DRAW BOUNDS HANDLES
-		Rect rect = sceneInfoInst.bounds;
+		Rect rect = targetRoot.transform.position.TransformRect(sceneInfoInst.bounds);
 
 		Vector2 xMin = new Vector2(rect.xMin, rect.center.y);
 		Vector2 xMax = new Vector2(rect.xMax, rect.center.y);
@@ -149,13 +205,13 @@ public class SceneRootEditor : Editor {
 		if (EditorGUI.EndChangeCheck()) {
 			sceneInfoObject.Update();
 			rect.Set(xMin.x, yMin.y, xMax.x - xMin.x, yMax.y - yMin.y);
-			boundsProp.rectValue = rect;
+			boundsProp.rectValue = targetRoot.transform.position.InverseTransformRect(rect);
 			sceneInfoObject.ApplyModifiedProperties();
 			this.Repaint();
 		}
 
 		// DRAW RESPAWN POINT HANDLE
-		Vector2 respawn = targetRoot.respawnPoint;
+		Vector2 respawn = targetRoot.transform.TransformPoint(targetRoot.respawnPoint);
 
 		Handles.color = respawnHandleColorBG;
 		Handles.DrawSolidDisc(respawn, Vector3.forward, respawnHandleSize);
@@ -167,50 +223,40 @@ public class SceneRootEditor : Editor {
 		}
 		if (EditorGUI.EndChangeCheck()) {
 			serializedObject.Update();
-			respawnPointProp.vector2Value = respawn;
+			respawnPointProp.vector2Value = targetRoot.transform.InverseTransformPoint(respawn);
 			serializedObject.ApplyModifiedProperties();
 			this.Repaint();
 		}
-	}
-	
-	public void DrawAdjacentHeader(Rect rect) {
-		EditorGUI.LabelField(rect, "Adjacent Scenes");
-	}
 
-	public void DrawAdjacentItem(Rect rect, int index, bool isActive, bool isFocused) {
-		SerializedProperty prop = adjacentScenesProp.GetArrayElementAtIndex(index);
-		rect.y += 2;
-		EditorGUI.ObjectField(
-			new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), prop, typeof(SceneInfo));
-		// TODO: Update the Adjacency list of the other scene, too.
-	}
+		// DRAW CONNECTION POINT HANDLES
 
-	public void AddAdjacentItemMenu(Rect rect, ReorderableList list) {
-		GenericMenu menu = new GenericMenu();
-		foreach (SceneInfo si in SceneInfo.allScenes) {
-			if (si == sceneInfoInst) {
-				menu.AddDisabledItem(new GUIContent(si.ToString()));
-			} else if (si != null) {
-				menu.AddItem(new GUIContent(si.ToString()), false, AddAdjacentItemClick, si);
+		Handles.color = connectionHandleColor;
+
+		GUI.backgroundColor = connectionLableColorBG;
+		foreach (SceneAdjacency adj in adjacentScenesList) {
+			Vector2 point = adj.connectionPoint + (Vector2)targetRoot.transform.position;
+			EditorGUI.BeginChangeCheck();
+			{
+				point = Handles.Slider2D(point, Vector3.forward, Vector2.up, Vector2.left, connectionHandleSize, Handles.DotHandleCap, 0);
+			}
+			if (EditorGUI.EndChangeCheck()) {
+				adj.connectionPoint = point - (Vector2)targetRoot.transform.position;
+				EditorUtility.SetDirty(sceneInfoInst);
+				this.Repaint();
+			}
+			SceneInfo si;
+			if (SceneInfo.scenesByBI.TryGetValue(adj.toBI, out si)) {
+				Handles.Label(point + Vector2.up * 2, si.name, connectionLabelStyle);
 			}
 		}
-		menu.ShowAsContext();
 	}
 
-	public void AddAdjacentItemClick(object obj) {
-		sceneInfoObject.Update();
+	private void AddAdjacentItemClick(object obj) {
+		Undo.RecordObject(sceneInfoInst, "Add adjacent item");
 		SceneInfo other = (SceneInfo)obj;
 
-		int index = adjacentList.index;
-		if (adjacentList.count == 0) {
-			index = 0;
-		} else if (index < 0) {
-			index += adjacentList.count;
-		}
-
-		adjacentScenesProp.InsertArrayElementAtIndex(index);
-		adjacentScenesProp.GetArrayElementAtIndex(index).objectReferenceValue = other;
+		adjacentScenesList.AddSorted(new SceneAdjacency(other.buildIndex, Vector2.zero));
+		EditorUtility.SetDirty(sceneInfoInst);
 		// TODO: Update the Adjacency list of the other scene, too.
-		sceneInfoObject.ApplyModifiedProperties();
 	}
 }

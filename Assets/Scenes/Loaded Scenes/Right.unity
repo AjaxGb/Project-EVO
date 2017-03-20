@@ -469,7 +469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: fe144c9c0c074e34dadb13f059a8d7c2, type: 2}
-  respawnPoint: {x: 19.209047, y: -7.4470444}
+  respawnPoint: {x: -4.5809307, y: -5.8610425}
 --- !u!4 &1497049943
 Transform:
   m_ObjectHideFlags: 0
@@ -477,7 +477,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1497049941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 23.55, y: -0.69, z: 0}
+  m_LocalPosition: {x: -5.1, y: 6.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 282418518}
