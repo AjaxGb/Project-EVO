@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -173,7 +172,12 @@ public class SceneLoader : MonoBehaviour {
 			if (theirAdjacency.toBI == currScene.buildIndex) {
 				adjPos = currScenePos + ourAdjacency.connectionPoint - theirAdjacency.connectionPoint;
 				posFound = true;
-				worldPositions[adjacentScene] = adjPos;
+				Vector2 oldPos;
+				if (worldPositions.TryGetValue(adjacentScene, out oldPos) && Vector2.SqrMagnitude(oldPos - adjPos) > 0.000001f) {
+					Debug.LogErrorFormat(adjacentScene, "Adjacency map seems impossible; \"{0}\" has conflicting claims on its world position.", adjacentScene.name);
+				} else {
+					worldPositions[adjacentScene] = adjPos;
+				}
 				break;
 			}
 		}
