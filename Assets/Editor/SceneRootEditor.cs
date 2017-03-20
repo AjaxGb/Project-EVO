@@ -107,6 +107,12 @@ public class SceneRootEditor : Editor {
 			EditorGUILayout.BeginHorizontal();
 			{
 				if (GUILayout.Button("-")) {
+
+					SceneInfo otherInfo = SceneInfo.scenesByBI[adjacentScenesList[i].toBI];
+					if (otherInfo.adjacentScenes.RemoveSorted(new SceneAdjacency(sceneInfoInst.buildIndex, Vector2.zero))) {
+						EditorUtility.SetDirty(otherInfo);
+					}
+
 					adjacentScenesList.RemoveAt(i);
 					if (i >= adjacentScenesList.Count) break;
 				}
@@ -257,6 +263,11 @@ public class SceneRootEditor : Editor {
 
 		adjacentScenesList.AddSorted(new SceneAdjacency(other.buildIndex, Vector2.zero));
 		EditorUtility.SetDirty(sceneInfoInst);
-		// TODO: Update the Adjacency list of the other scene, too.
+
+		SceneAdjacency otherAdj = new SceneAdjacency(sceneInfoInst.buildIndex, Vector2.zero);
+		if (!other.adjacentScenes.ContainsSorted(otherAdj)) {
+			other.adjacentScenes.AddSorted(otherAdj);
+			EditorUtility.SetDirty(other);
+		}
 	}
 }
