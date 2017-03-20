@@ -161,7 +161,7 @@ public class SceneRootEditor : Editor {
 		serializedObject.ApplyModifiedProperties();
 		sceneInfoObject.ApplyModifiedProperties();
 
-		if (GUILayout.Button("Arrange all loaded scenes correctly")) {
+		if (GUILayout.Button("Arrange all loaded scenes correctly\nTest adjacency map for errors")) {
 			Dictionary<SceneInfo, Vector2> worldPositions = new Dictionary<SceneInfo, Vector2>();
 			SceneLoader.CalculateAllScenePositions(worldPositions, sceneInfoInst, targetRoot.transform.position);
 			for (int i = 0; i < SceneManager.sceneCount; ++i) {
@@ -181,8 +181,8 @@ public class SceneRootEditor : Editor {
 	public static readonly Color respawnHandleColor   = new Color(1, 0, 0, 1.0f);
 	public static readonly Color respawnHandleColorBG = new Color(1, 0, 0, 0.1f);
 	public const float respawnHandleSize = 1f;
-
-	public static readonly Color connectionHandleColor  = new Color(1, 1, 0, 1.0f);
+	
+	public static readonly Color connectionHandleColor  = new Color(0.5f, 1, 0, 1.0f);
 	public static readonly Color connectionLableColor   = new Color(1, 1, 1, 0.8f);
 	public static readonly Color connectionLableColorBG = new Color(0, 0, 0, 0.2f);
 	public static readonly GUIStyle connectionLabelStyle = new GUIStyle();
@@ -243,16 +243,21 @@ public class SceneRootEditor : Editor {
 			Vector2 point = adj.connectionPoint + (Vector2)targetRoot.transform.position;
 			EditorGUI.BeginChangeCheck();
 			{
-				point = Handles.Slider2D(point, Vector3.forward, Vector2.up, Vector2.left, connectionHandleSize, Handles.DotHandleCap, 0);
+				point = Handles.Slider2D(point, Vector3.forward, Vector2.up, Vector2.left, connectionHandleSize, Handles.CircleHandleCap, 0);
 			}
 			if (EditorGUI.EndChangeCheck()) {
 				adj.connectionPoint = point - (Vector2)targetRoot.transform.position;
 				EditorUtility.SetDirty(sceneInfoInst);
 				this.Repaint();
 			}
+			float crossSize = Mathf.Sqrt(2 * connectionHandleSize * connectionHandleSize) / 2;
+			Vector3 crossVecR = new Vector3(crossSize, crossSize);
+			Vector3 crossVecL = new Vector3(-crossSize, crossSize);
+			Vector3 point3 = point;
+			Handles.DrawLines(new []{ point3 - crossVecR, point3 + crossVecR, point3 - crossVecL, point3 + crossVecL });
 			SceneInfo si;
 			if (SceneInfo.scenesByBI.TryGetValue(adj.toBI, out si)) {
-				Handles.Label(point + Vector2.up * 2, si.name, connectionLabelStyle);
+				Handles.Label(point, si.name, connectionLabelStyle);
 			}
 		}
 	}
