@@ -12,6 +12,8 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
 
     public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
 
+    Collider PlayerColl;
+
 	// Use this for initialization
 	void Start () {
         enemyTransform = this.transform;
@@ -20,7 +22,9 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
         SpriteRenderer enemySprite = this.GetComponent<SpriteRenderer>();
         enemyWidth = enemySprite.bounds.extents.x; //Find width of the enemy sprite and check against the horizontal bounds for edge detection on isGrounded
         enemyHeight = enemySprite.bounds.extents.y; //Height of the enemy for use in isBlocked
-	}
+        
+        PlayerColl = SceneLoader.inst.player.GetComponent<Collider>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -30,31 +34,42 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
     void FixedUpdate() {
 
         //Only move forward if there is ground ahead, ergo not at the edge
-        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth + Vector2.up * enemyHeight; //Origin of Linecast will be top left corner. Cast lines from that position
+        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth + Vector2.up * enemyHeight/2; //Origin of Linecast will be top left corner. Cast lines from that position
 
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 1.1f); //Debug statement, draw the line beneath the position
-        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 1.1f, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 0.8f); //Debug statement, draw the line beneath the position
+        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 0.8f, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
 
         Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f ); //Debug statement, draw the line horizontal from the position
         bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f, enemyMask); //Similar to above, now check for blocks such as walls. Much shorter line
 
+        
         //No ground ahead underneath, turn enemy around
         if (!isGrounded) {
+            speed = -1;
             Vector3 currRot = enemyTransform.eulerAngles;
             currRot.y += 180;
             enemyTransform.eulerAngles = currRot;
         }
 
         if (isBlocked) { //In this check, if line meets something indicating blockage, turn around
+            speed = -1;
             Vector3 currRot = enemyTransform.eulerAngles;
             currRot.y += 180;
             enemyTransform.eulerAngles = currRot;
+        }
+
+        Ray SpotPlayerRange = new Ray (enemyTransform.position, enemyTransform.right * speed);
+        RaycastHit hitPlayer;
+        if (PlayerColl.Raycast(SpotPlayerRange, out hitPlayer, enemyWidth * 0.5f))
+        {
+            ChargeAtPlayer();
         }
 
         //Movement of enemy every frame
         Vector2 enemyVelo = enemyRB.velocity;
         enemyVelo.x = enemyTransform.right.x * speed;
         enemyRB.velocity = enemyVelo;
+
     }
 
     void OnCollisionEnter2D(Collision2D TouchedThing) {
@@ -64,6 +79,11 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
             //TouchedThing.gameObject.GetComponent<Player>().TakeDamage(DamageStrength); //Simpler call on Player component in absence of Sceneloader during testing
 
             SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage equal to Enemy Strength
+
+            speed = -1; //Revert speed and turn enemy around after damaging player. Speed reversion to account for charge attack
+            Vector3 currRot = enemyTransform.eulerAngles;
+            currRot.y += 180;
+            enemyTransform.eulerAngles = currRot;
         }
     }
 
@@ -71,4 +91,8 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
 		// TODO: health, particle effects, etc.
 		Destroy(gameObject);
 	}
+
+    public void ChargeAtPlayer() {
+
+    }
 }
