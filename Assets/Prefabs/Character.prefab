@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4300652472679122}
   - component: {fileID: 114186401735270222}
   - component: {fileID: 61013116380557548}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4565780555296000}
   - component: {fileID: 114226988767314872}
   - component: {fileID: 61203116033434662}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   - component: {fileID: 4339417961079848}
   - component: {fileID: 61336539236532306}
   - component: {fileID: 114196405217533514}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 50738414848887936}
   - component: {fileID: 114271024096330826}
   - component: {fileID: 95713500556687958}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
