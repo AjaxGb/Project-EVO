@@ -12,10 +12,12 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
 
     public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
 
-    Collider PlayerColl;
+    Collider2D EnemyColl;
 
-	// Use this for initialization
-	void Start () {
+    public float ChargeSightRange = 3f; //Distance the enemy can see the player
+
+    // Use this for initialization
+    void Start () {
         enemyTransform = this.transform;
         enemyRB = this.GetComponent<Rigidbody2D>(); //Enemy has a Rigidbody and its transform for positioning checks
 
@@ -23,7 +25,7 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
         enemyWidth = enemySprite.bounds.extents.x; //Find width of the enemy sprite and check against the horizontal bounds for edge detection on isGrounded
         enemyHeight = enemySprite.bounds.extents.y; //Height of the enemy for use in isBlocked
         
-        PlayerColl = SceneLoader.inst.player.GetComponent<Collider>();
+        EnemyColl = this.GetComponent<Collider2D>();
     }
 	
 	// Update is called once per frame
@@ -42,8 +44,9 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
         Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f ); //Debug statement, draw the line horizontal from the position
         bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f, enemyMask); //Similar to above, now check for blocks such as walls. Much shorter line
 
+        Debug.DrawRay(transform.position, transform.right * Mathf.Sign(speed) * ChargeSightRange); //Draws ray for enemy's "sight" to charge at player
         
-        //No ground ahead underneath, turn enemy around
+        //No ground ahead underneath, turn enemy around nd revert to "normal" speed
         if (!isGrounded) {
             speed = -1;
             Vector3 currRot = enemyTransform.eulerAngles;
@@ -58,10 +61,10 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
             enemyTransform.eulerAngles = currRot;
         }
 
-        Ray SpotPlayerRange = new Ray (enemyTransform.position, enemyTransform.right * speed);
-        RaycastHit hitPlayer;
-        if (PlayerColl.Raycast(SpotPlayerRange, out hitPlayer, enemyWidth * 0.5f))
+        RaycastHit2D[] hitPlayer = new RaycastHit2D[1]; //If enemy spots the player, call the function to charge at them
+        if (EnemyColl.Raycast(enemyTransform.right*speed, hitPlayer, ChargeSightRange) != 0 && hitPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Check if Raycast of intersects the player collider
         {
+            //Debug.Log(hitPlayer[0].collider);
             ChargeAtPlayer();
         }
 
@@ -74,7 +77,6 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
 
     void OnCollisionEnter2D(Collision2D TouchedThing) {
         if (TouchedThing.gameObject.tag == "Player" ) {
-            //Debug.Log("Player collision");
 
             //TouchedThing.gameObject.GetComponent<Player>().TakeDamage(DamageStrength); //Simpler call on Player component in absence of Sceneloader during testing
 
@@ -93,6 +95,8 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
 	}
 
     public void ChargeAtPlayer() {
+        speed = -4; //Make enemy move faster towards the player
 
+        //Trying to figure out a way to "stun" enemy briefly if it collides with something 
     }
 }
