@@ -5,6 +5,7 @@ public class Player : MonoBehaviour, IKillable {
     //upgrades
     public bool hasDoubleJump;
     public bool hasGlide;
+    public bool hasAttack;
 
     //movement variables
     public float inAirSlow = 0.5f;
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour, IKillable {
     public bool leftClimb { get { return !leftCheck.InAir; } }
     public bool rightClimb { get { return !rightCheck.InAir; } }
     public bool canJump = true;
-    public bool isGliding;
+    public bool isGliding;  //possibly change this to a state enum, especially if others like push/pull are going to be added
     public bool isClimbing;
 	public PhysicsMaterial2D deathPhysMaterial;
 	private PhysicsMaterial2D alivePhysMaterial;
@@ -104,13 +105,32 @@ public class Player : MonoBehaviour, IKillable {
 			}
 		}
 
-		UpdateActivatable();
+        //activate objects
+        UpdateActivatable();
         if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
             upAxisInUse = true;
         } else if (Input.GetAxis("Vertical") <= 0) {
 			upAxisInUse = false;
 		}
+
+        //attack
+        if (Input.GetButtonDown("Attack") && hasAttack) {
+            //attack here
+            animator.SetTrigger("Attack");
+
+            if (GetComponent<SpriteRenderer>().flipX) {
+                //attack to the left
+            } else {
+                //attack to the right
+            }
+
+
+            //cancels glide
+            if (isGliding)
+                isGliding = false;
+        }
+
 	}
 
     void FixedUpdate() {

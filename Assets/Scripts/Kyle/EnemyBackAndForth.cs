@@ -8,9 +8,12 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
     Transform enemyTransform;
     float enemyWidth, enemyHeight;
-    public float speed = -1; //Movement speed of enemy, adjustable. Negative for left, positive for right. Default to moving left at 1 speed
 
+    //combat stats
+    public float speed = -1; //Movement speed of enemy, adjustable. Negative for left, positive for right. Default to moving left at 1 speed
     public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
+    public float maxHP;
+    public float curHP;
 
     Collider2D EnemyColl;
 
@@ -87,6 +90,19 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
             currRot.y += 180;
             enemyTransform.eulerAngles = currRot;
         }
+    }
+
+    //simple taking damage
+    public float TakeDamge(float amount) {
+        if (amount > curHP) {
+            amount = curHP;
+        }
+        curHP -= amount;
+        if (curHP <= 0) {
+            Kill();
+        }
+
+        return amount;
     }
 
 	public void Kill() {
