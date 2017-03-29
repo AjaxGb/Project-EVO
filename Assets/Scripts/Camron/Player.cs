@@ -22,7 +22,7 @@ public class Player : MonoBehaviour, IKillable {
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
 
-	public bool fakeControls = false;
+	public bool realControls = true;
 	public IControls control;
 
 	//other stuff
@@ -83,7 +83,9 @@ public class Player : MonoBehaviour, IKillable {
 
 	// Use this for initialization
 	void Start () {
-		control = (fakeControls ? null : new ControlsReal());
+		if (realControls) {
+			control = new ControlsReal();
+		}
 		body = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
 		alivePhysMaterial = body.sharedMaterial;
@@ -109,7 +111,7 @@ public class Player : MonoBehaviour, IKillable {
 		
 		//activate objects
 		UpdateActivatable();
-        if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
+        if (currActivatable && control.GetAxis(AxisId.VERTICAL) > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
             upAxisInUse = true;
         } else if (control.GetAxis(AxisId.VERTICAL) <= 0) {
@@ -117,7 +119,7 @@ public class Player : MonoBehaviour, IKillable {
 		}
 
         //attack
-        if (Input.GetButtonDown("Attack") && hasAttack) {
+        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack) {
             //attack here
             animator.SetTrigger("Attack");
 
@@ -132,7 +134,6 @@ public class Player : MonoBehaviour, IKillable {
             if (isGliding)
                 isGliding = false;
         }
-
 	}
 
     void FixedUpdate() {
@@ -142,15 +143,14 @@ public class Player : MonoBehaviour, IKillable {
             canJump = true;
         }
 
-        //double jump
+		//double jump
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = false;
-
-        }
+        } else
         //first jump
-        else if (control.GetButton(ButtonId.JUMP) && (!InAir || isClimbing)  ) {
-            if (control.GetAxis(AxisId.VERTICAL) < 0) {
+        if (control.GetButton(ButtonId.JUMP) && (!InAir || isClimbing)  ) {
+			if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 //drop thru platform
                 canJump = hasDoubleJump;
             } else {
