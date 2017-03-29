@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Paralax : MonoBehaviour {
 
-    public GameObject camera;
-    public float scale;
+	public new GameObject camera;
+	public float scale;
     Vector2 lastPos;
 
 	// Use this for initialization

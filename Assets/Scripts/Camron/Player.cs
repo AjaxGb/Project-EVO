@@ -21,6 +21,9 @@ public class Player : MonoBehaviour, IKillable {
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
 
+	public bool fakeControls = false;
+	public IControls control;
+
 	//other stuff
 	public float DeathTime { get; private set; }
 	public bool IsAlive { get { return DeathTime == 0; } }
@@ -33,10 +36,9 @@ public class Player : MonoBehaviour, IKillable {
 	public PhysicsMaterial2D deathPhysMaterial;
 	private PhysicsMaterial2D alivePhysMaterial;
     private Rigidbody2D body;
-	private Collider2D collider;
+	private new Collider2D collider;
 	private Activatable currActivatable;
 	private Animator animator;
-    int playerLayer;
 
     public UIAttributeBar HealthBar;
     private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
@@ -80,13 +82,13 @@ public class Player : MonoBehaviour, IKillable {
 
 	// Use this for initialization
 	void Start () {
+		control = (fakeControls ? null : new ControlsReal());
 		body = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
 		alivePhysMaterial = body.sharedMaterial;
 		animator = GetComponent<Animator>();
         gravityScale = body.gravityScale;
 		groundCheck = groundCheck ? groundCheck : GetComponentInChildren<GroundCheck>();
-        playerLayer = LayerMask.NameToLayer("Player");
 		MaxHealth = 100f;
 		MaxMana = 100f;
 		PlayerHealth = MaxHealth;
@@ -105,10 +107,10 @@ public class Player : MonoBehaviour, IKillable {
 		}
 
 		UpdateActivatable();
-        if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
+        if (currActivatable && control.GetAxis(AxisId.VERTICAL) > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
             upAxisInUse = true;
-        } else if (Input.GetAxis("Vertical") <= 0) {
+        } else if (control.GetAxis(AxisId.VERTICAL) <= 0) {
 			upAxisInUse = false;
 		}
 	}
@@ -121,14 +123,14 @@ public class Player : MonoBehaviour, IKillable {
         }
 
         //double jump
-        if (Input.GetButtonDown("Jump") && canJump && InAir && hasDoubleJump) {
+        if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = false;
 
         }
         //first jump
-        else if (Input.GetButton("Jump") && (!InAir || isClimbing)  ) {
-            if (Input.GetAxis("Vertical") < 0) {
+        else if (control.GetButton(ButtonId.JUMP) && (!InAir || isClimbing)  ) {
+            if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 //drop thru platform
                 canJump = hasDoubleJump;
             } else {
@@ -142,7 +144,7 @@ public class Player : MonoBehaviour, IKillable {
 
         //left and right movement
         //right
-        if (Input.GetAxis("Horizontal") > 0) {
+        if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
             animator.SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = false;
             if (body.velocity.x < maxSpeed) {
@@ -156,7 +158,7 @@ public class Player : MonoBehaviour, IKillable {
             }
         }
         //left
-        if (Input.GetAxis("Horizontal") < 0) {
+        if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
             animator.SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = true;
             if (body.velocity.x > -maxSpeed) {
@@ -170,7 +172,7 @@ public class Player : MonoBehaviour, IKillable {
             }
         }
 
-        if (Input.GetAxis("Horizontal") == 0 && !InAir) {
+        if (control.GetAxis(AxisId.HORIZONTAL) == 0 && !InAir) {
 			animator.SetBool("isidle",true);
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
@@ -188,7 +190,7 @@ public class Player : MonoBehaviour, IKillable {
         }
 
         //wall climb
-        if (  Input.GetButton("Glide") && ((leftClimb && (Input.GetAxis("Horizontal") < 0 || isClimbing)) || (rightClimb && (Input.GetAxis("Horizontal") > 0 || isClimbing)))  ) {
+        if (  control.GetButton(ButtonId.GLIDE) && ((leftClimb && (control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) || (rightClimb && (control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
             //if the climb just started
             if (!isClimbing) {
                 body.gravityScale = 0;
@@ -197,9 +199,9 @@ public class Player : MonoBehaviour, IKillable {
             }
 
             //climb up or down
-            if (Input.GetAxis("Vertical") > 0) {
+            if (control.GetAxis(AxisId.VERTICAL) > 0) {
                 body.velocity = new Vector2(0/*body.velocity.x*/, climbSpeed);
-            } else if (Input.GetAxis("Vertical") < 0) {
+            } else if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 body.velocity = new Vector2(0, -climbSpeed);
             } else {
                 body.velocity = new Vector2(0, 0);
@@ -209,7 +211,7 @@ public class Player : MonoBehaviour, IKillable {
         }
 
         //in air gliding 
-        if (  Input.GetButton("Glide") && InAir && hasGlide && PlayerMana > 0 && !isClimbing  ) {
+        if (control.GetButton(ButtonId.GLIDE) && InAir && hasGlide && PlayerMana > 0 && !isClimbing  ) {
             //if the glide has just started
             if (!isGliding) {
                 isGliding = true;
@@ -223,7 +225,7 @@ public class Player : MonoBehaviour, IKillable {
             endGlide();
         }
         // Check if key is still held to prevent flickering
-        if (!(Input.GetButton("Glide") && InAir) || isClimbing) PlayerMana += 0.1f;
+        if (!(control.GetButton(ButtonId.GLIDE) && InAir) || isClimbing) PlayerMana += 0.1f;
     }
 
 	private void UpdateActivatable() {
