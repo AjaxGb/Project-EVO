@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, IKillable {
     public float glideSlow = 0.3f;
     public float glideFallSpeed = 2f;
     public float jumpForce = 10f;
-    private float gravityScale;
+	protected float gravityScale;
     public float maxSpeed = 10f;
     public float walkingAcceleration;
     public float walkingDecceleration;
@@ -26,7 +26,7 @@ public class Player : MonoBehaviour, IKillable {
 	public IControls control;
 
 	//other stuff
-	public float DeathTime { get; private set; }
+	public float DeathTime { get; protected set; }
 	public bool IsAlive { get { return DeathTime == 0; } }
 	public bool InAir { get { return groundCheck.InAir; } }
     public bool leftClimb { get { return !leftCheck.InAir; } }
@@ -35,11 +35,12 @@ public class Player : MonoBehaviour, IKillable {
     public bool isGliding;  //possibly change this to a state enum, especially if others like push/pull are going to be added
     public bool isClimbing;
 	public PhysicsMaterial2D deathPhysMaterial;
-	private PhysicsMaterial2D alivePhysMaterial;
-    private Rigidbody2D body;
-	private new Collider2D collider;
-	private Activatable currActivatable;
-	private Animator animator;
+	protected PhysicsMaterial2D alivePhysMaterial;
+	protected Rigidbody2D body;
+	protected new Collider2D collider;
+	protected new SpriteRenderer renderer;
+	protected Activatable currActivatable;
+	protected Animator animator;
 
     public UIAttributeBar HealthBar;
     private float _playerHealth; //Variable for the player's health total, ease updating of this and the UI at the same time
@@ -49,7 +50,7 @@ public class Player : MonoBehaviour, IKillable {
         set
         {
             _playerHealth = value;
-            HealthBar.Amount = value;
+            if (HealthBar != null) HealthBar.Amount = value;
         }
     }
 	private float _maxHealth;
@@ -57,7 +58,7 @@ public class Player : MonoBehaviour, IKillable {
 		get { return _maxHealth; }
 		set {
 			_maxHealth = value;
-			HealthBar.MaxAmount = value;
+			if (HealthBar != null) HealthBar.MaxAmount = value;
 		}
 	}
 
@@ -67,7 +68,7 @@ public class Player : MonoBehaviour, IKillable {
 		get { return _playerMana; }
 		set {
 			_playerMana = value;
-			ManaBar.Amount = value;
+			if (ManaBar != null) ManaBar.Amount = value;
 		}
 	}
 	private float _maxMana;
@@ -75,17 +76,19 @@ public class Player : MonoBehaviour, IKillable {
 		get { return _maxMana; }
 		set {
 			_maxMana = value;
-			ManaBar.MaxAmount = value;
+			if (ManaBar != null) ManaBar.MaxAmount = value;
 		}
 	}
 
 	private bool upAxisInUse;
+	public virtual bool isRealPlayer { get { return true; } }
 
 	// Use this for initialization
-	void Start () {
+	protected void Start () {
 		if (realControls) {
 			control = new ControlsReal();
 		}
+		renderer = GetComponent<SpriteRenderer>();
 		body = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
 		alivePhysMaterial = body.sharedMaterial;
@@ -106,6 +109,8 @@ public class Player : MonoBehaviour, IKillable {
 			if (DeathTime <= 0) {
 				DeathTime = 0;
 				OnRespawn();
+			} else {
+				DeadUpdate();
 			}
 		}
 		
@@ -129,14 +134,15 @@ public class Player : MonoBehaviour, IKillable {
                 //attack to the right
             }
 
-
             //cancels glide
             if (isGliding)
                 isGliding = false;
         }
 	}
 
-    void FixedUpdate() {
+	protected virtual void DeadUpdate() {}
+
+	void FixedUpdate() {
         if (Time.timeScale == 0 || !IsAlive) return;
 
         if (!InAir) {
@@ -286,7 +292,7 @@ public class Player : MonoBehaviour, IKillable {
         d = Mathf.Min(d, PlayerHealth);
         PlayerHealth -= d;
 		if (d > 0) {
-			ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 0.3f, true, true);
+			OnDamaged(d);
 		}
         if (PlayerHealth <= 0) {
             OnDeath();
@@ -294,13 +300,17 @@ public class Player : MonoBehaviour, IKillable {
         return d;
     }
 
+	protected virtual void OnDamaged(float d) {
+		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 0.3f, true, true);
+	}
+
 	public void Kill() {
 		if (!IsAlive) return;
 		PlayerHealth = 0;
 		OnDeath();
 	}
 
-    public void OnDeath() {
+    public virtual void OnDeath() {
 		DeathTime = 3.0f; // Wait 3 seconds before respawn
 		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.4f), 1);
 		SceneLoader.inst.cameraFollow.target = null;
@@ -316,7 +326,7 @@ public class Player : MonoBehaviour, IKillable {
 		collider.enabled = true;
 	}
 
-	public void OnRespawn() {
+	public virtual void OnRespawn() {
 		body.freezeRotation = true;
 		body.rotation = 0;
 		body.velocity = Vector2.zero;
