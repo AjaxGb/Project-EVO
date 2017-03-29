@@ -5,6 +5,7 @@ public class Player : MonoBehaviour, IKillable {
     //upgrades
     public bool hasDoubleJump;
     public bool hasGlide;
+    public bool hasAttack;
 
     //movement variables
     public float inAirSlow = 0.5f;
@@ -31,7 +32,7 @@ public class Player : MonoBehaviour, IKillable {
     public bool leftClimb { get { return !leftCheck.InAir; } }
     public bool rightClimb { get { return !rightCheck.InAir; } }
     public bool canJump = true;
-    public bool isGliding;
+    public bool isGliding;  //possibly change this to a state enum, especially if others like push/pull are going to be added
     public bool isClimbing;
 	public PhysicsMaterial2D deathPhysMaterial;
 	private PhysicsMaterial2D alivePhysMaterial;
@@ -105,14 +106,33 @@ public class Player : MonoBehaviour, IKillable {
 				OnRespawn();
 			}
 		}
-
+		
+		//activate objects
 		UpdateActivatable();
-        if (currActivatable && control.GetAxis(AxisId.VERTICAL) > 0 && currActivatable.CanActivate && !upAxisInUse) {
+        if (currActivatable && Input.GetAxis("Vertical") > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
             upAxisInUse = true;
         } else if (control.GetAxis(AxisId.VERTICAL) <= 0) {
 			upAxisInUse = false;
 		}
+
+        //attack
+        if (Input.GetButtonDown("Attack") && hasAttack) {
+            //attack here
+            animator.SetTrigger("Attack");
+
+            if (GetComponent<SpriteRenderer>().flipX) {
+                //attack to the left
+            } else {
+                //attack to the right
+            }
+
+
+            //cancels glide
+            if (isGliding)
+                isGliding = false;
+        }
+
 	}
 
     void FixedUpdate() {
@@ -190,7 +210,7 @@ public class Player : MonoBehaviour, IKillable {
         }
 
         //wall climb
-        if (  control.GetButton(ButtonId.GLIDE) && ((leftClimb && (control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) || (rightClimb && (control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
+        if (control.GetButton(ButtonId.GLIDE) && ((leftClimb && (control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) || (rightClimb && (control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
             //if the climb just started
             if (!isClimbing) {
                 body.gravityScale = 0;
