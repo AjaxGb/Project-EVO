@@ -1,4 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
 Shader "Unlit/WorldspaceTiling"
 {
@@ -36,7 +38,7 @@ Shader "Unlit/WorldspaceTiling"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+                o.vertex = UnityObjectToClipPos(v.vertex);
 
                 // Gets the xy position of the vertex in worldspace.
                 float2 worldXY = mul(unity_ObjectToWorld, v.vertex).xy;
