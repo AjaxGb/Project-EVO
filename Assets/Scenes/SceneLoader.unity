@@ -833,79 +833,9 @@ Prefab:
       propertyPath: ManaBar
       value: 
       objectReference: {fileID: 404042733}
-    - target: {fileID: 61336539236532306, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: -0.86947465
-      objectReference: {fileID: 0}
-    - target: {fileID: 61336539236532306, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: -5.948044
-      objectReference: {fileID: 0}
-    - target: {fileID: 61336539236532306, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 0.6152482
-      objectReference: {fileID: 0}
-    - target: {fileID: 61203116033434662, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: -5.1883917
-      objectReference: {fileID: 0}
-    - target: {fileID: 61203116033434662, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: 2.3265486
-      objectReference: {fileID: 0}
-    - target: {fileID: 61203116033434662, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 1.3792896
-      objectReference: {fileID: 0}
-    - target: {fileID: 61013116380557548, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: 3.6910162
-      objectReference: {fileID: 0}
-    - target: {fileID: 61013116380557548, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: 2.2748628
-      objectReference: {fileID: 0}
-    - target: {fileID: 61013116380557548, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 2.3803453
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 61336539236532306, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
-    - {fileID: 61203116033434662, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
-    - {fileID: 61013116380557548, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &500411666 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1707618632488266, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-    type: 2}
-  m_PrefabInternal: {fileID: 495633993}
---- !u!68 &500411668
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 500411666}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 2, y: -5.7}
-  - {x: -3.5, y: -5.7}
 --- !u!1 &790178819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,28 +1054,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
---- !u!1 &1159065848 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1433370694558656, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-    type: 2}
-  m_PrefabInternal: {fileID: 495633993}
---- !u!68 &1159065849
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1159065848}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 2.6, y: 10}
-  - {x: 2.6, y: -5.31}
 --- !u!1 &1238865988
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,28 +1116,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1273191065 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1665377954043450, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-    type: 2}
-  m_PrefabInternal: {fileID: 495633993}
---- !u!68 &1273191066
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1273191065}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -4.7, y: 10.023823}
-  - {x: -4.7, y: -5.3126264}
 --- !u!1 &1369298297
 GameObject:
   m_ObjectHideFlags: 0
