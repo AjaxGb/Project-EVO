@@ -40,6 +40,8 @@ public class Player : MonoBehaviour, IKillable {
 	protected new Collider2D collider;
 	protected new SpriteRenderer renderer;
 	protected Activatable currActivatable;
+
+    //animation
 	protected Animator animator;
 
     public UIAttributeBar HealthBar;
@@ -285,6 +287,19 @@ public class Player : MonoBehaviour, IKillable {
     public void endClimb() {
         isClimbing = false;
         body.gravityScale = gravityScale;
+    }
+
+    public void LearnClaws() {
+        hasAttack = true;
+    }
+
+    public void LearnWings() {
+        hasDoubleJump = true;
+        hasGlide = true;
+    }
+
+    public void LearnTime() {
+        //hasTime = true;
     }
 
     public float TakeDamage(float d) {
