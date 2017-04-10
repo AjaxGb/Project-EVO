@@ -291,15 +291,18 @@ public class Player : MonoBehaviour, IKillable {
 
     public void LearnClaws() {
         hasAttack = true;
+        animator.SetTrigger("GainClaws");
     }
 
     public void LearnWings() {
         hasDoubleJump = true;
         hasGlide = true;
+        animator.SetTrigger("GainWings");
     }
 
     public void LearnTime() {
         //hasTime = true;
+        animator.SetTrigger("GainTime");
     }
 
     public float TakeDamage(float d) {
