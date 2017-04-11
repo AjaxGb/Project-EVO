@@ -222,7 +222,7 @@ public class Player : MonoBehaviour, IKillable {
             //if the climb just started
             if (!isClimbing) {
                 body.gravityScale = 0;
-                isClimbing = true;
+                startClimb();
                 canJump = hasDoubleJump;
             }
 
@@ -280,15 +280,26 @@ public class Player : MonoBehaviour, IKillable {
 		}
 	}
 
+
+    //===GLIDING===
     public void endGlide() {
         isGliding = false;
     }
 
+
+    //===CLIMBING===
     public void endClimb() {
         isClimbing = false;
         body.gravityScale = gravityScale;
+        animator.SetBool("isClimbing", false);
+    }
+    public void startClimb() {
+        isClimbing = true;
+        animator.SetBool("isClimbing", true);
     }
 
+
+    //===NEW SKILLS===
     public void LearnClaws() {
         hasAttack = true;
         animator.SetTrigger("GainClaws");
@@ -305,6 +316,8 @@ public class Player : MonoBehaviour, IKillable {
         animator.SetTrigger("GainTime");
     }
 
+
+    //===DAMAGE AND DEATH===
     public float TakeDamage(float d) {
 		if (!IsAlive) return 0;
         d = Mathf.Min(d, PlayerHealth);
