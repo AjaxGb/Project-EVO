@@ -147,12 +147,14 @@ public class Player : MonoBehaviour, IKillable {
 	void FixedUpdate() {
         if (Time.timeScale == 0 || !IsAlive) return;
 
+        animator.SetBool("InAir", InAir);
         if (!InAir) {
             canJump = true;
         }
 
 		//double jump
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
+            animator.SetTrigger("jump");
             body.velocity = new Vector2(body.velocity.x, jumpForce);
             canJump = false;
         } else
@@ -242,7 +244,7 @@ public class Player : MonoBehaviour, IKillable {
         if (control.GetButton(ButtonId.GLIDE) && InAir && hasGlide && PlayerMana > 0 && !isClimbing  ) {
             //if the glide has just started
             if (!isGliding) {
-                isGliding = true;
+                startGlide();
             }
             if (body.velocity.y < -glideFallSpeed) {
                 body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
@@ -282,22 +284,26 @@ public class Player : MonoBehaviour, IKillable {
 
 
     //===GLIDING===
+    public void startGlide() {
+        isGliding = true;
+        animator.SetBool("IsGliding", true);
+    }
     public void endGlide() {
         isGliding = false;
+        animator.SetBool("IsGliding", true);
     }
 
 
     //===CLIMBING===
+    public void startClimb() {
+        isClimbing = true;
+        animator.SetBool("isClimbing", true);
+    }
     public void endClimb() {
         isClimbing = false;
         body.gravityScale = gravityScale;
         animator.SetBool("isClimbing", false);
     }
-    public void startClimb() {
-        isClimbing = true;
-        animator.SetBool("isClimbing", true);
-    }
-
 
     //===NEW SKILLS===
     public void LearnClaws() {
