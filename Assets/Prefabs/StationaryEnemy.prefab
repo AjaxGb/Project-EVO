@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4956412498416758}
   - component: {fileID: 212368713536266010}
+  - component: {fileID: 114631837328544192}
   - component: {fileID: 114795675202108780}
   - component: {fileID: 50680646247223402}
   - component: {fileID: 61428715357591066}
@@ -88,6 +89,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &114631837328544192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1960875488491706}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384c31c1e6fff7c4b8e92e1787e2cb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 4294964991
+  speed: -1
+  DamageStrength: 5
+  maxHP: 0
+  curHP: 0
+  ChargeSightRange: 3
 --- !u!114 &114795675202108780
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -102,12 +122,11 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 0
+  speed: -1
   DamageStrength: 5
   maxHP: 0
   curHP: 0
-  SightRange: 3
-  ShotDelay: 1
-  Projectile: {fileID: 1063031089388414, guid: c6b9935fd01472046a799d1166ed0be5, type: 2}
+  ChargeSightRange: 3
 --- !u!212 &212368713536266010
 SpriteRenderer:
   m_ObjectHideFlags: 1

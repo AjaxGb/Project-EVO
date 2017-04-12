@@ -259,7 +259,8 @@ Prefab:
       propertyPath: m_Name
       value: StationaryEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 0}
+    - target: {fileID: 114631837328544192, guid: 8c9a30215c73a1641be1400712f763c7,
+        type: 2}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
@@ -279,7 +280,7 @@ Prefab:
       value: 4294964991
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 0}
+    - {fileID: 114631837328544192, guid: 8c9a30215c73a1641be1400712f763c7, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 8c9a30215c73a1641be1400712f763c7, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &460427352
