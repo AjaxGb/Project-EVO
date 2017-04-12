@@ -5,19 +5,25 @@ using UnityEngine;
 public class Paralax : MonoBehaviour {
 
 	CameraFollow camera;
+    public bool useXY = false;
 	public float scale;
-    Vector2 lastPos;
+    public float scaleX;
+    public float scaleY;
+    Vector2 startPos;
 
 	// Use this for initialization
 	void Start () {
         camera = SceneLoader.inst.cameraFollow;
-        lastPos = camera.transform.position;
+        startPos = camera.transform.position - transform.position;
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        transform.position = ((Vector2)camera.transform.position - lastPos) * scale;
-	}
+	void LateUpdate () { 
+        if (!useXY)
+            transform.position = ((Vector2)camera.transform.position - startPos) * scale;
+        else
+            transform.position = new Vector2(   (camera.transform.position.x - startPos.x) * scaleX,    (camera.transform.position.y - startPos.y) * scaleY   );
+    }
 
 
 
