@@ -9,18 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77d5e1be52cc06b40a0735f9cb7124a9, type: 3}
-  m_Name: Right2
+  m_Name: Boss1
   m_EditorClassIdentifier: 
-  sceneName: Right 2
-  buildIndex: 4
+  sceneName: Boss 1
+  buildIndex: 5
   bounds:
     serializedVersion: 2
-    x: -10.413803
-    y: -61.59906
-    width: 215.63042
-    height: 87.28999
+    x: -35.37848
+    y: 39.679367
+    width: 72.1068
+    height: 37.776405
   adjacentScenes:
-  - toBI: 3
-    connectionPoint: {x: -8.463821, y: 0}
-  - toBI: 5
-    connectionPoint: {x: 26.516068, y: -48.775635}
+  - toBI: 4
+    connectionPoint: {x: 6.375702, y: 72.24481}
