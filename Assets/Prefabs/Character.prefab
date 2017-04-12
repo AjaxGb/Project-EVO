@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1896646703046190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.07, y: -0.61, z: 0}
   m_LocalScale: {x: 0.08276604, y: 0.08276611, z: 0.08276611}
   m_Children:
   - {fileID: 4339417961079848}
@@ -309,10 +309,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hasDoubleJump: 1
   hasGlide: 1
-  hasAttack: 0
+  hasAttack: 1
   inAirSlow: 0.8
-  glideSlow: 0.3
-  glideFallSpeed: 0.8
+  glideSlow: 1
+  glideFallSpeed: 1.2
   jumpForce: 10
   maxSpeed: 5
   walkingAcceleration: 40
