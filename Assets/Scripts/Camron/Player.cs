@@ -168,6 +168,7 @@ public class Player : MonoBehaviour, IKillable {
                     endClimb();
                 }
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
+                animator.SetTrigger("jump");
                 canJump = hasDoubleJump;
             }
         }
