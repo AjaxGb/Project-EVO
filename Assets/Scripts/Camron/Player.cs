@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Player : MonoBehaviour, IKillable {
+public class Player : MonoBehaviour, IKillable, IDamageable {
 
     //upgrades
     public bool hasDoubleJump;

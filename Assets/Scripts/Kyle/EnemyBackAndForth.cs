@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBackAndForth : MonoBehaviour, IKillable {
+public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
 
     Rigidbody2D enemyRB;
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
@@ -93,7 +93,7 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
     }
 
     //simple taking damage
-    public float TakeDamge(float amount) {
+    public float TakeDamage(float amount) {
         if (amount > curHP) {
             amount = curHP;
         }
