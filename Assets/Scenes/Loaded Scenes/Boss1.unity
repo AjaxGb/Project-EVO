@@ -304,11 +304,12 @@ GameObject:
   m_Component:
   - component: {fileID: 871171761}
   - component: {fileID: 871171762}
+  - component: {fileID: 871171765}
   - component: {fileID: 871171763}
   - component: {fileID: 871171764}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Boss 1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -411,6 +412,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &871171765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 871171760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 384c31c1e6fff7c4b8e92e1787e2cb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 5120
+  speed: -1
+  DamageStrength: 5
+  maxHP: 150
+  curHP: 150
+  ChargeSightRange: 7
 --- !u!1001 &952429080
 Prefab:
   m_ObjectHideFlags: 0
