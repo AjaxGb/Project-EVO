@@ -52,6 +52,7 @@ public class StationaryEnemy : MonoBehaviour {
                 GameObject Shot;
                 Shot = Instantiate(Projectile, transform.position, transform.rotation);
                 Shot.GetComponent<Rigidbody2D>().velocity = (playerTransform.position - transform.position).normalized * Shot.GetComponent<SpikeProjectile>().ShotSpeed;
+                Shot.transform.up = playerTransform.position - transform.position; //Turn the top of the sprite to face the player position when fired
 
                 //Debug.Log("Spotted Player");
                 CanShoot = false;

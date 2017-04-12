@@ -6,7 +6,7 @@ public class SpikeProjectile : MonoBehaviour {
 
     public float DamageStrength = 5f; //Amount of damage this enemy inflicts to the player
 
-    public float ShotSpeed = 10f;
+    public float ShotSpeed = 15f;
 	// Use this for initialization
 	void Start () {
         Destroy(gameObject, 2); //Destroy the Projectile after 2 seconds if it has not already been destroyed. Ensures destruction if it goes off a bottomless pit

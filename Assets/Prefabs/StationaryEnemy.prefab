@@ -103,8 +103,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   DamageStrength: 5
-  maxHP: 0
-  curHP: 0
+  maxHP: 1
+  curHP: 1
   SightRange: 10
   ShotDelay: 1
   Projectile: {fileID: 1720338170212518, guid: f09f92091dda8d244987c9d8a35aad3a, type: 2}

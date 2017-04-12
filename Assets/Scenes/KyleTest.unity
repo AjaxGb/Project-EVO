@@ -1025,7 +1025,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4956412498416758, guid: 8c9a30215c73a1641be1400712f763c7, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -9.44
+      value: -10.16
       objectReference: {fileID: 0}
     - target: {fileID: 4956412498416758, guid: 8c9a30215c73a1641be1400712f763c7, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1058,6 +1058,11 @@ Prefab:
     - target: {fileID: 1960875488491706, guid: 8c9a30215c73a1641be1400712f763c7, type: 2}
       propertyPath: m_Name
       value: StationaryEnemy (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114795675202108780, guid: 8c9a30215c73a1641be1400712f763c7,
+        type: 2}
+      propertyPath: SightRange
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8c9a30215c73a1641be1400712f763c7, type: 2}
