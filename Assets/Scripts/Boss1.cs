@@ -19,6 +19,13 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 	public float stunTimer = 0f;
 
 	public bool isCharging = false;
+
+	public Transform rockSpawnPoint;
+	public FallingRock rockPrefab;
+	private FallingRock spawnedRock;
+
+	public UIAttributeBar healthBar;
+
 	[SerializeField]
 	private bool _facingLeft = true;
 	public bool FacingLeft {
@@ -41,6 +48,7 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 				c.x += b.width;
 			}
 			b.center = c;
+			b.height += 1;
 			return b;
 		}
 	}
@@ -86,9 +94,9 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 
 			Vector2 playerPos = SceneLoader.inst.player.transform.position;
 			bool playerHeightGood = Math.Abs(playerPos.y - transform.position.y) < 3;
-			bool playerInFront = FacingLeft ? playerPos.x < transform.position.x : playerPos.x > transform.position.x;
+			float playerDist = (playerPos.x - transform.position.x) * FacingScale;
 
-			if (playerInFront && playerHeightGood) {
+			if (playerHeightGood && playerDist > 0 && playerDist < chargeSightRange) {
 				isCharging = true;
 			}
 		}
@@ -109,7 +117,10 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 				hit.TakeDamage(chargeDamage);
 				FacingLeft = !FacingLeft;
 			} else {
-				stunTimer = stunLength;
+				Stun();
+				if (spawnedRock == null) {
+					spawnedRock = Instantiate(rockPrefab, rockSpawnPoint.position, Quaternion.identity, rockSpawnPoint);
+				}
 			}
 			isCharging = false;
 		} else if (coll.gameObject.tag == "Player") {
@@ -120,18 +131,31 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 		}
 	}
 
+	public void Stun() {
+		if (stunTimer > 0) return;
+		stunTimer = stunLength;
+		rb.velocity += Vector2.up * 5f;
+		isCharging = false;
+	}
+
 	public float TakeDamage(float amount) {
-		if (amount >= health) {
+		if (amount > health) {
 			amount = health;
-			health = 0;
-			Kill();
-			return amount;
 		}
 		health -= amount;
+		healthBar.Amount = health;
+		Stun();
+		if (health <= 0) {
+			Kill();
+		}
 		return amount;
 	}
 
 	public void Kill() {
-		Destroy(transform.gameObject);
+		health = 0;
+		healthBar.Amount = health;
+		collider.enabled = false;
+		stunTimer = float.PositiveInfinity;
+		Destroy(transform.gameObject, 4f);
 	}
 }
