@@ -14,8 +14,13 @@ public class SpikeProjectile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+        //Ensure that the object rotates according to its velocity
+        Vector2 dir = transform.GetComponent<Rigidbody2D>().velocity; //Get Velocity as a Vector2 for direction
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f; //Get Tangent of Y/X for direction Vector2 and convert to degrees
+        //Subtract 90 degrees to ensure top is pointed towards Velocity rather than the right side
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); //Rotate the object along the Forward vector by the angle determined above
+    }
 
     void OnCollisionEnter2D(Collision2D TouchedThing)
     {
