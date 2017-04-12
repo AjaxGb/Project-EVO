@@ -304,9 +304,9 @@ GameObject:
   m_Component:
   - component: {fileID: 871171761}
   - component: {fileID: 871171762}
-  - component: {fileID: 871171765}
   - component: {fileID: 871171763}
   - component: {fileID: 871171764}
+  - component: {fileID: 871171765}
   m_Layer: 11
   m_Name: Boss 1
   m_TagString: Enemy
@@ -321,7 +321,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 871171760}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.74, y: 49.39, z: 0}
+  m_LocalPosition: {x: 13.91, y: 49.29, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1023885607}
@@ -420,17 +420,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 871171760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 384c31c1e6fff7c4b8e92e1787e2cb32, type: 3}
+  m_Script: {fileID: 11500000, guid: a8fb1dbaf71b71144b291efd1370e43d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMask:
+  wallMask:
     serializedVersion: 2
-    m_Bits: 5120
-  speed: -1
-  DamageStrength: 5
-  maxHP: 150
-  curHP: 150
-  ChargeSightRange: 7
+    m_Bits: 1025
+  health: 140
+  speed: 2
+  chargeSpeed: 6
+  touchDamage: 5
+  chargeDamage: 10
+  chargeSightRange: 10
+  stunLength: 3
+  isCharging: 0
+  _facingLeft: 1
 --- !u!1001 &952429080
 Prefab:
   m_ObjectHideFlags: 0

@@ -32,6 +32,14 @@ public static class Utilities {
 		return rect;
 	}
 
+	public static Rect ToRect(this Bounds bounds) {
+		return new Rect(bounds.min, bounds.size);
+	}
+
+	public static Bounds ToBounds(this Rect rect) {
+		return new Bounds(rect.center, rect.size);
+	}
+
 	public static void AddSorted<T>(this List<T> list, T item) where T : IComparable<T> {
 		if (list.Count == 0 || list[list.Count - 1].CompareTo(item) <= 0) {
 			list.Add(item);
