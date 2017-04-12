@@ -204,7 +204,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         }
 
         if (control.GetAxis(AxisId.HORIZONTAL) == 0 && !InAir) {
-			animator.SetBool("isidle",true);
+            animator.SetBool("isidle", true);
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
                 body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                     body.velocity = new Vector2(0, body.velocity.y);
                 }
                 //if player is moving right, add velocity to the left, but stop at 0
-            } else if (body.velocity.x > 0) { 
+            } else if (body.velocity.x > 0) {
                 body.velocity = new Vector2(body.velocity.x - walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
                 if (body.velocity.x < 0) {
                     body.velocity = new Vector2(0, body.velocity.y);
@@ -220,19 +220,17 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        //grab boulders
-        if (control.GetButton(ButtonId.GLIDE) && !InAir ){
-            //more to come here
-        }
-
-        //wall climb
-        if (control.GetButton(ButtonId.GLIDE) && ((leftClimb && (control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) || (rightClimb && (control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
+        //wall climb and push/pull
+        if (control.GetButton(ButtonId.GLIDE) && 
+                ((leftClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) 
+                || (rightClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
             //if the climb just started
             if (!isClimbing) {
                 body.gravityScale = 0;
                 startClimb();
                 canJump = hasDoubleJump;
             }
+
 
             //climb up or down
             if (control.GetAxis(AxisId.VERTICAL) > 0) {
