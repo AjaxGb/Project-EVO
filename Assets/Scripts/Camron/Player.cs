@@ -220,6 +220,11 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
+        //grab boulders
+        if (control.GetButton(ButtonId.GLIDE) && !InAir ){
+            //more to come here
+        }
+
         //wall climb
         if (control.GetButton(ButtonId.GLIDE) && ((leftClimb && (control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) || (rightClimb && (control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
             //if the climb just started
