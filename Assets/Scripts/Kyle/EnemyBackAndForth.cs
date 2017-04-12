@@ -12,8 +12,8 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
     //combat stats
     public float speed = -1; //Movement speed of enemy, adjustable. Negative for left, positive for right. Default to moving left at 1 speed
     public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
-    public float maxHP;
-    public float curHP;
+    public float maxHP = 1;
+    public float curHP = 1;
 
     Collider2D EnemyColl;
 
@@ -65,7 +65,7 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
         }
 
         RaycastHit2D[] hitPlayer = new RaycastHit2D[1]; //If enemy spots the player, call the function to charge at them
-        if (EnemyColl.Raycast(enemyTransform.right*speed, hitPlayer, ChargeSightRange) != 0 && hitPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Check if Raycast of intersects the player collider
+        if (EnemyColl.Raycast(enemyTransform.right*speed, hitPlayer, ChargeSightRange) != 0 && hitPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Check if Raycast intersects the player collider
         {
             //Debug.Log(hitPlayer[0].collider);
             ChargeAtPlayer();
