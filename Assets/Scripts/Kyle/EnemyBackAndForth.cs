@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBackAndForth : MonoBehaviour, IKillable {
+public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
 
     Rigidbody2D enemyRB;
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
@@ -46,26 +46,21 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
 
         Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f ); //Debug statement, draw the line horizontal from the position
         bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f, enemyMask); //Similar to above, now check for blocks such as walls. Much shorter line
-
+		
         Debug.DrawRay(transform.position, transform.right * Mathf.Sign(speed) * ChargeSightRange); //Draws ray for enemy's "sight" to charge at player
-        
-        //No ground ahead underneath, turn enemy around nd revert to "normal" speed
-        if (!isGrounded) {
-            speed = -1;
-            Vector3 currRot = enemyTransform.eulerAngles;
-            currRot.y += 180;
-            enemyTransform.eulerAngles = currRot;
-        }
 
-        if (isBlocked) { //In this check, if line meets something indicating blockage, turn around
-            speed = -1;
+		//No ground ahead underneath, turn enemy around nd revert to "normal" speed
+        if (!isGrounded || isBlocked) { //In this check, if line meets something indicating blockage, turn around
+			speed = -1;
             Vector3 currRot = enemyTransform.eulerAngles;
             currRot.y += 180;
             enemyTransform.eulerAngles = currRot;
         }
 
         RaycastHit2D[] hitPlayer = new RaycastHit2D[1]; //If enemy spots the player, call the function to charge at them
-        if (EnemyColl.Raycast(enemyTransform.right*speed, hitPlayer, ChargeSightRange) != 0 && hitPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Check if Raycast intersects the player collider
+		//Debug.Log(hitPlayer[0]);
+        if (EnemyColl.Raycast(enemyTransform.right*speed, hitPlayer, ChargeSightRange) != 0
+			&& hitPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Check if Raycast intersects the player collider
         {
             //Debug.Log(hitPlayer[0].collider);
             ChargeAtPlayer();
@@ -93,7 +88,7 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable {
     }
 
     //simple taking damage
-    public float TakeDamge(float amount) {
+    public float TakeDamage(float amount) {
         if (amount > curHP) {
             amount = curHP;
         }

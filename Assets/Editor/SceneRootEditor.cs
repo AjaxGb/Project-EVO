@@ -203,10 +203,10 @@ public class SceneRootEditor : Editor {
 		Handles.color = boundsHandleColor;
 		EditorGUI.BeginChangeCheck();
 		{
-			xMin = Handles.Slider(xMin, Vector2.left, boundHandleSize * HandleUtility.GetHandleSize(xMin), Handles.DotCap, 0);
-			xMax = Handles.Slider(xMax, Vector2.left, boundHandleSize * HandleUtility.GetHandleSize(xMax), Handles.DotCap, 0);
-			yMin = Handles.Slider(yMin, Vector2.up,   boundHandleSize * HandleUtility.GetHandleSize(yMin), Handles.DotCap, 0);
-			yMax = Handles.Slider(yMax, Vector2.up,   boundHandleSize * HandleUtility.GetHandleSize(yMax), Handles.DotCap, 0);
+			xMin = Handles.Slider(xMin, Vector2.left, boundHandleSize * HandleUtility.GetHandleSize(xMin), Handles.DotHandleCap, 0);
+			xMax = Handles.Slider(xMax, Vector2.left, boundHandleSize * HandleUtility.GetHandleSize(xMax), Handles.DotHandleCap, 0);
+			yMin = Handles.Slider(yMin, Vector2.up,   boundHandleSize * HandleUtility.GetHandleSize(yMin), Handles.DotHandleCap, 0);
+			yMax = Handles.Slider(yMax, Vector2.up,   boundHandleSize * HandleUtility.GetHandleSize(yMax), Handles.DotHandleCap, 0);
 		}
 		if (EditorGUI.EndChangeCheck()) {
 			sceneInfoObject.Update();

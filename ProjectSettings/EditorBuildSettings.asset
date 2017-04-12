@@ -7,11 +7,19 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/SceneLoader.unity
+    guid: 7bc9539bf95a0c743bb43b80ae7aeb90
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/Center.unity
+    guid: 9da7e0dfe93768c40b057da3b392127b
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/Left.unity
+    guid: 16eeade46f91f1849a1648979801dd29
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/Right.unity
+    guid: e5a4b4eacc167f842bfc24e0290ee5ff
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/Right2.unity
+    guid: 3ee63ffd1bd2d154b8be6a892a2a8515
+  - enabled: 1
+    path: Assets/Scenes/Loaded Scenes/Boss1.unity
+    guid: 81779708b295ec049a78530d4da606f3
