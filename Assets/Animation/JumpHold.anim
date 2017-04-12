@@ -5,7 +5,7 @@ AnimationClip:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: TempIdle
+  m_Name: JumpHold
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -19,9 +19,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 7b641db41bd17c34c9227b9241f520b6, type: 3}
+      value: {fileID: 21300000, guid: 689b90925af415a4daa9f1234fb9439e, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300000, guid: 5b97491e1a5c873428407d21077db70e, type: 3}
+      value: {fileID: 21300000, guid: c0d163a6cd4052d4b8024400cc6839ff, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -41,8 +41,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 7b641db41bd17c34c9227b9241f520b6, type: 3}
-    - {fileID: 21300000, guid: 5b97491e1a5c873428407d21077db70e, type: 3}
+    - {fileID: 21300000, guid: 689b90925af415a4daa9f1234fb9439e, type: 3}
+    - {fileID: 21300000, guid: c0d163a6cd4052d4b8024400cc6839ff, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
