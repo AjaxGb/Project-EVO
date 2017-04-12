@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Paralax : MonoBehaviour {
 
-	public new GameObject camera;
+	CameraFollow camera;
 	public float scale;
     Vector2 lastPos;
 
 	// Use this for initialization
 	void Start () {
+        camera = SceneLoader.inst.cameraFollow;
         lastPos = camera.transform.position;
 	}
 	
