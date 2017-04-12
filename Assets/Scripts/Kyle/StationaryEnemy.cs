@@ -15,12 +15,13 @@ public class StationaryEnemy : MonoBehaviour {
 
     Collider2D EnemyColl;
 
-    public float SightRange = 10f; //Distance the enemy can see the player
+    public float SightRange = 7f; //Distance the enemy can see the player
 
     Transform playerTransform;
 
     bool CanShoot = true;
     public float ShotDelay = 1f; //Time waited between firing projectiles
+    public GameObject Projectile;
 
     // Use this for initialization
     void Start () {
@@ -42,15 +43,20 @@ public class StationaryEnemy : MonoBehaviour {
 
         //Debug.DrawRay(enemyTransform.position, (playerTransform.position - enemyTransform.position), Color.black); //Draws ray from enemy to player
 
-        if (Vector3.Distance(enemyTransform.position, playerTransform.position) <= SightRange && CanShoot ) //Distance between player and Enemy is less than the SightRange, ergo player is in the enemy's view, and the enemy can shoot
+        if (Vector3.Distance(enemyTransform.position, playerTransform.position) <= SightRange && CanShoot) //Distance between player and Enemy is less than the SightRange, ergo player is in the enemy's view, and the enemy can shoot
         {
             RaycastHit2D[] findPlayer = new RaycastHit2D[1];
             if (EnemyColl.Raycast(playerTransform.position - enemyTransform.position, findPlayer, SightRange) != 0 && findPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Raycast from enemy to player, see if first thing intersected is the player
             {
-                Debug.Log("Spotted Player");
+                //Cameron: This is where it will shoot a projectile if it's allowed to shoot at the time
+                GameObject Shot;
+                Shot = Instantiate(Projectile, transform.position, transform.rotation);
+                Shot.GetComponent<Rigidbody2D>().velocity = (playerTransform.position - transform.position).normalized * Shot.GetComponent<SpikeProjectile>().ShotSpeed;
+
+                //Debug.Log("Spotted Player");
                 CanShoot = false;
-                Invoke("WaitNextShot", ShotDelay); //Invoke the Function to let it shoot again in 1 second
-                
+                Invoke("WaitNextShot", ShotDelay); //Invoke the Function to let it shoot (CanShoot = true) again after the Delay passes
+
             }
         }
     }
