@@ -8,7 +8,7 @@ public static class Utilities {
 		Vector2 topL = new Vector2(rect.xMin, rect.yMin);
 		Vector2 botL = new Vector2(rect.xMin, rect.yMax);
 		Vector2 topR = new Vector2(rect.xMax, rect.yMin);
-		Vector2 botR = new Vector2(rect.xMax, rect.yMin);
+		Vector2 botR = new Vector2(rect.xMax, rect.yMax);
 
 		Debug.DrawLine(topL, topR, color);
 		Debug.DrawLine(topL, botL, color);
