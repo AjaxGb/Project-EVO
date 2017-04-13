@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4648478361752410}
   - component: {fileID: 212505018246539604}
-  - component: {fileID: 61708046088586560}
+  - component: {fileID: 70824386566290940}
   - component: {fileID: 50738414848887936}
   - component: {fileID: 114271024096330826}
   - component: {fileID: 95713500556687958}
@@ -128,7 +128,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1896646703046190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07, y: -0.61, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.08276604, y: 0.08276611, z: 0.08276611}
   m_Children:
   - {fileID: 4339417961079848}
@@ -157,31 +157,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!61 &61708046088586560
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1896646703046190}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.7780334, y: 2.34775}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 15, y: 21}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 6.9737644, y: 15.900671}
-  m_EdgeRadius: 0
 --- !u!68 &68366264831944352
 EdgeCollider2D:
   m_ObjectHideFlags: 1
@@ -233,6 +208,21 @@ EdgeCollider2D:
   m_Points:
   - {x: -4.7, y: 10.023823}
   - {x: -4.7, y: -5.3126264}
+--- !u!70 &70824386566290940
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1896646703046190}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.65154654, y: 2.2553577}
+  m_Size: {x: 7.2816377, y: 15.887847}
+  m_Direction: 0
 --- !u!95 &95713500556687958
 Animator:
   serializedVersion: 3
