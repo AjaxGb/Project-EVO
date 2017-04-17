@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections.Generic;
 
 public class GroundCheck : MonoBehaviour {
@@ -34,5 +35,10 @@ public class GroundCheck : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D coll) {
 		collisions.Remove(coll);
+    }
+
+    //returns a list of all objects the check is currently colliding with
+    public List<Collider2D> GetCollisions() {
+        return collisions.ToList();
     }
 }
