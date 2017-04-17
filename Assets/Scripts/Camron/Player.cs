@@ -18,6 +18,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float walkingAcceleration;
     public float walkingDecceleration;
     public float climbSpeed;
+    public float offWallJumpDelay = 0.4f;
+    private float lastJumpTime = 0.0f;
 
     public GroundCheck groundCheck;
     public GroundCheck leftCheck;
@@ -153,6 +155,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             canJump = true;
         }
 
+        //===JUMPING===
 		//double jump
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
             animator.SetTrigger("jump");
@@ -167,6 +170,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             } else {
                 if (actionState == States.CLIMB) {
                     endClimb();
+                    lastJumpTime = Time.time;
                 }
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 animator.SetTrigger("jump");
@@ -174,7 +178,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        //left and right movement
+        //===MOVEMENT===
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
             animator.SetBool("isidle", false);
@@ -221,22 +225,17 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        //wall climb and push/pull
-        if (control.GetButton(ButtonId.GLIDE) && 
+        //===SHIFT KEY ACTIONS===
+        if (control.GetButton(ButtonId.GLIDE) && Time.time > lastJumpTime + offWallJumpDelay &&
                 ((leftClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) < 0 || actionState == States.CLIMB)) 
                 || (rightClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) > 0 || actionState == States.CLIMB)))  ) {
+        //===CLIMBING===
             //if the climb just started
             if (actionState != States.CLIMB) {
                 body.gravityScale = 0;
                 startClimb();
                 canJump = hasDoubleJump;
             }
-
-            //push/pull
-            if (!InAir) {
-
-            }
-
             //climb up or down
             if (control.GetAxis(AxisId.VERTICAL) > 0) {
                 body.velocity = new Vector2(0/*body.velocity.x*/, climbSpeed);
@@ -249,8 +248,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             endClimb();
         }
 
-        //in air gliding 
-        if (control.GetButton(ButtonId.GLIDE) && InAir && hasGlide && PlayerMana > 0 && actionState != States.CLIMB  ) {
+
+
+        //===GLIDE=== 
+        if (control.GetButton(ButtonId.GLIDE) && InAir && hasGlide && PlayerMana > 0 && actionState != States.CLIMB && Time.time > lastJumpTime + offWallJumpDelay) {
             //if the glide has just started
             if (actionState != States.GLIDE) {
                 startGlide();
@@ -267,6 +268,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         if (!(control.GetButton(ButtonId.GLIDE) && InAir) || actionState == States.CLIMB) PlayerMana += 0.1f;
     }
 
+
+    //====ACTIVATED OBJECTS===
 	private void UpdateActivatable() {
 		// Check all activators, highlight nearest one in range
 		Activatable nearest = null;
@@ -292,29 +295,29 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	}
 
 
-    //===GLIDING===
+    //===GLIDING HELPERS===
     public void startGlide() {
         actionState = States.GLIDE;
-        animator.SetBool("actionState == States.GLIDE", true);
+        animator.SetBool("IsGliding", true);
     }
     public void endGlide() {
         actionState = States.NEUTRAL;
-        animator.SetBool("actionState == States.GLIDE", true);
+        animator.SetBool("IsGliding", true);
     }
 
 
-    //===CLIMBING===
+    //===CLIMBING HELPERS===
     public void startClimb() {
         actionState = States.CLIMB;
-        animator.SetBool("actionState == States.CLIMB", true);
+        animator.SetBool("isClimbing", true);
     }
     public void endClimb() {
         actionState = States.NEUTRAL;
         body.gravityScale = gravityScale;
-        animator.SetBool("actionState == States.CLIMB", false);
+        animator.SetBool("isClimbing", false);
     }
 
-    //===NEW SKILLS===
+    //===NEW SKILL TRANSITIONS===
     public void LearnClaws() {
         hasAttack = true;
         animator.SetTrigger("GainClaws");
