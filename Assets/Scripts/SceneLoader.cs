@@ -21,6 +21,8 @@ public class SceneLoader : MonoBehaviour {
 	private void Start() {
 		inst = this;
 		SceneManager.sceneLoaded += OnSceneLoaded;
+		
+		Resources.LoadAll<SceneInfo>("");
 
 		if (overrideStartScene != null) {
 			currScene = overrideStartScene;
