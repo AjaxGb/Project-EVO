@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class Player : MonoBehaviour, IKillable, IDamageable {
 
@@ -17,6 +18,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float walkingAcceleration;
     public float walkingDecceleration;
     public float climbSpeed;
+    public float offWallJumpDelay = 0.4f;
+    private float lastJumpTime = 0.0f;
 
     public GroundCheck groundCheck;
     public GroundCheck leftCheck;
@@ -32,8 +35,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public bool leftClimb { get { return !leftCheck.InAir; } }
     public bool rightClimb { get { return !rightCheck.InAir; } }
     public bool canJump = true;
-    public bool isGliding;  //possibly change this to a state enum, especially if others like push/pull are going to be added
-    public bool isClimbing;
+    public enum States {NEUTRAL, CLIMB, GLIDE, PULL};
+    public States actionState = States.NEUTRAL;
 	public PhysicsMaterial2D deathPhysMaterial;
 	protected PhysicsMaterial2D alivePhysMaterial;
 	protected Rigidbody2D body;
@@ -137,8 +140,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
 
             //cancels glide
-            if (isGliding)
-                isGliding = false;
+            if (actionState == States.GLIDE)
+                actionState = States.NEUTRAL;
         }
 	}
 
@@ -152,6 +155,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             canJump = true;
         }
 
+        //===JUMPING===
 		//double jump
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
             animator.SetTrigger("jump");
@@ -159,13 +163,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             canJump = false;
         } else
         //first jump
-        if (control.GetButton(ButtonId.JUMP) && (!InAir || isClimbing)  ) {
+        if (control.GetButton(ButtonId.JUMP) && (!InAir || actionState == States.CLIMB)  ) {
 			if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 //drop thru platform
                 canJump = hasDoubleJump;
             } else {
-                if (isClimbing) {
+                if (actionState == States.CLIMB) {
                     endClimb();
+                    lastJumpTime = Time.time;
                 }
                 body.velocity = new Vector2(body.velocity.x, jumpForce);
                 animator.SetTrigger("jump");
@@ -173,7 +178,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        //left and right movement
+        //===MOVEMENT===
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
             animator.SetBool("isidle", false);
@@ -182,7 +187,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
                 if (InAir) {
                     scaledAccel *= inAirSlow;
-                } else if (isGliding) {
+                } else if (actionState == States.GLIDE) {
                     scaledAccel *= glideSlow;
                 }
                 body.velocity = new Vector2(body.velocity.x + scaledAccel, body.velocity.y);
@@ -196,7 +201,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
                 if (InAir) {
                     scaledAccel *= inAirSlow;
-                } else if (isGliding) {
+                } else if (actionState == States.GLIDE) {
                     scaledAccel *= glideSlow;
                 }
                 body.velocity = new Vector2(body.velocity.x - scaledAccel, body.velocity.y);
@@ -220,18 +225,17 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        //wall climb and push/pull
-        if (control.GetButton(ButtonId.GLIDE) && 
-                ((leftClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) < 0 || isClimbing)) 
-                || (rightClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) > 0 || isClimbing)))  ) {
+        //===SHIFT KEY ACTIONS===
+        if (control.GetButton(ButtonId.GLIDE) && Time.time > lastJumpTime + offWallJumpDelay &&
+                ((leftClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) < 0 || actionState == States.CLIMB)) 
+                || (rightClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) > 0 || actionState == States.CLIMB)))  ) {
+        //===CLIMBING===
             //if the climb just started
-            if (!isClimbing) {
+            if (actionState != States.CLIMB) {
                 body.gravityScale = 0;
                 startClimb();
                 canJump = hasDoubleJump;
             }
-
-
             //climb up or down
             if (control.GetAxis(AxisId.VERTICAL) > 0) {
                 body.velocity = new Vector2(0/*body.velocity.x*/, climbSpeed);
@@ -240,28 +244,32 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             } else {
                 body.velocity = new Vector2(0, 0);
             }
-        } else if (isClimbing){
+        } else if (actionState == States.CLIMB){
             endClimb();
         }
 
-        //in air gliding 
-        if (control.GetButton(ButtonId.GLIDE) && InAir && hasGlide && PlayerMana > 0 && !isClimbing  ) {
+
+
+        //===GLIDE=== 
+        if (control.GetButton(ButtonId.GLIDE) && InAir && hasGlide && PlayerMana > 0 && actionState != States.CLIMB && Time.time > lastJumpTime + offWallJumpDelay) {
             //if the glide has just started
-            if (!isGliding) {
+            if (actionState != States.GLIDE) {
                 startGlide();
             }
             if (body.velocity.y < -glideFallSpeed) {
                 body.velocity = new Vector2(body.velocity.x, -glideFallSpeed);
             }
 			PlayerMana -= 0.5f;
-		} else if(isGliding) {
+		} else if(actionState == States.GLIDE) {
             //glide ended
             endGlide();
         }
         // Check if key is still held to prevent flickering
-        if (!(control.GetButton(ButtonId.GLIDE) && InAir) || isClimbing) PlayerMana += 0.1f;
+        if (!(control.GetButton(ButtonId.GLIDE) && InAir) || actionState == States.CLIMB) PlayerMana += 0.1f;
     }
 
+
+    //====ACTIVATED OBJECTS===
 	private void UpdateActivatable() {
 		// Check all activators, highlight nearest one in range
 		Activatable nearest = null;
@@ -287,29 +295,29 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	}
 
 
-    //===GLIDING===
+    //===GLIDING HELPERS===
     public void startGlide() {
-        isGliding = true;
+        actionState = States.GLIDE;
         animator.SetBool("IsGliding", true);
     }
     public void endGlide() {
-        isGliding = false;
+        actionState = States.NEUTRAL;
         animator.SetBool("IsGliding", true);
     }
 
 
-    //===CLIMBING===
+    //===CLIMBING HELPERS===
     public void startClimb() {
-        isClimbing = true;
+        actionState = States.CLIMB;
         animator.SetBool("isClimbing", true);
     }
     public void endClimb() {
-        isClimbing = false;
+        actionState = States.NEUTRAL;
         body.gravityScale = gravityScale;
         animator.SetBool("isClimbing", false);
     }
 
-    //===NEW SKILLS===
+    //===NEW SKILL TRANSITIONS===
     public void LearnClaws() {
         hasAttack = true;
         animator.SetTrigger("GainClaws");
