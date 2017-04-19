@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Paralax : MonoBehaviour {
 
-	CameraFollow camera;
+	new CameraFollow camera;
     public bool useXY = false;
 	public float scale;
     public float scaleX;

@@ -25,23 +25,26 @@ public class FallingRock : MonoBehaviour, IKillable {
 	void Start() {
 		rb = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
-		groundCollider = new Collider2D[1];
+		groundCollider = new Collider2D[2];
 	}
 
 	// Update is called once per frame
 	void Update() {
-		Vector2 baseCenter = transform.position;
-		baseCenter.y -= collider.bounds.size.y;
+		Vector2 baseCenter = collider.bounds.center;
+		baseCenter.y -= collider.bounds.extents.y;
 		Vector2 baseSize = collider.bounds.size;
 		baseSize.y = 0.1f;
+		Utilities.DebugDrawRect(new Rect(baseCenter - (baseSize / 2f), baseSize), Color.red);
 		switch (state) {
 			case State.FALL_IN:
-				if (0 != Physics2D.OverlapBoxNonAlloc(baseCenter, baseSize, 0, groundCollider, groundLayers)) {
+				// Will always overlap with itself.
+				if (1 < Physics2D.OverlapBoxNonAlloc(baseCenter, baseSize, 0, groundCollider, groundLayers)) {
 					state = State.GROUNDED;
 				}
 				break;
 			case State.GROUNDED:
-				if (0 == Physics2D.OverlapBoxNonAlloc(baseCenter, baseSize, 0, groundCollider, groundLayers)) {
+				// Will always overlap with itself.
+				if (1 == Physics2D.OverlapBoxNonAlloc(baseCenter, baseSize, 0, groundCollider, groundLayers)) {
 					state = State.DROPPING;
 				}
 				break;
