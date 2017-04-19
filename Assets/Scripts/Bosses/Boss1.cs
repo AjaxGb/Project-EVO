@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss1 : MonoBehaviour, IKillable, IDamageable {
+public class Boss1 : BossBase {
+	public override int BossOrderID { get { return 1; } }
 
 	public LayerMask wallMask;
-	public float health = 140;
 
 	public float speed = 1f;
 	public float chargeSpeed = 4f;
@@ -24,8 +24,7 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 	public Transform rockSpawnPoint;
 	public FallingRock rockPrefab;
 	private FallingRock spawnedRock;
-
-	public UIAttributeBar healthBar;
+	
 	public MovingDoor deathDoor;
 
 	[SerializeField]
@@ -69,10 +68,16 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 	}
 
 	// Use this for initialization
-	void Start() {
+	public override void StartAlive() {
 		rb = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
 		sprite = GetComponent<SpriteRenderer>();
+	}
+
+	public override void StartDead() {
+		Destroy(gameObject);
+		deathDoor.IsOpened = true;
+		deathDoor.SkipAnimation();
 	}
 
 	void FixedUpdate() {
@@ -148,22 +153,11 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 		isCharging = false;
 	}
 
-	public float TakeDamage(float amount) {
-		if (amount > health) {
-			amount = health;
-		}
-		health -= amount;
-		healthBar.Amount = health;
+	public override void OnDamaged() {
 		Stun();
-		if (health <= 0) {
-			Kill();
-		}
-		return amount;
 	}
 
-	public void Kill() {
-		health = 0;
-		healthBar.Amount = health;
+	public override void OnKilled() {
 		collider.enabled = false;
 		stunTimer = float.PositiveInfinity;
 		Destroy(transform.gameObject, 4f);
