@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
     //movement variables
     public float inAirSlow = 0.5f;
+    public float boulderPushSlow = 0.56f;
     public float glideSlow = 0.3f;
     public float glideFallSpeed = 2f;
     public float jumpForce = 7;
@@ -183,12 +184,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //===JUMPING===
 		//double jump
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
+            endPull();
             animator.SetTrigger("jump");
             body.velocity = new Vector2(body.velocity.x, jumpForce);// + body.velocity.y * jumpForceStay);
             canJump = false;
         } else
         //first jump
         if (control.GetButton(ButtonId.JUMP) && (!InAir || actionState == States.CLIMB)  ) {
+            endPull();
 			if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 //drop thru platform
                 List<Collider2D> groundCols = groundCheck.GetCollisions();
@@ -218,13 +221,20 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             animator.SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = false;
             if (body.velocity.x < maxSpeed) {
-                float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+                float scaledAccel = walkingAcceleration * Time.fixedDeltaTime; 
+                //inair and glide slow
                 if (InAir) {
                     scaledAccel *= inAirSlow;
                 } else if (actionState == States.GLIDE) {
                     scaledAccel *= glideSlow;
                 }
+                //boulder slow
+                if (boulder != null) {
+                    scaledAccel *= boulderPushSlow;
+                    boulder.GetComponent<Rigidbody2D>().velocity = new Vector2(body.velocity.x + scaledAccel, 0);
+                }
                 body.velocity = new Vector2(body.velocity.x + scaledAccel, body.velocity.y);
+                
             }
         }
         //left
@@ -232,11 +242,17 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             animator.SetBool("isidle", false);
             GetComponent<SpriteRenderer>().flipX = true;
             if (body.velocity.x > -maxSpeed) {
-                float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;
+                float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;  
+                //inair and glide slow
                 if (InAir) {
                     scaledAccel *= inAirSlow;
                 } else if (actionState == States.GLIDE) {
                     scaledAccel *= glideSlow;
+                }
+                //boulder slow
+                if (boulder != null) {
+                    scaledAccel *= boulderPushSlow;
+                    boulder.GetComponent<Rigidbody2D>().velocity = new Vector2(body.velocity.x - scaledAccel, 0);
                 }
                 body.velocity = new Vector2(body.velocity.x - scaledAccel, body.velocity.y);
             }
@@ -257,6 +273,9 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                     body.velocity = new Vector2(0, body.velocity.y);
                 }
             }
+            //slow the boudler too
+            if(boulder != null)
+                boulder.GetComponent<Rigidbody2D>().velocity = body.velocity;
         }
 
         //===PULL===
