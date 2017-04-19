@@ -57,7 +57,6 @@ public class Boss1 : BossBase {
 	private Rigidbody2D rb;
 	private new Collider2D collider;
 	private SpriteRenderer sprite;
-	private RaycastHit2D[] hitPlayer = new RaycastHit2D[1];
 
 	public Vector2 FacePoint {
 		get {

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StationaryEnemy : MonoBehaviour, IKillable, IDamageable {
-
-    Rigidbody2D enemyRB;
+	
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
 
     //combat stats
@@ -24,9 +23,6 @@ public class StationaryEnemy : MonoBehaviour, IKillable, IDamageable {
 
     // Use this for initialization
     void Start () {
-        enemyRB = this.GetComponent<Rigidbody2D>(); //Enemy has a Rigidbody and its transform for positioning checks
-
-        SpriteRenderer enemySprite = this.GetComponent<SpriteRenderer>();
         EnemyColl = this.GetComponent<Collider2D>();
 
         playerCollider = SceneLoader.inst.player.GetComponent<Collider2D>(); //Get the Player's Transform
