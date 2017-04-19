@@ -1203,6 +1203,11 @@ Prefab:
       propertyPath: destructable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 50581929102939740, guid: 2c2c676cb75658947a2b2a5ee28ac7d9,
+        type: 2}
+      propertyPath: m_LinearDrag
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c2c676cb75658947a2b2a5ee28ac7d9, type: 2}
   m_IsPrefabParent: 0

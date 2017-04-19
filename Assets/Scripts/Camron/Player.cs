@@ -280,7 +280,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                     cols = leftCheck.GetCollisions();
                     foreach (Collider2D c in cols) {
                         if (c.gameObject.tag == "Boulder") {
-                            startPull(c.gameObject, true);
+                            startPull(c.gameObject);
                         }
                     }
                 }
@@ -289,7 +289,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                     cols = rightCheck.GetCollisions();
                     foreach (Collider2D c in cols) {
                         if (c.gameObject.tag == "Boulder") {
-                            startPull(c.gameObject, false);
+                            startPull(c.gameObject);
                         }
                     }
                 }
@@ -395,7 +395,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     }
 
     //===PUSH/PULL HELPERS===
-    public void startPull(GameObject b, bool boulderToLeft) {
+    public void startPull(GameObject b) {
         boulder = b;
         actionState = States.PULL;
     }
