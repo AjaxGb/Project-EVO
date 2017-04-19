@@ -19,30 +19,32 @@ public class FallingRock : MonoBehaviour, IKillable {
 	private Rigidbody2D rb;
 	private new Collider2D collider;
 
-	private RaycastHit2D[] hitResults;
+	private Collider2D[] groundCollider;
 
 	// Use this for initialization
 	void Start() {
 		rb = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
-		hitResults = new RaycastHit2D[1];
+		groundCollider = new Collider2D[2];
 	}
 
 	// Update is called once per frame
 	void Update() {
-		Vector2 baseCenter = transform.position;
-		baseCenter.y -= collider.bounds.size.y;
+		Vector2 baseCenter = collider.bounds.center;
+		baseCenter.y -= collider.bounds.extents.y;
 		Vector2 baseSize = collider.bounds.size;
 		baseSize.y = 0.1f;
-		Utilities.DebugDrawRect(new Rect(baseCenter, baseSize), Color.red);
+		Utilities.DebugDrawRect(new Rect(baseCenter - (baseSize / 2f), baseSize), Color.red);
 		switch (state) {
 			case State.FALL_IN:
-				if (0 != collider.Raycast(Vector2.down, hitResults, collider.bounds.extents.y + 0.1f, groundLayers)) {
+				// Will always overlap with itself.
+				if (1 < Physics2D.OverlapBoxNonAlloc(baseCenter, baseSize, 0, groundCollider, groundLayers)) {
 					state = State.GROUNDED;
 				}
 				break;
 			case State.GROUNDED:
-				if (0 == collider.Raycast(Vector2.down, hitResults, collider.bounds.extents.y + 0.1f, groundLayers)) {
+				// Will always overlap with itself.
+				if (1 == Physics2D.OverlapBoxNonAlloc(baseCenter, baseSize, 0, groundCollider, groundLayers)) {
 					state = State.DROPPING;
 				}
 				break;
