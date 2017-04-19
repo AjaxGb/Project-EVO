@@ -24,14 +24,17 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float offWallJumpDelay = 0.4f;
     private float lastJumpTime = 0.0f;
 
+    //checks around player and related
     public GroundCheck groundCheck;
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
+    private GameObject boulder; //the attached boulder if pushing/pulling
     public float PlatformDisableTime = 0.3f;
     private int layerBits;
     private Queue<GameObject> disabledPlatforms = new Queue<GameObject>();
     private Queue<float> disableTime = new Queue<float>();
 
+    //control system
 	public bool realControls = true;
 	public IControls control;
 
@@ -161,7 +164,9 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
         //check inair
         animator.SetBool("InAir", InAir);
-        if (!InAir) {
+        if (InAir) {
+            
+        } else {
             canJump = true;
         }
 
@@ -254,20 +259,49 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        //===SHIFT KEY ACTIONS===
+        //===PULL===
+        if (control.GetButton(ButtonId.GLIDE) && !InAir) {
+            if (boulder == null) { //if not pulling
+                List<Collider2D> cols;
+                //check if leftcheck is touching a boulder if the character is facing left
+                if (GetComponent<SpriteRenderer>().flipX) {
+                    cols = leftCheck.GetCollisions();
+                    foreach (Collider2D c in cols) {
+                        if (c.gameObject.tag == "Boulder") {
+                            startPull(c.gameObject, true);
+                        }
+                    }
+                }
+                //otherwise, check to the right side
+                else {
+                    cols = rightCheck.GetCollisions();
+                    foreach (Collider2D c in cols) {
+                        if (c.gameObject.tag == "Boulder") {
+                            startPull(c.gameObject, false);
+                        }
+                    }
+                }
+            } else { //if boulder pulling is already set
+                
+            }
+        } else {
+            endPull();
+        }
+
+       //===SHIFT KEY ACTIONS===
         if (control.GetButton(ButtonId.GLIDE) && Time.time > lastJumpTime + offWallJumpDelay &&
                 ((leftClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) < 0 || actionState == States.CLIMB)) 
                 || (rightClimb && (control.GetAxis(AxisId.VERTICAL) != 0 || control.GetAxis(AxisId.HORIZONTAL) > 0 || actionState == States.CLIMB)))  ) {
         //===CLIMBING===
             //if the climb just started
-            if (actionState != States.CLIMB) {
+            if (actionState != States.CLIMB && actionState != States.PULL) {
                 body.gravityScale = 0;
                 startClimb();
                 canJump = hasDoubleJump;
             }
             //climb up or down
             if (control.GetAxis(AxisId.VERTICAL) > 0) {
-                body.velocity = new Vector2(0/*body.velocity.x*/, climbSpeed);
+                body.velocity = new Vector2(0, climbSpeed);
             } else if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 body.velocity = new Vector2(0, -climbSpeed);
             } else {
@@ -344,6 +378,16 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         actionState = States.NEUTRAL;
         body.gravityScale = gravityScale;
         animator.SetBool("isClimbing", false);
+    }
+
+    //===PUSH/PULL HELPERS===
+    public void startPull(GameObject b, bool boulderToLeft) {
+        boulder = b;
+        actionState = States.PULL;
+    }
+    public void endPull() {
+        boulder = null;
+        actionState = States.NEUTRAL;
     }
 
     //===NEW SKILL TRANSITIONS===
