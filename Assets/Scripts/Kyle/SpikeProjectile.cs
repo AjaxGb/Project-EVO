@@ -24,7 +24,7 @@ public class SpikeProjectile : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D TouchedThing)
     {
-        if (TouchedThing.gameObject.tag == "Player")
+        if (TouchedThing.gameObject == SceneLoader.inst.player.gameObject)
         {
             SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage                      
         }

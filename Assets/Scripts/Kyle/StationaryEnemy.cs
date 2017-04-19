@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationaryEnemy : MonoBehaviour {
+public class StationaryEnemy : MonoBehaviour, IKillable, IDamageable {
 
     Rigidbody2D enemyRB;
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
-    Transform enemyTransform;
 
     //combat stats
     public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
@@ -17,21 +16,20 @@ public class StationaryEnemy : MonoBehaviour {
 
     public float SightRange = 7f; //Distance the enemy can see the player
 
-    Transform playerTransform;
+    Collider2D playerCollider;
 
     bool CanShoot = true;
     public float ShotDelay = 1f; //Time waited between firing projectiles
-    public GameObject Projectile;
+    public SpikeProjectile Projectile;
 
     // Use this for initialization
     void Start () {
-        enemyTransform = this.transform;
         enemyRB = this.GetComponent<Rigidbody2D>(); //Enemy has a Rigidbody and its transform for positioning checks
 
         SpriteRenderer enemySprite = this.GetComponent<SpriteRenderer>();
         EnemyColl = this.GetComponent<Collider2D>();
 
-        playerTransform = SceneLoader.inst.player.transform; //Get the Player's Transform
+        playerCollider = SceneLoader.inst.player.GetComponent<Collider2D>(); //Get the Player's Transform
     }
 	
 	// Update is called once per frame
@@ -41,17 +39,21 @@ public class StationaryEnemy : MonoBehaviour {
 
     void FixedUpdate() {
 
-        //Debug.DrawRay(enemyTransform.position, (playerTransform.position - enemyTransform.position), Color.black); //Draws ray from enemy to player
+		if (Time.timeScale == 0) return;
 
-        if (Vector3.Distance(enemyTransform.position, playerTransform.position) <= SightRange && CanShoot) //Distance between player and Enemy is less than the SightRange, ergo player is in the enemy's view, and the enemy can shoot
+		//Debug.DrawRay(enemyTransform.position, (playerTransform.position - enemyTransform.position), Color.black); //Draws ray from enemy to player
+
+		Vector2 playerCenterOfMass = playerCollider.bounds.center;
+		Vector2 dirToPlayer = playerCenterOfMass - (Vector2)transform.position;
+
+		if (dirToPlayer.sqrMagnitude <= SightRange * SightRange && CanShoot) //Distance between player and Enemy is less than the SightRange, ergo player is in the enemy's view, and the enemy can shoot
         {
             RaycastHit2D[] findPlayer = new RaycastHit2D[1];
-            if (EnemyColl.Raycast(playerTransform.position - enemyTransform.position, findPlayer, SightRange) != 0 && findPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Raycast from enemy to player, see if first thing intersected is the player
+            if (EnemyColl.Raycast(dirToPlayer, findPlayer, SightRange) != 0 && findPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Raycast from enemy to player, see if first thing intersected is the player
             {
                 //Cameron: This is where it will shoot a projectile if it's allowed to shoot at the time
-                GameObject Shot;
-                Shot = Instantiate(Projectile, transform.position, transform.rotation);
-                Shot.GetComponent<Rigidbody2D>().velocity = (playerTransform.position - transform.position).normalized * Shot.GetComponent<SpikeProjectile>().ShotSpeed;
+                SpikeProjectile Shot = Instantiate(Projectile, transform.position, transform.rotation);
+                Shot.GetComponent<Rigidbody2D>().velocity = (dirToPlayer).normalized * Shot.ShotSpeed;
                 
                 //Shot.transform.up = playerTransform.position - transform.position; //Turn the top of the sprite to face the player position when fired
 
@@ -64,7 +66,7 @@ public class StationaryEnemy : MonoBehaviour {
     }
 
     //simple taking damage
-    public float TakeDamge(float amount)
+    public float TakeDamage(float amount)
     {
         if (amount > curHP){
             amount = curHP;
