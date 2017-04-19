@@ -300,7 +300,7 @@ MonoBehaviour:
   hasDoubleJump: 1
   hasGlide: 1
   hasAttack: 1
-  inAirSlow: 0.8
+  inAirSlow: 0.68
   glideSlow: 1
   glideFallSpeed: 1.2
   jumpForce: 11
@@ -308,13 +308,14 @@ MonoBehaviour:
   walkingAcceleration: 40
   walkingDecceleration: 40
   climbSpeed: 2
+  offWallJumpDelay: 0.4
   groundCheck: {fileID: 114196405217533514}
   leftCheck: {fileID: 114226988767314872}
   rightCheck: {fileID: 114186401735270222}
+  PlatformDisableTime: 0.3
   realControls: 1
   canJump: 1
-  isGliding: 0
-  isClimbing: 0
+  actionState: 0
   deathPhysMaterial: {fileID: 6200000, guid: ddb78e960fca4364f98e49f9220f7053, type: 2}
   HealthBar: {fileID: 0}
   ManaBar: {fileID: 0}

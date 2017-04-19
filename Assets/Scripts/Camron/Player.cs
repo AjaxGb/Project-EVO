@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 public class Player : MonoBehaviour, IKillable, IDamageable {
 
@@ -12,7 +14,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float inAirSlow = 0.5f;
     public float glideSlow = 0.3f;
     public float glideFallSpeed = 2f;
-    public float jumpForce = 10f;
+    public float jumpForce = 7;
+    //public float jumpForceStay = 0.2f;
 	protected float gravityScale;
     public float maxSpeed = 10f;
     public float walkingAcceleration;
@@ -24,6 +27,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public GroundCheck groundCheck;
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
+    public float PlatformDisableTime = 0.3f;
+    private int layerBits;
+    private Queue<GameObject> disabledPlatforms = new Queue<GameObject>();
+    private Queue<float> disableTime = new Queue<float>();
 
 	public bool realControls = true;
 	public IControls control;
@@ -93,7 +100,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		if (realControls) {
 			control = new ControlsReal();
 		}
-		renderer = GetComponent<SpriteRenderer>();
+        layerBits = 1 << LayerMask.NameToLayer("Player");
+        renderer = GetComponent<SpriteRenderer>();
 		body = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
 		alivePhysMaterial = body.sharedMaterial;
@@ -148,31 +156,52 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	protected virtual void DeadUpdate() {}
 
 	void FixedUpdate() {
+        //skip this if game is paused
         if (Time.timeScale == 0 || !IsAlive) return;
 
+        //check inair
         animator.SetBool("InAir", InAir);
         if (!InAir) {
             canJump = true;
+        }
+
+        //if there are disabled platforms, reinable them
+        if (disabledPlatforms.Count > 0) {
+            Debug.Log("starting loop");
+            for (int i = 0; i < disabledPlatforms.Count && disableTime.Peek() < Time.time; i++) {
+                GameObject g = disabledPlatforms.Dequeue();
+                disableTime.Dequeue();
+                g.GetComponent<PlatformEffector2D>().colliderMask |= layerBits;
+            }
         }
 
         //===JUMPING===
 		//double jump
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
             animator.SetTrigger("jump");
-            body.velocity = new Vector2(body.velocity.x, jumpForce);
+            body.velocity = new Vector2(body.velocity.x, jumpForce);// + body.velocity.y * jumpForceStay);
             canJump = false;
         } else
         //first jump
         if (control.GetButton(ButtonId.JUMP) && (!InAir || actionState == States.CLIMB)  ) {
 			if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 //drop thru platform
+                List<Collider2D> groundCols = groundCheck.GetCollisions();
+                //get the list of all colliders the bottom ground check is interacting with, then diable them and add them to a list to be reinabled soon
+                foreach (Collider2D c in groundCols) {
+                    if (c.gameObject.CompareTag("Platform")) {
+                        c.gameObject.GetComponent<PlatformEffector2D>().colliderMask &= ~layerBits;
+                        disabledPlatforms.Enqueue(c.gameObject);
+                        disableTime.Enqueue(Time.time + PlatformDisableTime);
+                    }
+                }
                 canJump = hasDoubleJump;
             } else {
                 if (actionState == States.CLIMB) {
                     endClimb();
                     lastJumpTime = Time.time;
                 }
-                body.velocity = new Vector2(body.velocity.x, jumpForce);
+                body.velocity = new Vector2(body.velocity.x, jumpForce);// + body.velocity.y * jumpForceStay);
                 animator.SetTrigger("jump");
                 canJump = hasDoubleJump;
             }
