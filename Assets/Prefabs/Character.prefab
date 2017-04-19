@@ -253,6 +253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collideWith:
   - Ground
+  - Boulder
   playerRB: {fileID: 0}
   onlyWhenDown: 0
 --- !u!114 &114196405217533514
@@ -269,6 +270,7 @@ MonoBehaviour:
   collideWith:
   - Ground
   - Platform
+  - Boulder
   playerRB: {fileID: 50738414848887936}
   onlyWhenDown: 1
 --- !u!114 &114226988767314872
@@ -284,6 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collideWith:
   - Ground
+  - Boulder
   playerRB: {fileID: 0}
   onlyWhenDown: 0
 --- !u!114 &114271024096330826
@@ -301,6 +304,7 @@ MonoBehaviour:
   hasGlide: 1
   hasAttack: 1
   inAirSlow: 0.68
+  boulderPushSlow: 0.2
   glideSlow: 1
   glideFallSpeed: 1.2
   jumpForce: 11

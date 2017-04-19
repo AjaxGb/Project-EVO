@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 50581929102939740}
   m_Layer: 10
   m_Name: Falling Rock
-  m_TagString: Ground
+  m_TagString: Boulder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
