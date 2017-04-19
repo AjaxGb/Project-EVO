@@ -14,6 +14,7 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 	public float touchDamage = 5; //Amount of damage this enemy inflicts to the player
 	public float chargeDamage = 10; //Amount of damage inflicted by successful charge
 	public float chargeSightRange = 3f; //Distance the enemy can see the player
+	public float chargeKnockback = 2f;
 
 	public float stunLength = 3f;
 	public float stunTimer = 0f;
@@ -25,6 +26,7 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 	private FallingRock spawnedRock;
 
 	public UIAttributeBar healthBar;
+	public MovingDoor deathDoor;
 
 	[SerializeField]
 	private bool _facingLeft = true;
@@ -115,6 +117,7 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 			IDamageable hit = coll.gameObject.GetComponent<IDamageable>();
 			if (hit != null) {
 				hit.TakeDamage(chargeDamage);
+
 				FacingLeft = !FacingLeft;
 			} else {
 				Stun();
@@ -122,6 +125,13 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 					spawnedRock = Instantiate(rockPrefab, rockSpawnPoint.position, Quaternion.identity, rockSpawnPoint);
 				}
 			}
+
+			Rigidbody2D rb = coll.gameObject.GetComponent<Rigidbody2D>();
+			if (rb != null) {
+				rb.AddForce((rb.worldCenterOfMass - this.rb.worldCenterOfMass).normalized * chargeKnockback,
+					ForceMode2D.Impulse);
+			}
+
 			isCharging = false;
 		} else if (coll.gameObject.tag == "Player") {
 
@@ -157,5 +167,6 @@ public class Boss1 : MonoBehaviour, IKillable, IDamageable {
 		collider.enabled = false;
 		stunTimer = float.PositiveInfinity;
 		Destroy(transform.gameObject, 4f);
+		deathDoor.IsOpened = true;
 	}
 }
