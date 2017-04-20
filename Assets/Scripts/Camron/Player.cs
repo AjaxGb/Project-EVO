@@ -30,6 +30,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
     private GameObject boulder; //the attached boulder if pushing/pulling
+    private float boulderOffset;
     public float PlatformDisableTime = 0.3f;
     private int layerBits;
     private Queue<GameObject> disabledPlatforms = new Queue<GameObject>();
@@ -268,8 +269,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             
         }
         //Move the boulder too if theres one bein grabbed
-        if (boulder != null)
-            boulder.GetComponent<Rigidbody2D>().velocity = body.velocity;
+        if (boulder != null) {
+            if (boulder.GetComponent<FallingRock>().state != FallingRock.State.GROUNDED) {
+                endPull();
+            } else {
+                boulder.transform.position = new Vector2(transform.position.x + boulderOffset, boulder.transform.position.y);
+                boulder.GetComponent<Rigidbody2D>().velocity = body.velocity;
+            }
+        }
 
         //===PULL===
         if (control.GetButton(ButtonId.GLIDE) && !InAir) {
@@ -396,8 +403,11 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
     //===PUSH/PULL HELPERS===
     public void startPull(GameObject b) {
-        boulder = b;
-        actionState = States.PULL;
+        if (b.GetComponent<FallingRock>().state == FallingRock.State.GROUNDED) {
+            boulder = b;
+            boulderOffset = (b.transform.position.x - transform.position.x);
+            actionState = States.PULL;
+        }
     }
     public void endPull() {
         boulder = null;

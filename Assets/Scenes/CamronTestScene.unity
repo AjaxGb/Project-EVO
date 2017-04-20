@@ -223,25 +223,13 @@ Prefab:
       propertyPath: ManaBar
       value: 
       objectReference: {fileID: 1500811907}
-    - target: {fileID: 114271024096330826, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: offWallJumpDelay
-      value: 0.4
+    - target: {fileID: 4565780555296000, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.32
       objectReference: {fileID: 0}
-    - target: {fileID: 114271024096330826, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: PlatformDisableTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114271024096330826, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: jumpForce
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 114271024096330826, guid: 96aee7c5dc1e73c46a103e16c96d8169,
-        type: 2}
-      propertyPath: inAirSlow
-      value: 0.68
+    - target: {fileID: 4300652472679122, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.82
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
