@@ -274,7 +274,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                 endPull();
             } else {
                 boulder.transform.position = new Vector2(transform.position.x + boulderOffset, boulder.transform.position.y);
-                boulder.GetComponent<Rigidbody2D>().velocity = body.velocity;
+                boulder.GetComponent<Rigidbody2D>().velocity = new Vector2(body.velocity.x, boulder.GetComponent<Rigidbody2D>().velocity.y);
             }
         }
 
