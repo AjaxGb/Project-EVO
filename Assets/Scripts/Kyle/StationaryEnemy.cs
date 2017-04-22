@@ -9,7 +9,7 @@ public class StationaryEnemy : MonoBehaviour, IKillable, IDamageable {
     //combat stats
     public float DamageStrength = 5; //Amount of damage this enemy inflicts to the player
     public float maxHP = 1;
-    public float curHP = 1;
+    public float currHP = 1;
 
     Collider2D EnemyColl;
 
@@ -64,11 +64,11 @@ public class StationaryEnemy : MonoBehaviour, IKillable, IDamageable {
     //simple taking damage
     public float TakeDamage(float amount)
     {
-        if (amount > curHP){
-            amount = curHP;
+        if (amount > currHP){
+            amount = currHP;
         }
-        curHP -= amount;
-        if (curHP <= 0) {
+        currHP -= amount;
+        if (currHP <= 0) {
             Kill();
         }
 

@@ -1,17 +1,40 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class FlyingEnemy : MonoBehaviour {
+public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
     
+    public enum State
+    {
+        PATROLLING,
+        SURPRISED,
+        ATTACKING
+    }
+
+    public float maxHP = 2f;
+    public float currHP = 2f;
+
     public Transform[] Waypoints; //The Waypoints the enemy normally flies between
     public int WPIndex = 0; //Index in the waypoint array
-    public float speed = 2f; //The speed the enemy moves at
-    public float accel = 1f;
-    public float waypointRange = 2f;
 
-    public float SightRange = 0f;
-    public bool Patrolling;
+    public State state;
+
+    public float patrolSpeed = 2f; //The speed the enemy moves at normally
+    public float patrolAccel = 1f;
+    public float coolDownRequirement = 3f; //Time to wait before attacking the player again
+    public float coolDownTimer; //The actual amount of time the enemy has waited since attacking
+    public float nextWaypointRange = 2f; // Distance to waypoint before changing target
+
+    public float DamageStrength = 10f; //The damage this enemy deals to the player
+    public float SightRange = 4f;
+    public float attackSpeed = 6f; //Speed when charging at the player
+    public float attackAccel = 12f;
+    public float attackDuration = 5f; //Time spent attacking player before having to initiate a new check
+    public float attackTimer;
+    Vector2 attackDirection; //Velocity with which to attack player when spotted.
+
+    public float surpriseDuration = 1f;
+    public float surpriseTimer;
+    public float surpriseDecel = 25f;
 
     Transform playerTransform;
     Rigidbody2D rb;
@@ -19,7 +42,7 @@ public class FlyingEnemy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        Patrolling = true;
+        state = State.PATROLLING;
         playerTransform = SceneLoader.inst.player.transform; //Get the Player's Transform
         rb = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
@@ -27,56 +50,151 @@ public class FlyingEnemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-
-        Debug.DrawLine(transform.position, transform.position + transform.up, Color.red);
-        if (Input.GetKeyDown("m")) {
-            IncrementWPIndexLoop();
+        if (Input.GetKeyDown("l")) {
+            TakeDamage(1);
         }
 
-        if (Vector3.Distance(transform.position, playerTransform.position) <= SightRange && Patrolling) //Distance between player and Enemy is less than the SightRange, ergo player is in the enemy's view, and the enemy is in patrolling behavior
+        switch (state)
         {
-            RaycastHit2D[] findPlayer = new RaycastHit2D[1];
-            if (GetComponent<BoxCollider2D>().Raycast(playerTransform.position - transform.position, findPlayer, SightRange) != 0 && findPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Raycast from enemy to player, see if first thing intersected is the player
-            {
-                //Debug.Log("Spotted Player");
-                
-                //Patrolling = false; //Enemy is attacking, not patrolling
-                //Swoop(); //Swoop at the player
-            }
-        }
-        else if (Patrolling) { //If the enemy does not see the player, do this if it's Patrolling
-            //Move towards Waypoints[WPIndex]
+            case State.PATROLLING:
+                //Check if the player is in the enemy's range of detection.
+                if (coolDownTimer <= 0f && (transform.position - playerTransform.position).sqrMagnitude <= SightRange * SightRange)
+                {
+                    //Distance between player and Enemy is less than the SightRange, ergo player is in the enemy's view, and the enemy is in patrolling behavior
+                    RaycastHit2D[] findPlayer = new RaycastHit2D[1];
+                    if (GetComponent<BoxCollider2D>().Raycast(playerTransform.position - transform.position, findPlayer, SightRange) != 0 && findPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Raycast from enemy to player, see if first thing intersected is the player
+                    {
+                        //Debug.Log("Spotted Player");
 
-            Vector2 targetVel = Waypoints[WPIndex].position - transform.position;
-            // Check dist to waypoint
-            if (targetVel.sqrMagnitude < waypointRange * waypointRange)
-            {
-                // Change target to next waypoint
-                IncrementWPIndexLoop();
-                targetVel = Waypoints[WPIndex].position - transform.position;
-            }
+                        state = State.SURPRISED; //Enemy is attacking, not patrolling
+                        surpriseTimer = surpriseDuration;
+                    }
+                }
+                else
+                {
+                    coolDownTimer -= Time.deltaTime; //Add the time that has passed since the last frame to the cooldownTimer
 
-            if (targetVel.sqrMagnitude > speed * speed)
-            {
-                targetVel.Normalize();
-                targetVel *= speed;
-            }
-            if (targetVel.x != 0)
-            {
-                renderer.flipX = targetVel.x > 0;
-            }
+                    //Move towards Waypoints[WPIndex]
+                    MoveTowardsTarget(Waypoints[WPIndex].position, patrolSpeed, patrolAccel);
+                    if ((Waypoints[WPIndex].position - transform.position).sqrMagnitude <= nextWaypointRange * nextWaypointRange)
+                    {
+                        IncrementWPIndexLoop();
+                    }
+                }
+                break;
+            case State.SURPRISED:
+                rb.velocity = Vector2.zero;
 
-            Vector2 targetAcc = targetVel - rb.velocity;
-            if (targetAcc.sqrMagnitude > accel * accel)
-            {
-                targetAcc.Normalize();
-                targetAcc *= accel;
-            }
-            rb.AddForce(targetAcc);
+                surpriseTimer -= Time.deltaTime;
+                if (surpriseTimer <= 0 && rb.velocity.sqrMagnitude < 0.01f)
+                {
+                    state = State.ATTACKING;
+                    attackDirection = playerTransform.position - transform.position;
+                    if (attackDirection.sqrMagnitude > attackSpeed * attackSpeed)
+                    {
+                        attackDirection.Normalize();
+                        attackDirection *= attackSpeed;
+                    }
+                    attackTimer = attackDuration;
+                    coolDownTimer = coolDownRequirement;
+                }
+                break;
+            case State.ATTACKING:
+                attackTimer -= Time.deltaTime; //Increase the attack timer if not patrolling
+
+                if (attackTimer > 0f)
+                { //If the attackTimer is less than the attackDuration, ergo the window for an attack is not done. 
+                    MoveWithVelocity(attackDirection, attackAccel);
+                }
+                else
+                { //If the alloted amount of time has been spent on an attack
+                    state = State.PATROLLING; //go back to Patrolling
+                    WPIndex = GetNearestWaypoint();
+                }
+                break;
         }
     }
 
     void IncrementWPIndexLoop() {
         WPIndex = (++WPIndex) % Waypoints.Length;
+    }
+
+    void MoveTowardsTarget(Vector2 target, float maxSpeed, float maxAccel) {
+
+        Vector2 targetVel = target - (Vector2)transform.position; //Target the position the player was spotted at
+        if (targetVel.sqrMagnitude > maxSpeed * maxSpeed)
+        {
+            targetVel.Normalize();
+            targetVel *= maxSpeed;
+        }
+        MoveWithVelocity(targetVel, maxAccel);
+    }
+
+    void MoveWithVelocity(Vector2 targetVel, float maxAccel)
+    {
+        if (targetVel.x != 0)
+        {
+            renderer.flipX = targetVel.x > 0;
+        }
+
+        Vector2 targetAcc = targetVel - rb.velocity;
+        if (targetAcc.sqrMagnitude > maxAccel * maxAccel)
+        {
+            targetAcc.Normalize();
+            targetAcc *= maxAccel;
+        }
+        rb.AddForce(targetAcc);
+    }
+
+    int GetNearestWaypoint()
+    {
+        float sqrShortestDist = float.PositiveInfinity;
+        int indexShortest = 0;
+        for (int i = 0; i < Waypoints.Length; ++i)
+        {
+            float sqrCurrDist = (Waypoints[i].position - transform.position).sqrMagnitude;
+            if (sqrCurrDist < sqrShortestDist)
+            {
+                sqrShortestDist = sqrCurrDist;
+                indexShortest = i;
+            }
+        }
+        return indexShortest;
+    }
+
+    void OnCollisionEnter2D(Collision2D TouchedThing) {
+
+        if (TouchedThing.gameObject == SceneLoader.inst.player.gameObject)
+        {
+            SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage                      
+        }
+
+        if (state == State.ATTACKING)
+        {
+            //Debug.Log("Returning to Patrol");
+            state = State.PATROLLING; //Set the enemy back to patrolling mode
+            rb.velocity = Vector2.zero;
+            WPIndex = GetNearestWaypoint();
+        }
+    }
+
+    public float TakeDamage(float amount)
+    {
+        if (amount > currHP)
+        {
+            amount = currHP;
+        }
+        currHP -= amount;
+        if (currHP <= 0)
+        {
+            Kill();
+        }
+
+        return amount;
+    }
+
+    public void Kill()
+    {
+        Destroy(transform.parent.gameObject);
     }
 }
