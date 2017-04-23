@@ -8,6 +8,7 @@ public class Pillar : MonoBehaviour {
     public float breakDistance = 25;
     public float breakSpeed;
     bool needToMove = false;
+    public GameObject landingZone;
 
     Vector2 curV;
     Vector2 dest;
@@ -24,7 +25,8 @@ public class Pillar : MonoBehaviour {
         }
         //if the pillar needs to move, move it
         if (!active && needToMove) {
-            Vector2.SmoothDamp(transform.position, dest, ref curV, breakSpeed, 1000, Time.deltaTime);
+            //on the downward move we add a bit of random shake to it
+            Vector2.SmoothDamp(transform.position, dest + new Vector2(UnityEngine.Random.Range(-0.5f,0.5f), 0), ref curV, breakSpeed, 1000, Time.deltaTime);
         } else if (needToMove) {
             Vector2.SmoothDamp(transform.position, dest, ref curV, breakSpeed, 1000, Time.deltaTime);
         }

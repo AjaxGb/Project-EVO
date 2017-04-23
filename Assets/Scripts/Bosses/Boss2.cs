@@ -21,7 +21,9 @@ public class Boss2 : BossBase {
 
     public GameObject[] waypoints = new GameObject[6];
     int nextWP = 0;
-    bool isLanded = false;
+    Vector2 targetLoc;
+    public enum State {FLYING, LANDED, LANDING, LANDINGPREP };
+    public State actionState = State.FLYING;
     private int landedPillar = -1; //-1 if in air, pillar number if landed
 
     public MovingDoor deathDoor;
@@ -51,56 +53,73 @@ public class Boss2 : BossBase {
 	}
 
     void FixedUpdate () {
-        if (Time.time > lastAttack + timeBetweenAttacks && !isLanded) {
-            //shoot pew pews
-            //select 2 pillars.
-            List<int> ex = new List<int>(curPhase - 1);
-            for (int i = 0; i < 5; i++) {
-                if (!Pillars[i].active) {
-                    ex.Add(i);
+        if (actionState == State.FLYING) {
+            //===if its time to shoot===
+            if (Time.time > lastAttack + timeBetweenAttacks) {
+                //shoot pew pews
+                //select 2 pillars.
+                List<int> ex = new List<int>(curPhase - 1);
+                for (int i = 0; i < 5; i++) {
+                    if (!Pillars[i].active) {
+                        ex.Add(i);
+                    }
                 }
-            }
-            int pillarChoice = SelectPillar(0, 4, ex);
-            ex.Add(pillarChoice);
-            //2nd unique pillar
-            int pillarChoice2 = SelectPillar(0, 4, ex);
+                int pillarChoice = SelectPillar(0, 4, ex);
+                ex.Add(pillarChoice);
+                //2nd unique pillar
+                int pillarChoice2 = SelectPillar(0, 4, ex);
 
-        } else if (Time.time > phaseStart + phaseDuration && !isLanded) {
-            //chose pillar to land on
-            List<int> ex = new List<int>(curPhase - 1);
-            for (int i = 0; i < 5; i++) {
-                if (!Pillars[i].active) {
-                    ex.Add(i);
+                //===if its time to land===
+            } else if (Time.time > phaseStart + phaseDuration) {
+                //chose pillar to land on
+                List<int> ex = new List<int>(curPhase - 1);
+                for (int i = 0; i < 5; i++) {
+                    if (!Pillars[i].active) {
+                        ex.Add(i);
+                    }
                 }
-            }
-            int pillarChoice = SelectPillar(0, 4, ex);
-            isLanded = true;
-        } else {
-            //just fly around n shit, idk
-
-            //if reached a waypoint, set target to be the next one. 
-            if (Vector2.Distance(transform.position, waypoints[nextWP].transform.position) < 0.5) {
-                nextWP++;
-                if (nextWP >= waypoints.Length) {
-                    nextWP = 0;
-                }
+                landedPillar = SelectPillar(0, 4, ex);
+                actionState = State.LANDINGPREP;
+                targetLoc = new Vector2(Pillars[landedPillar].landingZone.transform.position.x, Pillars[landedPillar].landingZone.transform.position.y + UnityEngine.Random.Range(4, 7));
+                //===flyin around===
             } else {
+                //if reached a waypoint, set target to be the next one. 
+                if (Vector2.Distance(transform.position, waypoints[nextWP].transform.position) < 0.5) {
+                    nextWP++;
+                    if (nextWP >= waypoints.Length) {
+                        nextWP = 0;
+                    }
+                }
                 //move towards next WP
-                Vector2.SmoothDamp(transform.position, waypoints[nextWP].transform.position, ref curV, moveSpeed, 1000, Time.deltaTime);
+                targetLoc = waypoints[nextWP].transform.position;
+            }
+        } else if (actionState == State.LANDINGPREP) {
+            //If it gets close to the spot above the pillar, then set the new destination to be landed on it
+            if (Vector2.Distance(targetLoc, transform.position) < 0.25) {
+                targetLoc = Pillars[landedPillar].landingZone.transform.position;
+                actionState = State.LANDING;
+            }
+        } else if (actionState == State.LANDING) {
+            if (Vector2.Distance(targetLoc, transform.position) < 0.1) {
+                transform.position = targetLoc;
+                actionState = State.LANDED;
             }
         }
+
+        //===START MOVEMENT TO TARGET LOC===
+        Vector2.SmoothDamp(transform.position, targetLoc, ref curV, moveSpeed, 1000, Time.deltaTime);
     }
 
     public void OnDamage() {
         //phase change checks
-        if (curHP < (0.66 * maxHP) && curPhase == 1) {
-            curPhase = 2;
-            Pillars[landedPillar].Break();
-            phaseStart = Time.time;
-        } else if (curHP < (0.33 * maxHP) && curPhase == 2) {
-            curPhase = 3;
-            Pillars[landedPillar].Break();
-            phaseStart = Time.time;
+        if (actionState == State.LANDED) {
+            if (  (curHP < (0.66 * maxHP) && curPhase == 1)  ||  (curHP < (0.33 * maxHP) && curPhase == 2)  ) {
+                curPhase++;
+                Pillars[landedPillar].Break();
+                phaseStart = Time.time;
+                actionState = State.FLYING;
+                landedPillar = -1;
+            } 
         }
     }
     
