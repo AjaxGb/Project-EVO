@@ -12,6 +12,8 @@ public class Boss2 : BossBase {
     public float curHP;
     public int curPhase = 1;
     public float phaseDuration;
+    public float timeBetweenAttacks;
+    public float lastAttack;
     private float phaseStart;
     private int landedPillar = -1; //-1 if in air, pillar number if landed
 
@@ -40,6 +42,34 @@ public class Boss2 : BossBase {
         
 	}
 
+    void FixedUpdate () {
+        if (Time.time > lastAttack + timeBetweenAttacks) {
+            //shoot pew pews
+            //select 2 pillars.
+            List<int> ex = new List<int>(curPhase - 1);
+            for (int i = 0; i < 5; i++) {
+                if (!Pillars[i].active) {
+                    ex.Add(i);
+                }
+            }
+            int pillarChoice = SelectPillar(0, 4, ex);
+            ex.Add(pillarChoice);
+            int pillarChoice2 = SelectPillar(0, 4, ex);
+
+        } else if (Time.time > phaseStart + phaseDuration) {
+            //chose pillar to land on
+            List<int> ex = new List<int>(curPhase - 1);
+            for (int i = 0; i < 5; i++) {
+                if (!Pillars[i].active) {
+                    ex.Add(i);
+                }
+            }
+            int pillarChoice = SelectPillar(0, 4, ex);
+        } else {
+            //just fly around n shit, idk
+        }
+    }
+
     public void OnDamage() {
         //phase change checks
         if (curHP < (0.66 * maxHP) && curPhase == 1) {
@@ -66,8 +96,8 @@ public class Boss2 : BossBase {
     }
 
     //selects a pillar. Exlude must not be larger than the available numbers. Exclude must be sorted
-    public int SelectPillar(int min, int max, int[] exclude) {
-        int targetNum = (int)UnityEngine.Random.Range(min, max - exclude.Length);
+    public int SelectPillar(int min, int max, List<int> exclude) {
+        int targetNum = (int)UnityEngine.Random.Range(min, max - exclude.Count);
         foreach (int ex in exclude) {
             if (targetNum >= ex) {
                 targetNum++;
