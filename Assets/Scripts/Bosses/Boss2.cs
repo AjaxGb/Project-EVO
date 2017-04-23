@@ -10,17 +10,25 @@ public class Boss2 : BossBase {
     public Pillar[] Pillars = new Pillar[5];
     public int maxHP;
     public float curHP;
+    public float moveSpeed;
+
     public int curPhase = 1;
     public float phaseDuration;
+    private float phaseStart;
+
     public float timeBetweenAttacks;
     public float lastAttack;
-    private float phaseStart;
+
+    public GameObject[] waypoints = new GameObject[6];
+    int nextWP = 0;
+    bool isLanded = false;
     private int landedPillar = -1; //-1 if in air, pillar number if landed
 
     public MovingDoor deathDoor;
     private Rigidbody2D rb;
     private new Collider2D collider;
     private SpriteRenderer sprite;
+    private Vector2 curV;
 
 
     // Use this for initialization
@@ -43,7 +51,7 @@ public class Boss2 : BossBase {
 	}
 
     void FixedUpdate () {
-        if (Time.time > lastAttack + timeBetweenAttacks) {
+        if (Time.time > lastAttack + timeBetweenAttacks && !isLanded) {
             //shoot pew pews
             //select 2 pillars.
             List<int> ex = new List<int>(curPhase - 1);
@@ -54,9 +62,10 @@ public class Boss2 : BossBase {
             }
             int pillarChoice = SelectPillar(0, 4, ex);
             ex.Add(pillarChoice);
+            //2nd unique pillar
             int pillarChoice2 = SelectPillar(0, 4, ex);
 
-        } else if (Time.time > phaseStart + phaseDuration) {
+        } else if (Time.time > phaseStart + phaseDuration && !isLanded) {
             //chose pillar to land on
             List<int> ex = new List<int>(curPhase - 1);
             for (int i = 0; i < 5; i++) {
@@ -65,8 +74,20 @@ public class Boss2 : BossBase {
                 }
             }
             int pillarChoice = SelectPillar(0, 4, ex);
+            isLanded = true;
         } else {
             //just fly around n shit, idk
+
+            //if reached a waypoint, set target to be the next one. 
+            if (Vector2.Distance(transform.position, waypoints[nextWP].transform.position) < 0.5) {
+                nextWP++;
+                if (nextWP >= waypoints.Length) {
+                    nextWP = 0;
+                }
+            } else {
+                //move towards next WP
+                Vector2.SmoothDamp(transform.position, waypoints[nextWP].transform.position, ref curV, moveSpeed, 1000, Time.deltaTime);
+            }
         }
     }
 
