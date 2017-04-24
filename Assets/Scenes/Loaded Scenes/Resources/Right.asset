@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Right
   m_EditorClassIdentifier: 
   sceneName: Right
-  buildIndex: 3
+  buildIndex: 4
   bounds:
     serializedVersion: 2
     x: -13.144962
@@ -20,7 +20,7 @@ MonoBehaviour:
     width: 36.478626
     height: 70.95897
   adjacentScenes:
-  - toBI: 1
+  - toBI: 2
     connectionPoint: {x: -13.2630005, y: 0.5813503}
-  - toBI: 4
+  - toBI: 5
     connectionPoint: {x: 20.775011, y: -0.91651535}

@@ -473,19 +473,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	}
 
 	public virtual void OnRespawn() {
-		body.freezeRotation = true;
-		body.rotation = 0;
-		body.velocity = Vector2.zero;
-		body.angularVelocity = 0;
-		collider.sharedMaterial = alivePhysMaterial;
-		collider.enabled = false;
-		collider.enabled = true;
-		PlayerHealth = MaxHealth;
-		PlayerMana = MaxMana;
-		transform.position = SceneLoader.inst.currScene.root.WorldSpaceRespawnPoint;
-		SceneLoader.inst.cameraFollow.target = this.transform;
-		SceneLoader.inst.cameraFollow.WarpToTarget();
-		ScreenTint.inst.RemoveAllTints();
+		SaveManager.inst.LoadCurrentSave();
 	}
 
 }

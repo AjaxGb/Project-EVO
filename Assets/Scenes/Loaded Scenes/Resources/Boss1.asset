@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Boss1
   m_EditorClassIdentifier: 
   sceneName: Boss 1
-  buildIndex: 5
+  buildIndex: 6
   bounds:
     serializedVersion: 2
     x: -35.37848
@@ -20,5 +20,5 @@ MonoBehaviour:
     width: 72.1068
     height: 37.776405
   adjacentScenes:
-  - toBI: 4
+  - toBI: 5
     connectionPoint: {x: 6.375702, y: 72.24481}

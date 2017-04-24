@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Center
   m_EditorClassIdentifier: 
   sceneName: Center
-  buildIndex: 1
+  buildIndex: 2
   bounds:
     serializedVersion: 2
     x: -7.3538895
@@ -20,7 +20,7 @@ MonoBehaviour:
     width: 26.23426
     height: 55.85531
   adjacentScenes:
-  - toBI: 2
-    connectionPoint: {x: -4.9052963, y: 1}
   - toBI: 3
+    connectionPoint: {x: -4.9052963, y: 1}
+  - toBI: 4
     connectionPoint: {x: 15.132568, y: 1}

@@ -5,14 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour {
 	public static SceneLoader inst;
-	public const int buildIndex = 0;
-	public static SceneInfo overrideStartScene = null;
+	public const int buildIndex = 1;
+
+	public static SaveState loadSaveState;
 
 	public Player player;
 	public CameraFollow cameraFollow;
 	public SceneInfo currScene;
-	public bool warpToSpawn = true;
 
+	private bool currSceneLoaded = false;
 	private HashSet<SceneInfo> _activeScenes = new HashSet<SceneInfo>();
 	private Dictionary<SceneInfo, Vector2> _worldPositions = new Dictionary<SceneInfo, Vector2>();
 	private HashSet<SceneInfo> _justLoaded   = new HashSet<SceneInfo>();
@@ -24,9 +25,9 @@ public class SceneLoader : MonoBehaviour {
 		
 		Resources.LoadAll<SceneInfo>("");
 
-		if (overrideStartScene != null) {
-			currScene = overrideStartScene;
-			overrideStartScene = null;
+		if (loadSaveState != null) {
+			Debug.ClearDeveloperConsole();
+			currScene = SceneInfo.scenesByBI[loadSaveState.currSceneBI];
 		}
 		if (currScene != null) {
 			CalculateAllScenePositions(_worldPositions, currScene);
@@ -54,32 +55,29 @@ public class SceneLoader : MonoBehaviour {
 		}
 
 		if (currScene == null) return;
+		currScene = GetCurrScene();
 
-		if (currScene.file.isLoaded) {
+		if (!currSceneLoaded && currScene.file.isLoaded) {
+			// Was in unloaded scene, now loaded
 			SceneManager.SetActiveScene(currScene.file);
-		}
-
-		if (!currScene.file.isLoaded) {
+			player.gameObject.SetActive(true);
+			currSceneLoaded = true;
+		} else if (currSceneLoaded && !currScene.file.isLoaded) {
+			// Should be in loaded scene, currently not loaded
 			player.gameObject.SetActive(false);
+			currSceneLoaded = false;
 			if (!_activeScenes.Contains(currScene)) {
 				SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);
 				_activeScenes.Add(currScene);
 			}
 			return;
-		} else {
-			player.gameObject.SetActive(true);
 		}
-		if (warpToSpawn) {
-			if (currScene.root) {
-				player.transform.position = currScene.root.respawnPoint;
-				cameraFollow.WarpToTarget();
-			} else {
-				Debug.LogError("Scene \"" + currScene.name + "\" does not contain a SceneRoot!");
-			}
-			warpToSpawn = false;
-			return;
+
+		if (loadSaveState != null && currScene.root) {
+			player.transform.position = (Vector2)currScene.root.transform.position + loadSaveState.posInScene;
+			cameraFollow.WarpToTarget();
+			loadSaveState = null;
 		}
-		currScene = GetCurrScene();
 		EnsureAdjacency();
 	}
 
@@ -98,7 +96,7 @@ public class SceneLoader : MonoBehaviour {
 
 	private SceneInfo GetCurrScene() {
 		SceneInfo curr = currScene;
-		if (!player.IsAlive) return curr;
+		if (!(player.IsAlive && curr.root)) return curr;
 		Vector2 currPos = curr.root.transform.position;
 
 		while (!currPos.TransformRect(curr.bounds).Contains(player.transform.position)) {

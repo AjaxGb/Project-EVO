@@ -69,10 +69,6 @@ public static class Utilities {
 
     public static bool IsChildOf(this GameObject child, GameObject parent)
     {
-        for (Transform curr = child.transform; curr != null; curr = curr.transform.parent)
-        {
-            if (curr == parent.transform) return true;
-        }
-        return false;
+		return child.transform.IsChildOf(parent.transform);
     }
 }
