@@ -5,6 +5,9 @@ using UnityEngine;
 public class BGMusicManager : MonoBehaviour {
     public static BGMusicManager inst { get; private set; }
 
+    public AudioClip[] musicOptions;
+    private int currMusicOption;
+
     [SerializeField]
     private AudioClip _targetMusic;
     public AudioClip TargetMusic
@@ -26,6 +29,12 @@ public class BGMusicManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (currMusicOption < BossBase.highestKilled && currMusicOption < musicOptions.Length - 1)
+        {
+            currMusicOption++;
+            TargetMusic = musicOptions[currMusicOption];
+        }
+
         if (!audioSource.isPlaying) {
             audioSource.clip = _targetMusic;
             audioSource.loop = true;
