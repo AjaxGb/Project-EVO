@@ -12,13 +12,19 @@ public class Boss2 : BossBase {
     public float curHP;
     public float moveSpeed;
 
+    //phases
     public int curPhase = 1;
     public float phaseDuration;
     private float phaseStart;
-
+    
+    //attacking
     public float timeBetweenAttacks;
     public float lastAttack;
+    public int[] targets = new int[2];
+    public float chargeTime;
+    float chargeStart = -1;
 
+    //movement
     public GameObject[] waypoints = new GameObject[6];
     int nextWP = 0;
     Vector2 targetLoc;
@@ -53,7 +59,14 @@ public class Boss2 : BossBase {
 	}
 
     void FixedUpdate () {
+        //if targets ahve already been selected, attack em
+        if (chargeStart != -1 && Time.time >  + chargeTime) {
+
+            chargeStart = -1;
+        }
+
         if (actionState == State.FLYING) {
+
             //===if its time to shoot===
             if (Time.time > lastAttack + timeBetweenAttacks) {
                 //shoot pew pews
@@ -64,12 +77,13 @@ public class Boss2 : BossBase {
                         ex.Add(i);
                     }
                 }
-                int pillarChoice = SelectPillar(0, 4, ex);
-                ex.Add(pillarChoice);
+                targets[0] = SelectPillar(0, 4, ex);
+                ex.Add(targets[0]);
                 //2nd unique pillar
-                int pillarChoice2 = SelectPillar(0, 4, ex);
+                targets[1] = SelectPillar(0, 4, ex);
+                chargeStart = Time.time;
 
-                //===if its time to land===
+            //===if its time to land===
             } else if (Time.time > phaseStart + phaseDuration) {
                 //chose pillar to land on
                 List<int> ex = new List<int>(curPhase - 1);
@@ -81,7 +95,9 @@ public class Boss2 : BossBase {
                 landedPillar = SelectPillar(0, 4, ex);
                 actionState = State.LANDINGPREP;
                 targetLoc = new Vector2(Pillars[landedPillar].landingZone.transform.position.x, Pillars[landedPillar].landingZone.transform.position.y + UnityEngine.Random.Range(4, 7));
-                //===flyin around===
+
+
+            //===flyin around===
             } else {
                 //if reached a waypoint, set target to be the next one. 
                 if (Vector2.Distance(transform.position, waypoints[nextWP].transform.position) < 0.5) {
@@ -100,6 +116,7 @@ public class Boss2 : BossBase {
                 actionState = State.LANDING;
             }
         } else if (actionState == State.LANDING) {
+            //if it gets close to the landing zone, set it to be landed
             if (Vector2.Distance(targetLoc, transform.position) < 0.1) {
                 transform.position = targetLoc;
                 actionState = State.LANDED;
@@ -107,13 +124,14 @@ public class Boss2 : BossBase {
         }
 
         //===START MOVEMENT TO TARGET LOC===
-        Vector2.SmoothDamp(transform.position, targetLoc, ref curV, moveSpeed, 1000, Time.deltaTime);
+        if(actionState != State.LANDED)
+            Vector2.SmoothDamp(transform.position, targetLoc, ref curV, moveSpeed, 1000, Time.deltaTime);
     }
 
     public void OnDamage() {
         //phase change checks
         if (actionState == State.LANDED) {
-            if (  (curHP < (0.66 * maxHP) && curPhase == 1)  ||  (curHP < (0.33 * maxHP) && curPhase == 2)  ) {
+            if (  (curHP < (0.66 * maxHP) && curPhase <= 1)  ||  (curHP < (0.33 * maxHP) && curPhase <= 2)  ) {
                 curPhase++;
                 Pillars[landedPillar].Break();
                 phaseStart = Time.time;
