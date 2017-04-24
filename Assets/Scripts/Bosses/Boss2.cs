@@ -19,14 +19,14 @@ public class Boss2 : BossBase {
     
     //attacking
     public float timeBetweenAttacks;
-    public float lastAttack;
+    float lastAttack;
     public int[] targets = new int[2];
     public float chargeTime;
     float chargeStart = -1;
 
     //movement
     public GameObject[] waypoints = new GameObject[6];
-    int nextWP = 0;
+    public int nextWP = 0;
     Vector2 targetLoc;
     public enum State {FLYING, LANDED, LANDING, LANDINGPREP };
     public State actionState = State.FLYING;
@@ -41,6 +41,7 @@ public class Boss2 : BossBase {
 
     // Use this for initialization
     public override void StartAlive() {
+        targetLoc = waypoints[0].transform.position;
         rb = GetComponent<Rigidbody2D>();
         phaseStart = Time.time;
         collider = GetComponent<Collider2D>();
@@ -82,9 +83,9 @@ public class Boss2 : BossBase {
                 //2nd unique pillar
                 targets[1] = SelectPillar(0, 4, ex);
                 chargeStart = Time.time;
-
+            }
             //===if its time to land===
-            } else if (Time.time > phaseStart + phaseDuration) {
+            if (Time.time > phaseStart + phaseDuration) {
                 //chose pillar to land on
                 List<int> ex = new List<int>(curPhase - 1);
                 for (int i = 0; i < 5; i++) {
@@ -98,17 +99,19 @@ public class Boss2 : BossBase {
 
 
             //===flyin around===
-            } else {
-                //if reached a waypoint, set target to be the next one. 
-                if (Vector2.Distance(transform.position, waypoints[nextWP].transform.position) < 0.5) {
-                    nextWP++;
-                    if (nextWP >= waypoints.Length) {
-                        nextWP = 0;
-                    }
+            } 
+
+            //if reached a waypoint, set target to be the next one. 
+            if (Vector2.Distance(transform.position, waypoints[nextWP].transform.position) < 0.5) {
+                nextWP++;
+                if (nextWP >= waypoints.Length) {
+                    nextWP = 0;
                 }
                 //move towards next WP
                 targetLoc = waypoints[nextWP].transform.position;
             }
+                
+            
         } else if (actionState == State.LANDINGPREP) {
             //If it gets close to the spot above the pillar, then set the new destination to be landed on it
             if (Vector2.Distance(targetLoc, transform.position) < 0.25) {
@@ -119,13 +122,15 @@ public class Boss2 : BossBase {
             //if it gets close to the landing zone, set it to be landed
             if (Vector2.Distance(targetLoc, transform.position) < 0.1) {
                 transform.position = targetLoc;
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 actionState = State.LANDED;
             }
         }
 
         //===START MOVEMENT TO TARGET LOC===
-        if(actionState != State.LANDED)
-            Vector2.SmoothDamp(transform.position, targetLoc, ref curV, moveSpeed, 1000, Time.deltaTime);
+        if (actionState != State.LANDED)
+            GetComponent<Rigidbody2D>().velocity = (targetLoc - (Vector2)transform.position).normalized * moveSpeed;
+            //transform.position = Vector2.SmoothDamp(transform.position, targetLoc, ref curV, moveSpeed, 1000, Time.deltaTime);
     }
 
     public void OnDamage() {
