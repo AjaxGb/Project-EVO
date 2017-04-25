@@ -10,6 +10,7 @@ public class Pillar : MonoBehaviour {
     public float randomShake;
     public float explosionHeight = 1.0f;
     public float explosionRadius = 1.5f;
+    public GameObject explosion;
     bool needToMove = false;
     public GameObject landingZone;
 
@@ -45,6 +46,7 @@ public class Pillar : MonoBehaviour {
     public void Blast(float damage) {
         //blast everything on the pillar
         Collider2D[] thingsHit;
+        Instantiate(explosion, landingZone.transform);
         thingsHit = Physics2D.OverlapCircleAll(landingZone.transform.position + new Vector3(0, explosionHeight, 0), explosionRadius);
         foreach (Collider2D c in thingsHit) {
             if (c.gameObject.CompareTag("Player")) {

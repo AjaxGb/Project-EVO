@@ -142,6 +142,8 @@ MonoBehaviour:
   breakDistance: 25
   breakSpeed: 10
   randomShake: 0
+  explosionHeight: 1
+  explosionRadius: 1.5
   landingZone: {fileID: 726047228}
 --- !u!61 &32724953
 BoxCollider2D:
@@ -215,8 +217,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 32724951}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 115.44, y: 11.16, z: 0}
-  m_LocalScale: {x: 0.3312774, y: 0.3312774, z: 0.3312774}
+  m_LocalPosition: {x: 117.36, y: 10.35, z: 0}
+  m_LocalScale: {x: 0.4884178, y: 0.48841804, z: 0.48841804}
   m_Children:
   - {fileID: 726047229}
   m_Father: {fileID: 0}
@@ -276,6 +278,8 @@ MonoBehaviour:
   breakDistance: 25
   breakSpeed: 10
   randomShake: 0
+  explosionHeight: 1
+  explosionRadius: 1.5
   landingZone: {fileID: 1951608749}
 --- !u!61 &52990454
 BoxCollider2D:
@@ -349,8 +353,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 52990452}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 108.68, y: 11.92, z: 0}
-  m_LocalScale: {x: 0.35212114, y: 0.35212114, z: 0.35212114}
+  m_LocalPosition: {x: 108.47, y: 12.02, z: 0}
+  m_LocalScale: {x: 0.5191487, y: 0.51914895, z: 0.51914895}
   m_Children:
   - {fileID: 1951608750}
   m_Father: {fileID: 0}
@@ -410,6 +414,8 @@ MonoBehaviour:
   breakDistance: 25
   breakSpeed: 10
   randomShake: 0
+  explosionHeight: 1
+  explosionRadius: 1.5
   landingZone: {fileID: 1158384435}
 --- !u!61 &65829041
 BoxCollider2D:
@@ -483,8 +489,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 65829039}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 103.24, y: 12.48, z: 0}
-  m_LocalScale: {x: 0.32029852, y: 0.42530036, z: 0.35212114}
+  m_LocalPosition: {x: 99.68, y: 13.52, z: 0}
+  m_LocalScale: {x: 0.47223112, y: 0.62704057, z: 0.51914895}
   m_Children:
   - {fileID: 1158384436}
   m_Father: {fileID: 0}
@@ -584,7 +590,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 297167625}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.070004, y: 4.640002, z: 0}
+  m_LocalPosition: {x: -35.62, y: 21.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 944235742}
@@ -751,7 +757,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 880071682}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.079993, y: 7.230003, z: 0}
+  m_LocalPosition: {x: -10.079993, y: 20.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 944235742}
@@ -813,7 +819,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 995411363}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.090012, y: -1.4300019, z: 0}
+  m_LocalPosition: {x: -28.28, y: 8.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 944235742}
@@ -841,7 +847,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1087298929}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12.180747, y: 0.6783458, z: 0}
+  m_LocalPosition: {x: -12.180747, y: 7.88, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 944235742}
@@ -921,6 +927,8 @@ MonoBehaviour:
   timeBetweenAttacks: 5
   targets: 0000000000000000
   chargeTime: 0
+  damage: 45
+  chargeStart: -1
   waypoints:
   - {fileID: 1384699310}
   - {fileID: 1087298929}
@@ -931,6 +939,7 @@ MonoBehaviour:
   nextWP: 0
   actionState: 0
   deathDoor: {fileID: 0}
+  sprite: {fileID: 1685542226}
 --- !u!4 &1323451911
 Transform:
   m_ObjectHideFlags: 0
@@ -1040,7 +1049,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1384699310}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.7799926, y: 0.09000095, z: 0}
+  m_LocalPosition: {x: 6.7799926, y: 4.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 944235742}
@@ -1073,7 +1082,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1628659286}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.4000025, y: 5.71, z: 0}
+  m_LocalPosition: {x: 12.4000025, y: 15.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 944235742}
@@ -1113,6 +1122,8 @@ MonoBehaviour:
   breakDistance: 25
   breakSpeed: 10
   randomShake: 0
+  explosionHeight: 1
+  explosionRadius: 1.5
   landingZone: {fileID: 1366533479}
 --- !u!61 &1657141319
 BoxCollider2D:
@@ -1186,8 +1197,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1657141317}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 105.89, y: 11.14, z: 0}
-  m_LocalScale: {x: 0.3312774, y: 0.3312774, z: 0.3312774}
+  m_LocalPosition: {x: 103.97, y: 10.91, z: 0}
+  m_LocalScale: {x: 0.4884178, y: 0.48841804, z: 0.48841804}
   m_Children:
   - {fileID: 1366533480}
   m_Father: {fileID: 0}
@@ -1247,6 +1258,8 @@ MonoBehaviour:
   breakDistance: 25
   breakSpeed: 10
   randomShake: 0
+  explosionHeight: 1
+  explosionRadius: 1.5
   landingZone: {fileID: 1830314798}
 --- !u!61 &1675732009
 BoxCollider2D:
@@ -1320,8 +1333,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1675732007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 112.58, y: 12.02, z: 0}
-  m_LocalScale: {x: 0.3608238, y: 0.3608238, z: 0.3608238}
+  m_LocalPosition: {x: 112.55, y: 9.71, z: 0}
+  m_LocalScale: {x: 0.53197944, y: 0.53197974, z: 0.53197974}
   m_Children:
   - {fileID: 1830314799}
   m_Father: {fileID: 0}
@@ -1513,5 +1526,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 1437924838}
-  zoom: 2
+  zoom: 3
   sensivity: 0.2
