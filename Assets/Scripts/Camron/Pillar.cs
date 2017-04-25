@@ -7,6 +7,7 @@ public class Pillar : MonoBehaviour {
     public bool active = true;
     public float breakDistance = 25;
     public float breakSpeed;
+    public float randomShake;
     bool needToMove = false;
     public GameObject landingZone;
 
@@ -20,15 +21,10 @@ public class Pillar : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //if dest is reached stop moving
-        if (Vector2.Distance(transform.position, dest) < 0.25) {
+        if (Vector2.Distance(transform.position, dest) < 0.25 && needToMove) {
             needToMove = false;
-        }
-        //if the pillar needs to move, move it
-        if (!active && needToMove) {
-            //on the downward move we add a bit of random shake to it
-            Vector2.SmoothDamp(transform.position, dest + new Vector2(UnityEngine.Random.Range(-0.5f,0.5f), 0), ref curV, breakSpeed, 1000, Time.deltaTime);
         } else if (needToMove) {
-            Vector2.SmoothDamp(transform.position, dest, ref curV, breakSpeed, 1000, Time.deltaTime);
+            GetComponent<Rigidbody2D>().velocity = ((dest - (Vector2)transform.position).normalized * breakSpeed) + new Vector2(0, Random.Range(-randomShake, randomShake)) ;
         }
 	}
 
@@ -42,6 +38,10 @@ public class Pillar : MonoBehaviour {
         active = false;
         needToMove = true;
         dest = new Vector2(transform.position.x, transform.position.y - breakDistance);
+    }
+
+    public void Blast(float damage) {
+
     }
 
 }
