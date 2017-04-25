@@ -22,8 +22,10 @@ public class SceneLoader : MonoBehaviour {
 	private void Start() {
 		inst = this;
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		
-		Resources.LoadAll<SceneInfo>("");
+
+		// This does nothing, but it ensures that the SaveManager
+		// (and by extension, all SceneInfo instances) is loaded.
+		SaveManager noop = SaveManager.inst;
 
 		if (loadSaveState != null) {
 			Debug.ClearDeveloperConsole();

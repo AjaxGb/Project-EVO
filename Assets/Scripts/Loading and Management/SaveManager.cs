@@ -46,7 +46,9 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 	public static readonly string savePath = Path.Combine(Application.persistentDataPath, "saves.json");
 	public static readonly SaveManager inst = new SaveManager();
 	private SaveManager() {
-		
+		// Make sure all SceneInfo instances are loaded
+		Resources.LoadAll<SceneInfo>("");
+
 		Debug.Log("Save Path: " + savePath);
 
 		try {
