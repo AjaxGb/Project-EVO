@@ -102,8 +102,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	private bool upAxisInUse;
 	public virtual bool isRealPlayer { get { return true; } }
 
-	// Use this for initialization
-	protected void Start () {
+    public AudioSource audioSource;
+    public AudioClip hurtSound;
+    public AudioClip hitAttackSound;
+    public AudioClip missedAttackSound;
+    public AudioClip deathSound;
+
+    // Use this for initialization
+    protected void Start () {
 		if (realControls) {
 			control = new ControlsReal();
 		}
@@ -148,6 +154,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             //attack here
             animator.SetTrigger("Attack");
 
+            
             Collider2D[] thingsHit;
             if (renderer.flipX) {
                 //attack to the left
@@ -158,8 +165,16 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
             foreach (Collider2D c in thingsHit) {
                 //deal damage to anything in claw range that is damageable and is not the player
-                if (c.gameObject.GetComponent<IDamageable>() != null && !c.gameObject.CompareTag("Player")) {
+                if (c.gameObject.GetComponent<IDamageable>() != null && !c.gameObject.CompareTag("Player"))
+                {
                     c.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
+                    audioSource.clip = hitAttackSound;
+                    audioSource.Play();
+                }
+                else
+                {
+                    audioSource.clip = missedAttackSound; //Still play a sound for attack even if nothing hit
+                    audioSource.Play();
                 }
             }
 
@@ -461,11 +476,15 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
 	protected virtual void OnDamaged(float d) {
 		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 0.3f, true, true);
+        audioSource.clip = hurtSound;
+        audioSource.Play();
 	}
 
 	public void Kill() {
 		if (!IsAlive) return;
 		PlayerHealth = 0;
+        audioSource.clip = deathSound;
+        audioSource.Play();
 		OnDeath();
 	}
 
