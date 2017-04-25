@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 50738414848887936}
   - component: {fileID: 114271024096330826}
   - component: {fileID: 95713500556687958}
+  - component: {fileID: 82604691215192958}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -223,6 +224,86 @@ CapsuleCollider2D:
   m_Offset: {x: -0.65154654, y: 2.2553577}
   m_Size: {x: 7.2816377, y: 15.887847}
   m_Direction: 0
+--- !u!82 &82604691215192958
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1896646703046190}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95713500556687958
 Animator:
   serializedVersion: 3
@@ -313,9 +394,11 @@ MonoBehaviour:
   walkingDecceleration: 40
   climbSpeed: 2
   offWallJumpDelay: 0.4
+  damage: 25
   groundCheck: {fileID: 114196405217533514}
   leftCheck: {fileID: 114226988767314872}
   rightCheck: {fileID: 114186401735270222}
+  maxPullForce: 70
   PlatformDisableTime: 0.3
   realControls: 1
   canJump: 1
@@ -323,7 +406,14 @@ MonoBehaviour:
   deathPhysMaterial: {fileID: 6200000, guid: ddb78e960fca4364f98e49f9220f7053, type: 2}
   HealthBar: {fileID: 0}
   ManaBar: {fileID: 0}
-  maxPullForce: 70
+  audioSource: {fileID: 82604691215192958}
+  hurtSound:
+  - {fileID: 8300000, guid: 9df48b99163db904bb21586c51951a86, type: 3}
+  - {fileID: 8300000, guid: 7ecb13617e2d34440a2f90cd8f339d30, type: 3}
+  - {fileID: 8300000, guid: e5f10e83f01e59b4b813f3a52c2abb79, type: 3}
+  hitAttackSound: {fileID: 0}
+  missedAttackSound: {fileID: 8300000, guid: 0cae0320c7a976749aff11e6641056b0, type: 3}
+  deathSound: {fileID: 8300000, guid: f9d3f51e75fd42b4aa618ee3ed98e422, type: 3}
 --- !u!212 &212505018246539604
 SpriteRenderer:
   m_ObjectHideFlags: 1
