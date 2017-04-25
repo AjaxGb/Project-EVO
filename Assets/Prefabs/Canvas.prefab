@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 223317752937717768}
   - component: {fileID: 114047872082767188}
   - component: {fileID: 114456539566514718}
+  - component: {fileID: 114843979835431378}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -476,6 +477,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tinterPrefab: {fileID: 114445212155633964, guid: 6a5ed16420397a944a17b87aa268772a,
     type: 2}
+--- !u!114 &114843979835431378
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1676983488533832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab2cdf58b6073f24e9e334f2a5a2823f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114913774710305054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -546,15 +558,16 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1676983488533832}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

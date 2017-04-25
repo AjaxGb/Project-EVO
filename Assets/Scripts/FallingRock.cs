@@ -16,6 +16,9 @@ public class FallingRock : MonoBehaviour, IKillable {
 	public float damage = 20f;
 	public float minFallSpeed = 5f;
 
+	public float immobileMass = 5000f;
+	public float mobileMass = 5f;
+
 	[NonSerialized]
 	public Rigidbody2D rb;
 	[NonSerialized]

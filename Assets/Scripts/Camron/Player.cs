@@ -30,7 +30,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
     private FallingRock boulder; //the attached boulder if pushing/pulling
-    private float boulderOffset;
+	private DistanceJoint2D boulderJoint;
+	public float maxPullForce = 70f;
     public float PlatformDisableTime = 0.3f;
     private int layerBits;
     private Queue<GameObject> disabledPlatforms = new Queue<GameObject>();
@@ -268,15 +269,6 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
             
         }
-        //Move the boulder too if theres one bein grabbed
-        if (boulder != null) {
-            if (boulder.state != FallingRock.State.GROUNDED) {
-                endPull();
-            } else {
-                boulder.transform.position = new Vector2(transform.position.x + boulderOffset, boulder.transform.position.y);
-                boulder.rb.velocity = new Vector2(body.velocity.x, boulder.rb.velocity.y);
-            }
-        }
 
         //===PULL===
         if (control.GetButton(ButtonId.GLIDE) && !InAir) {
@@ -391,15 +383,35 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
     //===PUSH/PULL HELPERS===
     public void startPull(FallingRock rock) {
-        if (rock && rock.state == FallingRock.State.GROUNDED) {
-            boulder = rock;
-            boulderOffset = (rock.transform.position.x - transform.position.x);
-            actionState = States.PULL;
-        }
+		if (!rock || rock.state != FallingRock.State.GROUNDED) return;
+
+		boulder = rock;
+		boulder.rb.mass = boulder.mobileMass;
+        actionState = States.PULL;
+		// Move out of its scene, so it doesn't unload
+		boulder.transform.parent = transform;
+		boulder.transform.parent = null;
+
+		if (boulderJoint) {
+			Destroy(boulderJoint);
+		}
+		boulderJoint = rock.gameObject.AddComponent<DistanceJoint2D>();
+		boulderJoint.connectedBody = this.body;
+		boulderJoint.maxDistanceOnly = true;
+		boulderJoint.enableCollision = true;
+		boulderJoint.breakForce = maxPullForce;
     }
     public void endPull() {
-        boulder = null;
+		Debug.Log("End pull");
+		
+		// Move into current scene, so it does unload
+		boulder.transform.parent = SceneLoader.inst.currScene.root.transform;
+
+		boulder.rb.mass = boulder.immobileMass;
+
+		boulder = null;
         actionState = States.NEUTRAL;
+		Destroy(boulderJoint);
     }
 
     //===NEW SKILL TRANSITIONS===
