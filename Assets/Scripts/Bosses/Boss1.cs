@@ -22,7 +22,7 @@ public class Boss1 : BossBase {
 
 	public bool isCharging = false;
 
-	public Transform rockSpawnPoint;
+    public Transform[] rockSpawnPoints = new Transform[3];
 	public FallingRock rockPrefab;
 	private FallingRock spawnedRock;
 	
@@ -128,7 +128,8 @@ public class Boss1 : BossBase {
 				Stun();
 				CameraFollow.inst.shakeAmount += stunShakeAmount;
 				if (spawnedRock == null) {
-					spawnedRock = Instantiate(rockPrefab, rockSpawnPoint.position, Quaternion.identity, rockSpawnPoint);
+                    int platformNumber = UnityEngine.Random.Range(0, 2);
+					spawnedRock = Instantiate(rockPrefab, rockSpawnPoints[platformNumber].position, Quaternion.identity, rockSpawnPoints[platformNumber]);
 				}
 			}
 
