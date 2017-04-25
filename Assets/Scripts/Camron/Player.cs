@@ -402,8 +402,6 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		boulderJoint.breakForce = maxPullForce;
     }
     public void endPull() {
-		Debug.Log("End pull");
-		
 		// Move into current scene, so it does unload
 		boulder.transform.parent = SceneLoader.inst.currScene.root.transform;
 
