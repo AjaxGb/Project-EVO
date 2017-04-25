@@ -16,8 +16,10 @@ public class FallingRock : MonoBehaviour, IKillable {
 	public float damage = 20f;
 	public float minFallSpeed = 5f;
 
-	private Rigidbody2D rb;
-	private new Collider2D collider;
+	[NonSerialized]
+	public Rigidbody2D rb;
+	[NonSerialized]
+	public new Collider2D collider;
 
 	private Collider2D[] groundCollider;
 
