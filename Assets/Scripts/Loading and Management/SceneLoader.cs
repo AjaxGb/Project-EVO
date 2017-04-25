@@ -29,11 +29,16 @@ public class SceneLoader : MonoBehaviour {
 			Debug.ClearDeveloperConsole();
 			currScene = SceneInfo.scenesByBI[loadSaveState.currSceneBI];
 		}
+
 		if (currScene != null) {
 			CalculateAllScenePositions(_worldPositions, currScene);
 			SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);
 			_activeScenes.Add(currScene);
 			EnsureAdjacency();
+
+			if (SaveManager.inst.currentSave == null) {
+				SaveManager.inst.currentSave = new SaveState("!EDITOR! Test play", currScene.buildIndex, Vector2.zero, 0);
+			} 
 		}
 	}
 
