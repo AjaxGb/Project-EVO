@@ -29,7 +29,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public GroundCheck groundCheck;
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
-    private GameObject boulder; //the attached boulder if pushing/pulling
+    private FallingRock boulder; //the attached boulder if pushing/pulling
     private float boulderOffset;
     public float PlatformDisableTime = 0.3f;
     private int layerBits;
@@ -146,7 +146,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             //attack here
             animator.SetTrigger("Attack");
 
-            if (GetComponent<SpriteRenderer>().flipX) {
+            if (renderer.flipX) {
                 //attack to the left
             } else {
                 //attack to the right
@@ -222,7 +222,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
             animator.SetBool("isidle", false);
-            GetComponent<SpriteRenderer>().flipX = false;
+            renderer.flipX = false;
             if ((boulder == null && body.velocity.x < maxSpeed)  ||  (boulder != null && body.velocity.x < maxSpeed * boulderPushSlow)) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime; 
                 //inair and glide slow
@@ -238,7 +238,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //left
         if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
             animator.SetBool("isidle", false);
-            GetComponent<SpriteRenderer>().flipX = true;
+            renderer.flipX = true;
             if ((boulder == null && body.velocity.x > -maxSpeed)  ||  (boulder != null && body.velocity.x > -maxSpeed * boulderPushSlow)) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;  
                 //inair and glide slow
@@ -270,11 +270,11 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         }
         //Move the boulder too if theres one bein grabbed
         if (boulder != null) {
-            if (boulder.GetComponent<FallingRock>().state != FallingRock.State.GROUNDED) {
+            if (boulder.state != FallingRock.State.GROUNDED) {
                 endPull();
             } else {
                 boulder.transform.position = new Vector2(transform.position.x + boulderOffset, boulder.transform.position.y);
-                boulder.GetComponent<Rigidbody2D>().velocity = new Vector2(body.velocity.x, boulder.GetComponent<Rigidbody2D>().velocity.y);
+                boulder.rb.velocity = new Vector2(body.velocity.x, boulder.rb.velocity.y);
             }
         }
 
@@ -283,25 +283,13 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             if (boulder == null) { //if not pulling
                 List<Collider2D> cols;
                 //check if leftcheck is touching a boulder if the character is facing left
-                if (GetComponent<SpriteRenderer>().flipX) {
-                    cols = leftCheck.GetCollisions();
-                    foreach (Collider2D c in cols) {
-                        if (c.gameObject.tag == "Boulder") {
-                            startPull(c.gameObject);
-                        }
-                    }
-                }
-                //otherwise, check to the right side
-                else {
-                    cols = rightCheck.GetCollisions();
-                    foreach (Collider2D c in cols) {
-                        if (c.gameObject.tag == "Boulder") {
-                            startPull(c.gameObject);
-                        }
-                    }
-                }
-                
-            } else { //if boulder pulling is already set
+                cols = renderer.flipX ? leftCheck.GetCollisions() : rightCheck.GetCollisions();
+				foreach (Collider2D c in cols) {
+					if (c.gameObject.tag == "Boulder") {
+						startPull(c.GetComponent<FallingRock>());
+					}
+				}
+			} else { //if boulder pulling is already set
                 
             }
         } else if (actionState == States.PULL) {
@@ -402,10 +390,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     }
 
     //===PUSH/PULL HELPERS===
-    public void startPull(GameObject b) {
-        if (b.GetComponent<FallingRock>().state == FallingRock.State.GROUNDED) {
-            boulder = b;
-            boulderOffset = (b.transform.position.x - transform.position.x);
+    public void startPull(FallingRock rock) {
+        if (rock && rock.state == FallingRock.State.GROUNDED) {
+            boulder = rock;
+            boulderOffset = (rock.transform.position.x - transform.position.x);
             actionState = States.PULL;
         }
     }
