@@ -39,6 +39,7 @@ public class Boss2 : BossBase {
     private Rigidbody2D rb;
     private new Collider2D collider;
     public SpriteRenderer sprite;
+    public Animator anim;
     private Vector2 curV;
 
 
@@ -48,7 +49,6 @@ public class Boss2 : BossBase {
         rb = GetComponent<Rigidbody2D>();
         phaseStart = Time.time;
         collider = GetComponent<Collider2D>();
-        //sprite = GetComponent<SpriteRenderer>();
     }
 
     public override void StartDead() {
@@ -73,9 +73,8 @@ public class Boss2 : BossBase {
             //stop charging lasers
             chargeStart = -1;
             lastAttack = Time.time;
-        } else
-
-        if (actionState == State.FLYING && chargeStart == -1) {
+            anim.SetTrigger("Fire");
+        } else if (actionState == State.FLYING && chargeStart == -1) {
 
             //===if its time to shoot===
             if (Time.time > lastAttack + timeBetweenAttacks) {
@@ -93,6 +92,7 @@ public class Boss2 : BossBase {
                 targets[1] = SelectPillar(0, 4, ex);
                 chargeStart = Time.time;
                 rb.velocity = Vector2.zero;
+                anim.SetTrigger("StartCharge");
             } else 
             //===if its time to land===
             if (Time.time > phaseStart + phaseDuration) {
@@ -127,6 +127,7 @@ public class Boss2 : BossBase {
             if (Vector2.Distance(targetLoc, transform.position) < 0.25) {
                 targetLoc = Pillars[landedPillar].landingZone.transform.position;
                 actionState = State.LANDING;
+                anim.SetBool("isLanding", true);
             }
         } else if (actionState == State.LANDING) {
             //if it gets close to the landing zone, set it to be landed
@@ -156,6 +157,7 @@ public class Boss2 : BossBase {
                 phaseStart = Time.time;
                 actionState = State.FLYING;
                 landedPillar = -1;
+                anim.SetBool("isLanding", false);
             } 
         }
     }
@@ -167,6 +169,7 @@ public class Boss2 : BossBase {
                 p.UnBreak();
             }
         }
+        anim.SetTrigger("death");
         Destroy(transform.gameObject, 4f);
         deathDoor.IsOpened = true;
         collider.enabled = false;
