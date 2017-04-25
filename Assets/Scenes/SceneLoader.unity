@@ -308,7 +308,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9626043d5e65ae6468f429e9bda8f78e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetMusic: {fileID: 0}
+  musicOptions:
+  - {fileID: 8300000, guid: cc1da7da964183f449df1454f57aa5e7, type: 3}
+  - {fileID: 8300000, guid: 8c9f5ddf284032647b48e358e75ed112, type: 3}
+  _targetMusic: {fileID: 8300000, guid: cc1da7da964183f449df1454f57aa5e7, type: 3}
   audioSource: {fileID: 147613765}
 --- !u!1001 &223072180
 Prefab:

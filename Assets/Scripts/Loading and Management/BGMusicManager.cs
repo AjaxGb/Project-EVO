@@ -29,9 +29,9 @@ public class BGMusicManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (currMusicOption < BossBase.highestKilled && currMusicOption < musicOptions.Length - 1)
+        if (currMusicOption < BossBase.highestKilled && BossBase.highestKilled < musicOptions.Length)
         {
-            currMusicOption++;
+            currMusicOption = BossBase.highestKilled;
             TargetMusic = musicOptions[currMusicOption];
         }
 
