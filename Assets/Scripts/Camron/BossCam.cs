@@ -1,21 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BossCam : MonoBehaviour {
+	
+	public Transform playerTransform;
 
-    public Vector2 origin;
-    public GameObject player;
-
+	public float zoom = 2f; // Zoom in/out by this amount
     public float sensivity = 0.2f;
 
 	// Use this for initialization
 	void Start () {
-        origin = transform.position;
+		if (playerTransform == null && SceneLoader.inst != null) playerTransform = SceneLoader.inst.player.transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        transform.position = origin + (((Vector2)player.transform.position - origin) * sensivity);
+		if (Time.timeScale == 0 || !SceneLoader.IsInCurrentScene(gameObject)) return;
+		CameraFollow.inst.SetFixedAngle(
+			transform.position + (playerTransform.position - transform.position) * sensivity,
+			zoom);
 	}
 }

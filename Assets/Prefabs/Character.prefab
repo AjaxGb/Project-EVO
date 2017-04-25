@@ -323,6 +323,7 @@ MonoBehaviour:
   deathPhysMaterial: {fileID: 6200000, guid: ddb78e960fca4364f98e49f9220f7053, type: 2}
   HealthBar: {fileID: 0}
   ManaBar: {fileID: 0}
+  maxPullForce: 70
 --- !u!212 &212505018246539604
 SpriteRenderer:
   m_ObjectHideFlags: 1

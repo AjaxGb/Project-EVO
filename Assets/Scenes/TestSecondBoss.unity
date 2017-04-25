@@ -119,6 +119,7 @@ GameObject:
   - component: {fileID: 32724954}
   - component: {fileID: 32724953}
   - component: {fileID: 32724952}
+  - component: {fileID: 32724956}
   m_Layer: 10
   m_Name: pillar_forground_short
   m_TagString: Ground
@@ -220,6 +221,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &32724956
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 32724951}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &52990452
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,6 +252,7 @@ GameObject:
   - component: {fileID: 52990455}
   - component: {fileID: 52990454}
   - component: {fileID: 52990453}
+  - component: {fileID: 52990457}
   m_Layer: 10
   m_Name: pillar_forground_tall
   m_TagString: Ground
@@ -332,6 +354,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &52990457
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 52990452}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &65829039
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +385,7 @@ GameObject:
   - component: {fileID: 65829042}
   - component: {fileID: 65829041}
   - component: {fileID: 65829040}
+  - component: {fileID: 65829044}
   m_Layer: 10
   m_Name: pillar_forground_tall (2)
   m_TagString: Ground
@@ -444,6 +487,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &65829044
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 65829039}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1001 &208940020
 Prefab:
   m_ObjectHideFlags: 0
@@ -653,10 +716,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d9519bcc8586314fa76488624547072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2032117120}
+  camera: {fileID: 799584981}
+  target: {fileID: 1437924838}
+  zoomTarget: 0
   smoothTime: 0.15
   maxSpeed: 1000
+  zoomSmoothTime: 0.15
+  zoomMaxSpeed: 1000
   smooth: 1
+  shakeAmount: 0
+  shakeFalloff: 1
 --- !u!1 &880071682
 GameObject:
   m_ObjectHideFlags: 0
@@ -973,9 +1042,9 @@ Transform:
   m_Father: {fileID: 944235742}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1437924832 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1896646703046190, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+--- !u!4 &1437924838 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4648478361752410, guid: 96aee7c5dc1e73c46a103e16c96d8169,
     type: 2}
   m_PrefabInternal: {fileID: 208940020}
 --- !u!1 &1628659286
@@ -1017,6 +1086,7 @@ GameObject:
   - component: {fileID: 1657141320}
   - component: {fileID: 1657141319}
   - component: {fileID: 1657141318}
+  - component: {fileID: 1657141322}
   m_Layer: 10
   m_Name: pillar_forground_short (1)
   m_TagString: Ground
@@ -1118,6 +1188,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1657141322
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1657141317}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1675732007
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,6 +1219,7 @@ GameObject:
   - component: {fileID: 1675732010}
   - component: {fileID: 1675732009}
   - component: {fileID: 1675732008}
+  - component: {fileID: 1675732012}
   m_Layer: 10
   m_Name: pillar_forground_tall (1)
   m_TagString: Ground
@@ -1230,6 +1321,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1675732012
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1675732007}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 50000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &1685542224
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,7 +1489,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2032117119}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 109.71, y: 18.58, z: 0}
+  m_LocalPosition: {x: 109.71, y: 17.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1395,6 +1506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a755d44c5092ce46868a18744108545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0}
-  player: {fileID: 1437924832}
+  playerTransform: {fileID: 1437924838}
+  zoom: 2
   sensivity: 0.2

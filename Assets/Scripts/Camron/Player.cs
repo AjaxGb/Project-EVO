@@ -24,13 +24,15 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float climbSpeed;
     public float offWallJumpDelay = 0.4f;
     private float lastJumpTime = 0.0f;
+    public float damage = 25;
 
     //checks around player and related
     public GroundCheck groundCheck;
     public GroundCheck leftCheck;
     public GroundCheck rightCheck;
-    private GameObject boulder; //the attached boulder if pushing/pulling
-    private float boulderOffset;
+    private FallingRock boulder; //the attached boulder if pushing/pulling
+	private DistanceJoint2D boulderJoint;
+	public float maxPullForce = 70f;
     public float PlatformDisableTime = 0.3f;
     private int layerBits;
     private Queue<GameObject> disabledPlatforms = new Queue<GameObject>();
@@ -132,7 +134,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 			}
 		}
 		
-		//activate objects
+		//===ACTIVATE OBJECTS===
 		UpdateActivatable();
         if (currActivatable && control.GetAxis(AxisId.VERTICAL) > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
@@ -141,15 +143,24 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 			upAxisInUse = false;
 		}
 
-        //attack
-        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack) {
+        //===ATTACK===
+        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack && !InAir && actionState == States.NEUTRAL) {
             //attack here
             animator.SetTrigger("Attack");
 
-            if (GetComponent<SpriteRenderer>().flipX) {
+            Collider2D[] thingsHit;
+            if (renderer.flipX) {
                 //attack to the left
+                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(0.75f, 0, 0), 0.5f);
             } else {
                 //attack to the right
+                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(-0.75f, 0, 0), 0.5f);
+            }
+            foreach (Collider2D c in thingsHit) {
+                //deal damage to anything in claw range that is damageable and is not the player
+                if (c.gameObject.GetComponent<IDamageable>() != null && !c.gameObject.CompareTag("Player")) {
+                    c.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
+                }
             }
 
             //cancels glide
@@ -222,7 +233,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
             animator.SetBool("isidle", false);
-            GetComponent<SpriteRenderer>().flipX = false;
+            if(actionState != States.CLIMB && actionState != States.PULL)
+                renderer.flipX = false;
             if ((boulder == null && body.velocity.x < maxSpeed)  ||  (boulder != null && body.velocity.x < maxSpeed * boulderPushSlow)) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime; 
                 //inair and glide slow
@@ -238,7 +250,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //left
         if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
             animator.SetBool("isidle", false);
-            GetComponent<SpriteRenderer>().flipX = true;
+            if (actionState != States.CLIMB && actionState != States.PULL)
+                renderer.flipX = true;
             if ((boulder == null && body.velocity.x > -maxSpeed)  ||  (boulder != null && body.velocity.x > -maxSpeed * boulderPushSlow)) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;  
                 //inair and glide slow
@@ -268,40 +281,19 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
             
         }
-        //Move the boulder too if theres one bein grabbed
-        if (boulder != null) {
-            if (boulder.GetComponent<FallingRock>().state != FallingRock.State.GROUNDED) {
-                endPull();
-            } else {
-                boulder.transform.position = new Vector2(transform.position.x + boulderOffset, boulder.transform.position.y);
-                boulder.GetComponent<Rigidbody2D>().velocity = new Vector2(body.velocity.x, boulder.GetComponent<Rigidbody2D>().velocity.y);
-            }
-        }
 
         //===PULL===
         if (control.GetButton(ButtonId.GLIDE) && !InAir) {
             if (boulder == null) { //if not pulling
                 List<Collider2D> cols;
                 //check if leftcheck is touching a boulder if the character is facing left
-                if (GetComponent<SpriteRenderer>().flipX) {
-                    cols = leftCheck.GetCollisions();
-                    foreach (Collider2D c in cols) {
-                        if (c.gameObject.tag == "Boulder") {
-                            startPull(c.gameObject);
-                        }
-                    }
-                }
-                //otherwise, check to the right side
-                else {
-                    cols = rightCheck.GetCollisions();
-                    foreach (Collider2D c in cols) {
-                        if (c.gameObject.tag == "Boulder") {
-                            startPull(c.gameObject);
-                        }
-                    }
-                }
-                
-            } else { //if boulder pulling is already set
+                cols = renderer.flipX ? leftCheck.GetCollisions() : rightCheck.GetCollisions();
+				foreach (Collider2D c in cols) {
+					if (c.gameObject.tag == "Boulder") {
+						startPull(c.GetComponent<FallingRock>());
+					}
+				}
+			} else { //if boulder pulling is already set
                 
             }
         } else if (actionState == States.PULL) {
@@ -322,11 +314,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
             //climb up or down
             if (control.GetAxis(AxisId.VERTICAL) > 0) {
+                animator.SetBool("ActiveClimb", true);
                 body.velocity = new Vector2(0, climbSpeed);
             } else if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 body.velocity = new Vector2(0, -climbSpeed);
+                animator.SetBool("ActiveClimb", true);
             } else {
                 body.velocity = new Vector2(0, 0);
+                animator.SetBool("ActiveClimb", false);
             }
         } else if (actionState == States.CLIMB){
             endClimb();
@@ -402,16 +397,34 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     }
 
     //===PUSH/PULL HELPERS===
-    public void startPull(GameObject b) {
-        if (b.GetComponent<FallingRock>().state == FallingRock.State.GROUNDED) {
-            boulder = b;
-            boulderOffset = (b.transform.position.x - transform.position.x);
-            actionState = States.PULL;
-        }
+    public void startPull(FallingRock rock) {
+		if (!rock || rock.state != FallingRock.State.GROUNDED) return;
+
+		boulder = rock;
+		boulder.rb.mass = boulder.mobileMass;
+        actionState = States.PULL;
+		// Move out of its scene, so it doesn't unload
+		boulder.transform.parent = transform;
+		boulder.transform.parent = null;
+
+		if (boulderJoint) {
+			Destroy(boulderJoint);
+		}
+		boulderJoint = rock.gameObject.AddComponent<DistanceJoint2D>();
+		boulderJoint.connectedBody = this.body;
+		boulderJoint.maxDistanceOnly = true;
+		boulderJoint.enableCollision = true;
+		boulderJoint.breakForce = maxPullForce;
     }
     public void endPull() {
-        boulder = null;
+		// Move into current scene, so it does unload
+		boulder.transform.parent = SceneLoader.inst.currScene.root.transform;
+
+		boulder.rb.mass = boulder.immobileMass;
+
+		boulder = null;
         actionState = States.NEUTRAL;
+		Destroy(boulderJoint);
     }
 
     //===NEW SKILL TRANSITIONS===

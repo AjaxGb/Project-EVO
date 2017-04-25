@@ -40,13 +40,15 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 
 	[SerializeField]
 	private List<SaveState> saveStates;
+	[NonSerialized]
+	public SaveState currentSave;
 
-	private SaveState currentSave;
 	public static readonly string savePath = Path.Combine(Application.persistentDataPath, "saves.json");
-
 	public static readonly SaveManager inst = new SaveManager();
 	private SaveManager() {
-		
+		// Make sure all SceneInfo instances are loaded
+		Resources.LoadAll<SceneInfo>("");
+
 		Debug.Log("Save Path: " + savePath);
 
 		try {
@@ -84,10 +86,11 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 	}
 
 	public void LoadState(SaveState state) {
-		SceneLoader.loadSaveState = state;
-		SceneManager.LoadScene(SceneLoader.buildIndex);
+		if (state == null) throw new ArgumentNullException("state");
 		BossBase.highestKilled = state.lastBossBeaten;
 		currentSave = state;
+		SceneLoader.loadSaveState = state;
+		SceneManager.LoadScene(SceneLoader.buildIndex);
 	}
 
 	public void LoadCurrentSave() {

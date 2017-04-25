@@ -22,7 +22,7 @@ public class Paralax : MonoBehaviour {
         if (!useXY)
             transform.position = ((Vector2)camera.transform.position - startPos) * scale;
         else
-            transform.position = new Vector2(   (camera.transform.position.x - startPos.x) * scaleX,    (camera.transform.position.y - startPos.y) * scaleY   );
+            transform.position = new Vector2((camera.transform.position.x - startPos.x) * scaleX, (camera.transform.position.y - startPos.y) * scaleY);
     }
 
 

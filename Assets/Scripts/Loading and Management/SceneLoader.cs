@@ -22,18 +22,25 @@ public class SceneLoader : MonoBehaviour {
 	private void Start() {
 		inst = this;
 		SceneManager.sceneLoaded += OnSceneLoaded;
-		
-		Resources.LoadAll<SceneInfo>("");
+
+		// This does nothing, but it ensures that the SaveManager
+		// (and by extension, all SceneInfo instances) is loaded.
+		SaveManager noop = SaveManager.inst;
 
 		if (loadSaveState != null) {
 			Debug.ClearDeveloperConsole();
 			currScene = SceneInfo.scenesByBI[loadSaveState.currSceneBI];
 		}
+
 		if (currScene != null) {
 			CalculateAllScenePositions(_worldPositions, currScene);
 			SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);
 			_activeScenes.Add(currScene);
 			EnsureAdjacency();
+
+			if (SaveManager.inst.currentSave == null) {
+				SaveManager.inst.currentSave = new SaveState("!EDITOR! Test play", currScene.buildIndex, Vector2.zero, 0);
+			} 
 		}
 	}
 
@@ -198,5 +205,9 @@ public class SceneLoader : MonoBehaviour {
 			return pos;
 		}
 		return Vector2.zero;
+	}
+
+	public static bool IsInCurrentScene(GameObject go) {
+		return inst == null || inst.currScene.buildIndex == go.scene.buildIndex;
 	}
 }
