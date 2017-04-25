@@ -58,6 +58,7 @@ public class Boss1 : BossBase {
 	private Rigidbody2D rb;
 	private new Collider2D collider;
 	private SpriteRenderer sprite;
+    private Animator anim;
 
 	public Vector2 FacePoint {
 		get {
@@ -72,6 +73,7 @@ public class Boss1 : BossBase {
 		rb = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
 		sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 	}
 
 	public override void StartDead() {
@@ -85,6 +87,9 @@ public class Boss1 : BossBase {
 
 		if (stunTimer > 0) {
 			stunTimer -= Time.fixedDeltaTime;
+            if (stunTimer <= 0) {
+                anim.SetBool("isStun", false);
+            }
 			return;
 		}
 
@@ -105,6 +110,7 @@ public class Boss1 : BossBase {
 
 			if (playerHeightGood && playerDist > 0 && playerDist < chargeSightRange) {
 				isCharging = true;
+                anim.SetBool("isCharge", true);
 			}
 		}
 
@@ -140,6 +146,7 @@ public class Boss1 : BossBase {
 			}
 
 			isCharging = false;
+            anim.SetBool("isCharge", false);
 		} else if (coll.gameObject.tag == "Player") {
 
 			coll.gameObject.GetComponent<Player>().TakeDamage(touchDamage);
@@ -153,13 +160,16 @@ public class Boss1 : BossBase {
 		stunTimer = stunLength;
 		rb.velocity += Vector2.up * 5f;
 		isCharging = false;
-	}
+        anim.SetBool("isStun", true);
+        anim.SetBool("isCharge", false);
+    }
 
 	public override void OnDamaged() {
 		Stun();
 	}
 
 	public override void OnKilled() {
+        anim.SetTrigger("death");
 		collider.enabled = false;
 		stunTimer = float.PositiveInfinity;
 		Destroy(transform.gameObject, 4f);
