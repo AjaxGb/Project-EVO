@@ -24,6 +24,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float climbSpeed;
     public float offWallJumpDelay = 0.4f;
     private float lastJumpTime = 0.0f;
+    public float damage = 25;
 
     //checks around player and related
     public GroundCheck groundCheck;
@@ -133,7 +134,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 			}
 		}
 		
-		//activate objects
+		//===ACTIVATE OBJECTS===
 		UpdateActivatable();
         if (currActivatable && control.GetAxis(AxisId.VERTICAL) > 0 && currActivatable.CanActivate && !upAxisInUse) {
             currActivatable.Activate(this);
@@ -142,15 +143,24 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 			upAxisInUse = false;
 		}
 
-        //attack
-        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack) {
+        //===ATTACK===
+        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack && !InAir && actionState == States.NEUTRAL) {
             //attack here
             animator.SetTrigger("Attack");
 
+            Collider2D[] thingsHit;
             if (renderer.flipX) {
                 //attack to the left
+                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(0.75f, 0, 0), 0.5f);
             } else {
                 //attack to the right
+                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(-0.75f, 0, 0), 0.5f);
+            }
+            foreach (Collider2D c in thingsHit) {
+                //deal damage to anything in claw range that is damageable and is not the player
+                if (c.gameObject.GetComponent<IDamageable>() != null && !c.gameObject.CompareTag("Player")) {
+                    c.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
+                }
             }
 
             //cancels glide
@@ -223,7 +233,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
             animator.SetBool("isidle", false);
-            renderer.flipX = false;
+            if(actionState != States.CLIMB && actionState != States.PULL)
+                renderer.flipX = false;
             if ((boulder == null && body.velocity.x < maxSpeed)  ||  (boulder != null && body.velocity.x < maxSpeed * boulderPushSlow)) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime; 
                 //inair and glide slow
@@ -239,7 +250,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //left
         if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
             animator.SetBool("isidle", false);
-            renderer.flipX = true;
+            if (actionState != States.CLIMB && actionState != States.PULL)
+                renderer.flipX = true;
             if ((boulder == null && body.velocity.x > -maxSpeed)  ||  (boulder != null && body.velocity.x > -maxSpeed * boulderPushSlow)) {
                 float scaledAccel = walkingAcceleration * Time.fixedDeltaTime;  
                 //inair and glide slow
@@ -302,11 +314,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
             //climb up or down
             if (control.GetAxis(AxisId.VERTICAL) > 0) {
+                animator.SetBool("ActiveClimb", true);
                 body.velocity = new Vector2(0, climbSpeed);
             } else if (control.GetAxis(AxisId.VERTICAL) < 0) {
                 body.velocity = new Vector2(0, -climbSpeed);
+                animator.SetBool("ActiveClimb", true);
             } else {
                 body.velocity = new Vector2(0, 0);
+                animator.SetBool("ActiveClimb", false);
             }
         } else if (actionState == States.CLIMB){
             endClimb();

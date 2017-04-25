@@ -128,7 +128,7 @@ public class Boss1 : BossBase {
 				Stun();
 				CameraFollow.inst.shakeAmount += stunShakeAmount;
 				if (spawnedRock == null) {
-                    int platformNumber = UnityEngine.Random.Range(0, 2);
+                    int platformNumber = (int)UnityEngine.Random.Range(0, 2.9999f);
 					spawnedRock = Instantiate(rockPrefab, rockSpawnPoints[platformNumber].position, Quaternion.identity, rockSpawnPoints[platformNumber]);
 				}
 			}
