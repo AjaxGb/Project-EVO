@@ -25,6 +25,8 @@ public class ActivatableText : Activatable {
 			timeToGo = te.duration;
 		}
 	}
+    
+    public AudioClip readSound;
 
 	protected static int animationShowText = Animator.StringToHash("Show Text");
 
