@@ -6,6 +6,8 @@ public class BGMusicManager : MonoBehaviour {
     public static BGMusicManager inst { get; private set; }
 
     public AudioClip[] musicOptions;
+	public bool autoAdvanceMusic = true;
+
     private int currMusicOption;
 
     [SerializeField]
@@ -29,7 +31,7 @@ public class BGMusicManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (currMusicOption < BossBase.highestKilled && BossBase.highestKilled < musicOptions.Length)
+        if (autoAdvanceMusic && currMusicOption < BossBase.highestKilled && BossBase.highestKilled < musicOptions.Length)
         {
             currMusicOption = BossBase.highestKilled;
             TargetMusic = musicOptions[currMusicOption];

@@ -204,4 +204,8 @@ public class SceneLoader : MonoBehaviour {
 		}
 		return Vector2.zero;
 	}
+
+	public static bool IsInCurrentScene(GameObject go) {
+		return inst == null || inst.currScene.buildIndex == go.scene.buildIndex;
+	}
 }

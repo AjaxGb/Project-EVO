@@ -18,7 +18,7 @@ MonoBehaviour:
     x: -35.37848
     y: 39.679367
     width: 72.1068
-    height: 37.776405
+    height: 23.55391
   adjacentScenes:
   - toBI: 5
     connectionPoint: {x: 6.375702, y: 72.24481}

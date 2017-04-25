@@ -18,6 +18,7 @@ public class Boss1 : BossBase {
 
 	public float stunLength = 3f;
 	public float stunTimer = 0f;
+	public float stunShakeAmount = 1f;
 
 	public bool isCharging = false;
 
@@ -80,7 +81,7 @@ public class Boss1 : BossBase {
 	}
 
 	void FixedUpdate() {
-		if (Time.timeScale == 0 || SceneLoader.inst.currScene.buildIndex != this.gameObject.scene.buildIndex) return;
+		if (Time.timeScale == 0 || !SceneLoader.IsInCurrentScene(gameObject)) return;
 
 		if (stunTimer > 0) {
 			stunTimer -= Time.fixedDeltaTime;
@@ -125,6 +126,7 @@ public class Boss1 : BossBase {
 				FacingLeft = !FacingLeft;
 			} else {
 				Stun();
+				CameraFollow.inst.shakeAmount += stunShakeAmount;
 				if (spawnedRock == null) {
 					spawnedRock = Instantiate(rockPrefab, rockSpawnPoint.position, Quaternion.identity, rockSpawnPoint);
 				}
