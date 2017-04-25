@@ -103,7 +103,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	public virtual bool isRealPlayer { get { return true; } }
 
     public AudioSource audioSource;
-    public AudioClip hurtSound;
+    public AudioClip[] hurtSound;
     public AudioClip hitAttackSound;
     public AudioClip missedAttackSound;
     public AudioClip deathSound;
@@ -476,7 +476,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
 	protected virtual void OnDamaged(float d) {
 		ScreenTint.inst.StartFade(0, new Color(1, 0, 0, 0.2f), 0.3f, true, true);
-        audioSource.clip = hurtSound;
+        int randSound = UnityEngine.Random.Range(0, hurtSound.Length);
+        audioSource.clip = hurtSound[randSound]; //Play a random sound each time the player gets hurt
         audioSource.Play();
 	}
 
