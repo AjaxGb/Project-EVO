@@ -11,6 +11,7 @@ public class Boss2 : BossBase {
     public int maxHP;
     public float curHP;
     public float moveSpeed;
+    public float landingSpeed;
 
     //phases
     public int curPhase = 1;
@@ -22,6 +23,8 @@ public class Boss2 : BossBase {
     float lastAttack;
     public int[] targets = new int[2];
     public float chargeTime;
+    public float damage = 45;
+    public 
     float chargeStart = -1;
 
     //movement
@@ -60,9 +63,14 @@ public class Boss2 : BossBase {
 	}
 
     void FixedUpdate () {
-        //if targets ahve already been selected, attack em
-        if (chargeStart != -1 && Time.time >  + chargeTime) {
+        //if targets have already been selected and the attack is charged, attack em
+        if (chargeStart != -1 && Time.time > chargeStart + chargeTime) {
 
+            //pew pew
+            foreach (int t in targets) {
+                Pillars[t].Blast(damage);
+            }
+            //stop charging lasers
             chargeStart = -1;
         }
 
@@ -128,9 +136,12 @@ public class Boss2 : BossBase {
         }
 
         //===START MOVEMENT TO TARGET LOC===
-        if (actionState != State.LANDED)
-            GetComponent<Rigidbody2D>().velocity = (targetLoc - (Vector2)transform.position).normalized * moveSpeed;
-            //transform.position = Vector2.SmoothDamp(transform.position, targetLoc, ref curV, moveSpeed, 1000, Time.deltaTime);
+        if (actionState != State.LANDED && chargeStart == -1) {
+            if(actionState != State.LANDING)
+                GetComponent<Rigidbody2D>().velocity = (targetLoc - (Vector2)transform.position).normalized * moveSpeed;
+            else
+                GetComponent<Rigidbody2D>().velocity = (targetLoc - (Vector2)transform.position).normalized * landingSpeed;
+        }
     }
 
     public void OnDamage() {

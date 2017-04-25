@@ -141,6 +141,7 @@ MonoBehaviour:
   active: 1
   breakDistance: 25
   breakSpeed: 10
+  randomShake: 0
   landingZone: {fileID: 726047228}
 --- !u!61 &32724953
 BoxCollider2D:
@@ -274,6 +275,7 @@ MonoBehaviour:
   active: 1
   breakDistance: 25
   breakSpeed: 10
+  randomShake: 0
   landingZone: {fileID: 1951608749}
 --- !u!61 &52990454
 BoxCollider2D:
@@ -407,6 +409,7 @@ MonoBehaviour:
   active: 1
   breakDistance: 25
   breakSpeed: 10
+  randomShake: 0
   landingZone: {fileID: 1158384435}
 --- !u!61 &65829041
 BoxCollider2D:
@@ -911,7 +914,8 @@ MonoBehaviour:
   - {fileID: 65829040}
   maxHP: 100
   curHP: 100
-  moveSpeed: 1
+  moveSpeed: 1.4
+  landingSpeed: 5
   curPhase: 1
   phaseDuration: 10
   timeBetweenAttacks: 5
@@ -1108,6 +1112,7 @@ MonoBehaviour:
   active: 1
   breakDistance: 25
   breakSpeed: 10
+  randomShake: 0
   landingZone: {fileID: 1366533479}
 --- !u!61 &1657141319
 BoxCollider2D:
@@ -1241,6 +1246,7 @@ MonoBehaviour:
   active: 1
   breakDistance: 25
   breakSpeed: 10
+  randomShake: 0
   landingZone: {fileID: 1830314798}
 --- !u!61 &1675732009
 BoxCollider2D:
