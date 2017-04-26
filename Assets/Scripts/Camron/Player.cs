@@ -32,6 +32,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public GroundCheck rightCheck;
     private FallingRock boulder; //the attached boulder if pushing/pulling
 	private DistanceJoint2D boulderJoint;
+    private bool boulderOnLeft;
 	public float maxPullForce = 70f;
     public float PlatformDisableTime = 0.3f;
     private int layerBits;
@@ -265,7 +266,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //===MOVEMENT===
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
-            animator.SetInteger("pushDirection", 1);
+            animator.SetInteger("pushDirection", boulderOnLeft ? 1 :  -1);
             animator.SetBool("isidle", false);
             if(actionState != States.CLIMB && actionState != States.PULL)
                 renderer.flipX = false;
@@ -283,7 +284,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         }
         //left
         if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
-            animator.SetInteger("pushDirection", -1);
+            animator.SetInteger("pushDirection", boulderOnLeft ? -1 : 1);
             animator.SetBool("isidle", false);
             if (actionState != States.CLIMB && actionState != States.PULL)
                 renderer.flipX = true;
@@ -326,7 +327,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                 cols = renderer.flipX ? leftCheck.GetCollisions() : rightCheck.GetCollisions();
 				foreach (Collider2D c in cols) {
 					if (c.gameObject.tag == "Boulder") {
-						startPull(c.GetComponent<FallingRock>());
+						startPull(c.GetComponent<FallingRock>(), renderer.flipX ? false : true);
 					}
 				}
 			} else { //if boulder pulling is already set
@@ -433,7 +434,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     }
 
     //===PUSH/PULL HELPERS===
-    public void startPull(FallingRock rock) {
+    public void startPull(FallingRock rock, bool leftBoulder) {
 		if (!rock || rock.state != FallingRock.State.GROUNDED) return;
 
 		boulder = rock;
@@ -451,6 +452,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		boulderJoint.maxDistanceOnly = true;
 		boulderJoint.enableCollision = true;
 		boulderJoint.breakForce = maxPullForce;
+        boulderOnLeft = leftBoulder;
         animator.SetBool("isGrab", true);
     }
     public void endPull() {
