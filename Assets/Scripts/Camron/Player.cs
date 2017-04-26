@@ -113,6 +113,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public AudioClip hitAttackSound;
     public AudioClip missedAttackSound;
     public AudioClip deathSound;
+    public AudioClip jumpSound;
+    public AudioClip doubleJumpSound;
 
     // Use this for initialization
     protected void Start () {
@@ -226,10 +228,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                 endPull();
             animator.SetTrigger("jump");
             body.velocity = new Vector2(body.velocity.x, jumpForce);// + body.velocity.y * jumpForceStay);
+            audioSource.clip = doubleJumpSound;
+            audioSource.Play();
             canJump = false;
         } else
         //first jump
         if (control.GetButton(ButtonId.JUMP) && (!InAir || actionState == States.CLIMB)  ) {
+            audioSource.clip = jumpSound;
+            audioSource.Play();
             if (actionState == States.PULL)
                 endPull();
             //drop thru platform
