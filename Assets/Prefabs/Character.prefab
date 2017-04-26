@@ -411,9 +411,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9df48b99163db904bb21586c51951a86, type: 3}
   - {fileID: 8300000, guid: 7ecb13617e2d34440a2f90cd8f339d30, type: 3}
   - {fileID: 8300000, guid: e5f10e83f01e59b4b813f3a52c2abb79, type: 3}
-  hitAttackSound: {fileID: 0}
+  - {fileID: 8300000, guid: e5f10e83f01e59b4b813f3a52c2abb79, type: 3}
+  hitAttackSound: {fileID: 8300000, guid: 544fb99fcaf6c5f46ac0d4b105bb43eb, type: 3}
   missedAttackSound: {fileID: 8300000, guid: 0cae0320c7a976749aff11e6641056b0, type: 3}
-  deathSound: {fileID: 8300000, guid: f9d3f51e75fd42b4aa618ee3ed98e422, type: 3}
+  deathSound: {fileID: 8300000, guid: 14003a551c1454a4c94198c7d2fa99e9, type: 3}
 --- !u!212 &212505018246539604
 SpriteRenderer:
   m_ObjectHideFlags: 1
