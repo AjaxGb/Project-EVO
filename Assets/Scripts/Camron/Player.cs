@@ -213,6 +213,11 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             canJump = true;
         }
 
+        //boulder connection check
+        if (boulderJoint == null && boulder != null) {
+            endPull();
+        }
+
         //if there are disabled platforms, reinable them
         if (disabledPlatforms.Count > 0) {
             for (int i = 0; i < disabledPlatforms.Count && disableTime.Peek() < Time.time; i++) {
@@ -227,6 +232,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         if (control.GetButtonDown(ButtonId.JUMP) && canJump && InAir && hasDoubleJump) {
             if(actionState == States.PULL)
                 endPull();
+            animator.SetInteger("pushDirection", 0);
             animator.SetTrigger("jump");
             body.velocity = new Vector2(body.velocity.x, jumpForce);// + body.velocity.y * jumpForceStay);
             audioSource.clip = doubleJumpSound;
@@ -241,6 +247,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
                 endPull();
             //drop thru platform
             if (control.GetButtonDown(ButtonId.JUMP) && control.GetAxis(AxisId.VERTICAL) < 0) {
+                animator.SetInteger("pushDirection", 0);
                 animator.SetTrigger("jump");                
                 List<Collider2D> groundCols = groundCheck.GetCollisions();
                 //get the list of all colliders the bottom ground check is interacting with, then diable them and add them to a list to be reinabled soon
@@ -266,7 +273,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //===MOVEMENT===
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
-            animator.SetInteger("pushDirection", boulderOnLeft ? 1 :  -1);
+            if (boulder != null)
+                animator.SetInteger("pushDirection", boulderOnLeft ? 1 :  -1);
             animator.SetBool("isidle", false);
             if(actionState != States.CLIMB && actionState != States.PULL)
                 renderer.flipX = false;
@@ -284,7 +292,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         }
         //left
         if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
-            animator.SetInteger("pushDirection", boulderOnLeft ? -1 : 1);
+            if (boulder != null)
+                animator.SetInteger("pushDirection", boulderOnLeft ? -1 : 1);
             animator.SetBool("isidle", false);
             if (actionState != States.CLIMB && actionState != States.PULL)
                 renderer.flipX = true;
@@ -463,7 +472,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
 		boulder = null;
         actionState = States.NEUTRAL;
-		Destroy(boulderJoint);
+        if(boulderJoint != null)
+            Destroy(boulderJoint);
         animator.SetInteger("pushDirection", 0);
         animator.SetBool("isGrab", false);
     }
