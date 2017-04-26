@@ -25,7 +25,9 @@ public class SceneLoader : MonoBehaviour {
 
 		// This does nothing, but it ensures that the SaveManager
 		// (and by extension, all SceneInfo instances) is loaded.
+#pragma warning disable 0219 // "Unused"
 		SaveManager noop = SaveManager.inst;
+#pragma warning restore 0219
 
 		if (loadSaveState != null) {
 			Debug.ClearDeveloperConsole();
