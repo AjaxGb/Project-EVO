@@ -39,10 +39,10 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
     void FixedUpdate() {
 
         //Only move forward if there is ground ahead, ergo not at the edge
-        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth + Vector2.up * enemyHeight/2; //Origin of Linecast will be top left corner. Cast lines from that position
+        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth; //Origin of Linecast will be top left corner. Cast lines from that position
 
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * 0.8f); //Debug statement, draw the line beneath the position
-        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * 0.8f, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * enemyHeight); //Debug statement, draw the line beneath the position
+        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * enemyHeight, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
 
         Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f ); //Debug statement, draw the line horizontal from the position
         bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f, enemyMask); //Similar to above, now check for blocks such as walls. Much shorter line
