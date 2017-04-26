@@ -100,8 +100,12 @@ public class Boss2 : BossBase {
                 //INSTANTIATE BEAMS
                 Vector3 firstTargetPos = (Vector3)(Pillars[targets[0]].GetComponent<Pillar>().landingZone.transform.position);
                 Vector3 secondTargetPos = (Vector3)(Pillars[targets[1]].GetComponent<Pillar>().landingZone.transform.position);
+                //beamhits first
                 beamObjects.Add(  Instantiate(beamHit, firstTargetPos, Quaternion.identity)  );
                 beamObjects.Add(  Instantiate(beamHit, secondTargetPos, Quaternion.identity)  );
+                firstTargetPos += new Vector3(0, 0.2f,0);
+                secondTargetPos += new Vector3(0, 0.2f, 0);
+                //then real beams
                 GameObject temp = Instantiate(beam, firstTargetPos, Quaternion.LookRotation(Vector3.forward, transform.position - firstTargetPos));
                 temp.transform.localScale = new Vector3(1, Vector3.Distance(transform.position, firstTargetPos)/6, 1);
                 beamObjects.Add(temp);
