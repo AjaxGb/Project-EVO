@@ -58,6 +58,12 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 	protected new SpriteRenderer renderer;
 	protected Activatable currActivatable;
 
+    //damage
+    public float invTime = 0.5f;
+    public float invFlashSpeed = 2f;
+    public float invMinAlpha = 0.2f;
+    private float lastDamageTaken = -100;
+
     //animation
 	protected Animator animator;
 
@@ -139,7 +145,13 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 				DeadUpdate();
 			}
 		}
-		
+        //===INVINCIBILITY TIMER===
+        if (Time.time < lastDamageTaken + invTime) {
+            renderer.color = new Color(1, 1, 1, (float)(Math.Sin(Time.time * invFlashSpeed) + 1) * (1 - invMinAlpha) / 2f + invMinAlpha);
+        } else {
+            renderer.color = Color.white;
+        }
+
 		//===ACTIVATE OBJECTS===
 		UpdateActivatable();
         if (currActivatable && control.GetAxis(AxisId.VERTICAL) > 0 && currActivatable.CanActivate && !upAxisInUse) {
@@ -247,6 +259,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         //===MOVEMENT===
         //right
         if (control.GetAxis(AxisId.HORIZONTAL) > 0) {
+            animator.SetInteger("pushDirection", 1);
             animator.SetBool("isidle", false);
             if(actionState != States.CLIMB && actionState != States.PULL)
                 renderer.flipX = false;
@@ -264,6 +277,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         }
         //left
         if (control.GetAxis(AxisId.HORIZONTAL) < 0) {
+            animator.SetInteger("pushDirection", -1);
             animator.SetBool("isidle", false);
             if (actionState != States.CLIMB && actionState != States.PULL)
                 renderer.flipX = true;
@@ -280,6 +294,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         }
 
         if (control.GetAxis(AxisId.HORIZONTAL) == 0 && !InAir) {
+            animator.SetInteger("pushDirection", 0);
             animator.SetBool("isidle", true);
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
@@ -430,6 +445,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		boulderJoint.maxDistanceOnly = true;
 		boulderJoint.enableCollision = true;
 		boulderJoint.breakForce = maxPullForce;
+        animator.SetBool("isGrab", true);
     }
     public void endPull() {
 		// Move into current scene, so it does unload
@@ -440,6 +456,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		boulder = null;
         actionState = States.NEUTRAL;
 		Destroy(boulderJoint);
+        animator.SetInteger("pushDirection", 0);
+        animator.SetBool("isGrab", false);
     }
 
     //===NEW SKILL TRANSITIONS===
@@ -462,6 +480,9 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 
     //===DAMAGE AND DEATH===
     public float TakeDamage(float d) {
+        if (Time.time < lastDamageTaken + invTime) {
+            return 0;
+        }
 		if (!IsAlive) return 0;
         d = Mathf.Min(d, PlayerHealth);
         PlayerHealth -= d;
@@ -479,6 +500,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         int randSound = UnityEngine.Random.Range(0, hurtSound.Length);
         audioSource.clip = hurtSound[randSound]; //Play a random sound each time the player gets hurt
         audioSource.Play();
+        lastDamageTaken = Time.time;
 	}
 
 	public void Kill() {
