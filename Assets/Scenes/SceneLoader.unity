@@ -359,6 +359,11 @@ Prefab:
       propertyPath: invFlashSpeed
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 114271024096330826, guid: 96aee7c5dc1e73c46a103e16c96d8169,
+        type: 2}
+      propertyPath: maxPullForce
+      value: 100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 96aee7c5dc1e73c46a103e16c96d8169, type: 2}
   m_IsPrefabParent: 0
