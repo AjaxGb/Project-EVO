@@ -24,7 +24,9 @@ public class Boss2 : BossBase {
     public int[] targets = new int[2];
     public float chargeTime;
     public float damage = 45;
-    public 
+    public GameObject beam;
+    public GameObject beamHit;
+    private List<GameObject> beamObjects = new List<GameObject>(4);
     float chargeStart = -1;
 
     //movement
@@ -72,6 +74,10 @@ public class Boss2 : BossBase {
             //stop charging lasers
             chargeStart = -1;
             lastAttack = Time.time;
+            foreach (GameObject g in beamObjects) {
+                Destroy(g);
+            }
+            beamObjects.Clear();
             anim.SetTrigger("Fire");
         } else if (actionState == State.FLYING && chargeStart == -1) {
 
@@ -91,6 +97,17 @@ public class Boss2 : BossBase {
                 targets[1] = SelectPillar(0, 4, ex);
                 chargeStart = Time.time;
                 rb.velocity = Vector2.zero;
+                //INSTANTIATE BEAMS
+                Vector3 firstTargetPos = (Vector3)(Pillars[targets[0]].GetComponent<Pillar>().landingZone.transform.position);
+                Vector3 secondTargetPos = (Vector3)(Pillars[targets[1]].GetComponent<Pillar>().landingZone.transform.position);
+                beamObjects.Add(  Instantiate(beamHit, firstTargetPos, Quaternion.identity)  );
+                beamObjects.Add(  Instantiate(beamHit, secondTargetPos, Quaternion.identity)  );
+                GameObject temp = Instantiate(beam, firstTargetPos, Quaternion.LookRotation(Vector3.forward, transform.position - firstTargetPos));
+                temp.transform.localScale = new Vector3(1, Vector3.Distance(transform.position, firstTargetPos)/6, 1);
+                beamObjects.Add(temp);
+                temp = Instantiate(beam, secondTargetPos, Quaternion.LookRotation(Vector3.forward, transform.position - secondTargetPos));
+                temp.transform.localScale = new Vector3(1, Vector3.Distance(transform.position, secondTargetPos) / 6, 1);
+                beamObjects.Add(temp);
                 anim.SetTrigger("StartCharge");
             } else 
             //===if its time to land===
