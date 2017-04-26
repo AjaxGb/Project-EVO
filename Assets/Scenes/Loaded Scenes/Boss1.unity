@@ -793,11 +793,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fb1dbaf71b71144b291efd1370e43d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 140
   healthBar: {fileID: 1565550313}
   audioSource: {fileID: 871171767}
-  deathSound: {fileID: 8300000, guid: 0122b4e235c5dbf4aa23b7c27c0b1d65, type: 3}
-  hurtSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 03a5646125b98b04ea9e3f98e345af1a, type: 3}
+  hurtSound: {fileID: 8300000, guid: fe6bd4a4be677e040a3e5106ef62a1d7, type: 3}
   wallMask:
     serializedVersion: 2
     m_Bits: 1025

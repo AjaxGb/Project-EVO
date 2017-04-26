@@ -418,8 +418,8 @@ MonoBehaviour:
   hitAttackSound: {fileID: 0}
   missedAttackSound: {fileID: 8300000, guid: 0cae0320c7a976749aff11e6641056b0, type: 3}
   deathSound: {fileID: 8300000, guid: 14003a551c1454a4c94198c7d2fa99e9, type: 3}
-  jumpSound: {fileID: 8300000, guid: 7ec1047cd0491774bbc3386af2e1a5e2, type: 3}
-  doubleJumpSound: {fileID: 8300000, guid: 40289ad6a647d4b47926a92e87f2f0c0, type: 3}
+  jumpSound: {fileID: 0}
+  doubleJumpSound: {fileID: 0}
 --- !u!212 &212505018246539604
 SpriteRenderer:
   m_ObjectHideFlags: 1
