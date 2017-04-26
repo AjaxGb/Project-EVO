@@ -24,7 +24,7 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
         enemyTransform = this.transform;
         enemyRB = this.GetComponent<Rigidbody2D>(); //Enemy has a Rigidbody and its transform for positioning checks
 
-        SpriteRenderer enemySprite = this.GetComponent<SpriteRenderer>();
+        Collider2D enemySprite = this.GetComponent<Collider2D>();
         enemyWidth = enemySprite.bounds.extents.x; //Find width of the enemy sprite and check against the horizontal bounds for edge detection on isGrounded
         enemyHeight = enemySprite.bounds.extents.y; //Height of the enemy for use in isBlocked
         

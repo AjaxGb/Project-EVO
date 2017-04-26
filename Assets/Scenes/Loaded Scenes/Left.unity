@@ -577,17 +577,43 @@ Prefab:
     - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
         type: 2}
       propertyPath: m_Size.x
-      value: 2
+      value: 2.36306
       objectReference: {fileID: 0}
     - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
         type: 2}
       propertyPath: m_Size.y
-      value: 1.8592663
+      value: 1.3600597
       objectReference: {fileID: 0}
     - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
         type: 2}
       propertyPath: m_Offset.y
-      value: -0.07036686
+      value: 0.17923641
+      objectReference: {fileID: 0}
+    - target: {fileID: 212859343530433882, guid: 0e55c63223841954ab77a24646a3c185,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 708711c91bd66a94aa0f88b69eb6f450,
+        type: 3}
+    - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
+        type: 2}
+      propertyPath: m_SpriteTilingProperty.pivot.x
+      value: 0.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
+        type: 2}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 3.7333333
+      objectReference: {fileID: 0}
+    - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
+        type: 2}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 2.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 61350934895322232, guid: 0e55c63223841954ab77a24646a3c185,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: 0.18153
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
@@ -1221,6 +1247,28 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c2c676cb75658947a2b2a5ee28ac7d9, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1814325968 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1336885055720478, guid: 0e55c63223841954ab77a24646a3c185,
+    type: 2}
+  m_PrefabInternal: {fileID: 926784689}
+--- !u!95 &1814325969
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1814325968}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c30581239124c7740826123a7b35415d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1840592554
 GameObject:
   m_ObjectHideFlags: 0
