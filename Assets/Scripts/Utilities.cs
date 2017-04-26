@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -67,7 +68,7 @@ public static class Utilities {
 		return list.BinarySearch(item) >= 0;
 	}
 
-    public static bool IsChildOf(this GameObject child, GameObject parent)
+	public static bool IsChildOf(this GameObject child, GameObject parent)
     {
 		return child.transform.IsChildOf(parent.transform);
     }

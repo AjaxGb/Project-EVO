@@ -30,7 +30,6 @@ public class SceneLoader : MonoBehaviour {
 #pragma warning restore 0219
 
 		if (loadSaveState != null) {
-			Debug.ClearDeveloperConsole();
 			currScene = SceneInfo.scenesByBI[loadSaveState.currSceneBI];
 		}
 
