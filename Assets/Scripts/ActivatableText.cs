@@ -53,7 +53,9 @@ public class ActivatableText : Activatable {
 	public void NextTextEntry() {
 		if (CurrTextEntry < script.Length - 1) {
 			++CurrTextEntry;
-		} else {
+            audioSource.clip = readSound;
+            audioSource.Play();
+        } else {
 			ShowingText = false;
 		}
 	}
@@ -75,6 +77,6 @@ public class ActivatableText : Activatable {
 		timeToGo -= Time.deltaTime;
 		if (timeToGo <= 0) {
 			NextTextEntry();
-		}
+        }
 	}
 }

@@ -404,6 +404,9 @@ MonoBehaviour:
   canJump: 1
   actionState: 0
   deathPhysMaterial: {fileID: 6200000, guid: ddb78e960fca4364f98e49f9220f7053, type: 2}
+  invTime: 0.5
+  invFlashSpeed: 2
+  invMinAlpha: 0.2
   HealthBar: {fileID: 0}
   ManaBar: {fileID: 0}
   audioSource: {fileID: 82604691215192958}
@@ -411,10 +414,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9df48b99163db904bb21586c51951a86, type: 3}
   - {fileID: 8300000, guid: 7ecb13617e2d34440a2f90cd8f339d30, type: 3}
   - {fileID: 8300000, guid: e5f10e83f01e59b4b813f3a52c2abb79, type: 3}
-  - {fileID: 8300000, guid: e5f10e83f01e59b4b813f3a52c2abb79, type: 3}
-  hitAttackSound: {fileID: 8300000, guid: 544fb99fcaf6c5f46ac0d4b105bb43eb, type: 3}
+  - {fileID: 8300000, guid: 544fb99fcaf6c5f46ac0d4b105bb43eb, type: 3}
+  hitAttackSound: {fileID: 0}
   missedAttackSound: {fileID: 8300000, guid: 0cae0320c7a976749aff11e6641056b0, type: 3}
   deathSound: {fileID: 8300000, guid: 14003a551c1454a4c94198c7d2fa99e9, type: 3}
+  jumpSound: {fileID: 8300000, guid: 7ec1047cd0491774bbc3386af2e1a5e2, type: 3}
+  doubleJumpSound: {fileID: 8300000, guid: 40289ad6a647d4b47926a92e87f2f0c0, type: 3}
 --- !u!212 &212505018246539604
 SpriteRenderer:
   m_ObjectHideFlags: 1
