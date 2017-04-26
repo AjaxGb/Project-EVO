@@ -8,7 +8,11 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 	public float health = 140;
 	public UIAttributeBar healthBar;
 
-	private void Start() {
+    public AudioSource audioSource;
+    public AudioClip deathSound;
+    public AudioClip hurtSound;
+
+    private void Start() {
 		if (highestKilled < BossOrderID) {
 			StartAlive();
 		} else {
@@ -25,14 +29,16 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 		}
 		health -= amount;
 		healthBar.Amount = health;
-		OnDamaged();
+        audioSource.clip = hurtSound;
+        audioSource.Play();
+        OnDamaged();
 		if (health <= 0) {
 			Kill();
 		}
 		return amount;
 	}
 
-	public virtual void OnDamaged() { }
+	public virtual void OnDamaged() {}
 
 	public void Kill() {
 		health = 0;
@@ -41,8 +47,10 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 		if (id > highestKilled) {
 			highestKilled = id;
 		}
-		OnKilled();
+        audioSource.clip = deathSound;
+        audioSource.Play();
+        OnKilled();
 	}
 
-	public virtual void OnKilled() { }
+	public virtual void OnKilled() {}
 }

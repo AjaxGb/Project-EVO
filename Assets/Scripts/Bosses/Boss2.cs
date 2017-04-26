@@ -42,7 +42,6 @@ public class Boss2 : BossBase {
     public Animator anim;
     private Vector2 curV;
 
-
     // Use this for initialization
     public override void StartAlive() {
         targetLoc = waypoints[0].transform.position;
