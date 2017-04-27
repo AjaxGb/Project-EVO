@@ -16,7 +16,17 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
     public Transform[] Waypoints; //The Waypoints the enemy normally flies between
     public int WPIndex = 0; //Index in the waypoint array
 
-    public State state;
+	public readonly int animStateKey = Animator.StringToHash("State");
+	private Animator animator;
+
+	private State _state;
+    public State CurrState {
+		set {
+			_state = value;
+			animator.SetInteger(animStateKey, (int)value);
+		}
+		get { return _state; }
+	}
 
     public float patrolSpeed = 2f; //The speed the enemy moves at normally
     public float patrolAccel = 1f;
@@ -39,22 +49,22 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
     Transform playerTransform;
     Rigidbody2D rb;
     new SpriteRenderer renderer;
+	ParticleSystem deathParticles;
 
 	// Use this for initialization
 	void Start () {
-        state = State.PATROLLING;
-        playerTransform = SceneLoader.inst.player.transform; //Get the Player's Transform
+		playerTransform = SceneLoader.inst.player.transform; //Get the Player's Transform
         rb = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
-    }
+		animator = GetComponent<Animator>();
+		deathParticles = GetComponent<ParticleSystem>();
+	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (Input.GetKeyDown("l")) {
-            TakeDamage(1);
-        }
+		if (Time.deltaTime == 0 || currHP <= 0) return;
 
-        switch (state)
+        switch (CurrState)
         {
             case State.PATROLLING:
                 //Check if the player is in the enemy's range of detection.
@@ -64,9 +74,9 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
                     RaycastHit2D[] findPlayer = new RaycastHit2D[1];
                     if (GetComponent<BoxCollider2D>().Raycast(playerTransform.position - transform.position, findPlayer, SightRange) != 0 && findPlayer[0].collider.gameObject.IsChildOf(SceneLoader.inst.player.gameObject)) //Raycast from enemy to player, see if first thing intersected is the player
                     {
-                        //Debug.Log("Spotted Player");
+						//Debug.Log("Spotted Player");
 
-                        state = State.SURPRISED; //Enemy is attacking, not patrolling
+						CurrState = State.SURPRISED; //Enemy is attacking, not patrolling
                         surpriseTimer = surpriseDuration;
                     }
                 }
@@ -88,7 +98,7 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
                 surpriseTimer -= Time.deltaTime;
                 if (surpriseTimer <= 0 && rb.velocity.sqrMagnitude < 0.01f)
                 {
-                    state = State.ATTACKING;
+					CurrState = State.ATTACKING;
                     attackDirection = playerTransform.position - transform.position;
                     if (attackDirection.sqrMagnitude > attackSpeed * attackSpeed)
                     {
@@ -108,7 +118,7 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
                 }
                 else
                 { //If the alloted amount of time has been spent on an attack
-                    state = State.PATROLLING; //go back to Patrolling
+					CurrState = State.PATROLLING; //go back to Patrolling
                     WPIndex = GetNearestWaypoint();
                 }
                 break;
@@ -169,10 +179,10 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
             SceneLoader.inst.player.TakeDamage(DamageStrength); //Call TakeDamage function on player to deal damage                      
         }
 
-        if (state == State.ATTACKING)
+        if (CurrState == State.ATTACKING)
         {
-            //Debug.Log("Returning to Patrol");
-            state = State.PATROLLING; //Set the enemy back to patrolling mode
+			//Debug.Log("Returning to Patrol");
+			CurrState = State.PATROLLING; //Set the enemy back to patrolling mode
             rb.velocity = Vector2.zero;
             WPIndex = GetNearestWaypoint();
         }
@@ -195,6 +205,14 @@ public class FlyingEnemy : MonoBehaviour, IDamageable, IKillable {
 
     public void Kill()
     {
-        Destroy(transform.parent.gameObject);
+		rb.velocity = Vector2.up;
+		rb.gravityScale = 1;
+		rb.constraints = RigidbodyConstraints2D.None;
+		foreach (Collider2D c in GetComponentsInChildren<Collider2D>())
+		{
+			c.enabled = false;
+		}
+		deathParticles.Play();
+        Destroy(transform.parent.gameObject, 3);
     }
 }

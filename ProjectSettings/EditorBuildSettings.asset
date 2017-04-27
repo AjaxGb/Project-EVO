@@ -26,3 +26,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/Boss1.unity
     guid: 81779708b295ec049a78530d4da606f3
+  - enabled: 1
+    path: Assets/Scenes/Loaded Scenes/Caves 1.unity
+    guid: e2da0acfb8c3d764b9283d7dd062935e
