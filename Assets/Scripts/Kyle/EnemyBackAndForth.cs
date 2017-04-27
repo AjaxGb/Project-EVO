@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
 
     Rigidbody2D enemyRB;
+    new Collider2D collider;
     public LayerMask enemyMask; //Will need to give enemies a layer to work with enemyMask
     Transform enemyTransform;
     float enemyWidth, enemyHeight;
@@ -23,10 +24,10 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
     void Start () {
         enemyTransform = this.transform;
         enemyRB = this.GetComponent<Rigidbody2D>(); //Enemy has a Rigidbody and its transform for positioning checks
-
-        Collider2D enemySprite = this.GetComponent<Collider2D>();
-        enemyWidth = enemySprite.bounds.extents.x; //Find width of the enemy sprite and check against the horizontal bounds for edge detection on isGrounded
-        enemyHeight = enemySprite.bounds.extents.y; //Height of the enemy for use in isBlocked
+        
+        collider = this.GetComponent<Collider2D>();
+        enemyWidth = collider.bounds.extents.x; //Find width of the enemy sprite and check against the horizontal bounds for edge detection on isGrounded
+        enemyHeight = collider.bounds.extents.y; //Height of the enemy for use in isBlocked
         
         EnemyColl = this.GetComponent<Collider2D>();
     }
@@ -39,10 +40,10 @@ public class EnemyBackAndForth : MonoBehaviour, IKillable, IDamageable {
     void FixedUpdate() {
 
         //Only move forward if there is ground ahead, ergo not at the edge
-        Vector2 lineCastPos = enemyTransform.position.toVector2() - enemyTransform.right.toVector2() * enemyWidth; //Origin of Linecast will be top left corner. Cast lines from that position
+        Vector2 lineCastPos = (Vector2)collider.bounds.center - (Vector2)transform.right * enemyWidth; //Origin of Linecast will be top left corner. Cast lines from that position
 
-        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * enemyHeight); //Debug statement, draw the line beneath the position
-        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * enemyHeight, enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
+        Debug.DrawLine(lineCastPos, lineCastPos + Vector2.down * (enemyHeight + 0.1f)); //Debug statement, draw the line beneath the position
+        bool isGrounded = Physics2D.Linecast(lineCastPos, lineCastPos + Vector2.down * (enemyHeight + 0.1f), enemyMask); //enemyMask ensures it won't check against the enemy's own collider, only the ground
 
         Debug.DrawLine(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f ); //Debug statement, draw the line horizontal from the position
         bool isBlocked = Physics2D.Linecast(lineCastPos, lineCastPos - enemyTransform.right.toVector2() * 0.1f, enemyMask); //Similar to above, now check for blocks such as walls. Much shorter line
