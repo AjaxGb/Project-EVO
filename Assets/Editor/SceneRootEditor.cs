@@ -51,9 +51,10 @@ public class SceneRootEditor : Editor {
 			sceneInfoInst = (SceneInfo)sceneInfoProp.objectReferenceValue;
 		} else {
 			// Make new SceneInfo, save it, and update the reference
-			string assetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Resources",
-				scene.path.Remove(scene.path.Length - Path.GetExtension(scene.path).Length) + ".asset"));
-
+			string directory = Path.Combine(Path.GetDirectoryName(scene.path), "Resources");
+			string filename  = Path.GetFileNameWithoutExtension(scene.path) + ".asset";
+			string assetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(directory, filename));
+			
 			sceneInfoInst = CreateInstance<SceneInfo>();
 			AssetDatabase.CreateAsset(sceneInfoInst, assetPath);
 			AssetDatabase.SaveAssets();
