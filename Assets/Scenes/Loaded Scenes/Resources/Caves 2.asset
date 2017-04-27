@@ -9,18 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77d5e1be52cc06b40a0735f9cb7124a9, type: 3}
-  m_Name: Caves 1
+  m_Name: Caves 2
   m_EditorClassIdentifier: 
-  sceneName: Caves 1
-  buildIndex: 7
+  sceneName: Caves 2
+  buildIndex: 8
   bounds:
     serializedVersion: 2
-    x: -7.7477484
-    y: -12.520149
-    width: 99.088196
-    height: 26.571396
+    x: -22.809341
+    y: -51.31826
+    width: 135.9108
+    height: 64.497444
   adjacentScenes:
-  - toBI: 6
-    connectionPoint: {x: -6.594576, y: -0.43963623}
-  - toBI: 8
-    connectionPoint: {x: 89.19767, y: -1.1227417}
+  - toBI: 7
+    connectionPoint: {x: -16.637878, y: -1.6837616}

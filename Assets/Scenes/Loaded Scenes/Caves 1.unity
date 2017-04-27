@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4691769251078456, guid: 52788e554597d8d4f8e352cf1292b933, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 52788e554597d8d4f8e352cf1292b933, type: 2}
@@ -192,7 +192,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4752046673342634, guid: e80febc0149b7ac4abbc9499e46df917, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 212412514881065152, guid: e80febc0149b7ac4abbc9499e46df917,
         type: 2}
@@ -290,7 +290,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4752046673342634, guid: e80febc0149b7ac4abbc9499e46df917, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 212412514881065152, guid: e80febc0149b7ac4abbc9499e46df917,
         type: 2}
@@ -588,7 +588,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 999077975}
-  m_RootOrder: 7
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &415133379
 BoxCollider2D:
@@ -628,7 +628,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e04fbcf86afe1cd4897c2dabcd5e0f67, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -793,7 +793,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4206054348108490, guid: 778d56fd87fd4b9458099d7ed9e45d2f, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 778d56fd87fd4b9458099d7ed9e45d2f, type: 2}
@@ -822,7 +822,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 808262438}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50.8, y: 13.7, z: 0}
+  m_LocalPosition: {x: 53.6, y: 13.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 999077975}
@@ -845,7 +845,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 81.84363, y: 10}
+    newSize: {x: 99.50678, y: 10}
     adaptiveTilingThreshold: 0.471
     drawMode: 2
     adaptiveTiling: 0
@@ -866,7 +866,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e04fbcf86afe1cd4897c2dabcd5e0f67, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -890,7 +890,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 81.84363, y: 10}
+  m_Size: {x: 99.50678, y: 10}
   m_AdaptiveModeThreshold: 0.471
   m_SpriteTileMode: 0
 --- !u!1 &999077973
@@ -929,7 +929,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 999077973}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.887232, y: 70.52029, z: 0}
+  m_LocalPosition: {x: 18.76445, y: 73.23898, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1503433442}
@@ -939,13 +939,13 @@ Transform:
   - {fileID: 1139852748}
   - {fileID: 558447786}
   - {fileID: 295688936}
-  - {fileID: 415133378}
   - {fileID: 1540137132}
   - {fileID: 1761838820}
   - {fileID: 1151191272}
   - {fileID: 138065452}
   - {fileID: 185120830}
   - {fileID: 417448548}
+  - {fileID: 415133378}
   - {fileID: 17577924}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1118,7 +1118,7 @@ Transform:
   m_LocalScale: {x: 1.3781914, y: 2.205102, z: 1}
   m_Children: []
   m_Father: {fileID: 999077975}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1151191273
 SpriteRenderer:
@@ -1398,7 +1398,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1.8449204, z: 1}
   m_Children: []
   m_Father: {fileID: 999077975}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1761838821
 SpriteRenderer:

@@ -29,3 +29,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/Caves 1.unity
     guid: e2da0acfb8c3d764b9283d7dd062935e
+  - enabled: 1
+    path: Assets/Scenes/Loaded Scenes/Caves 2.unity
+    guid: 72feb72aeb7fd3543ae99691a65d4538

@@ -1,7 +1,4 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
+﻿
 Shader "Unlit/WorldspaceTiling"
 {
     Properties
@@ -10,11 +7,16 @@ Shader "Unlit/WorldspaceTiling"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags {
+			"RenderType"="Opaque"
+			"Queue" = "Transparent+1" 
+		}
         LOD 100
 
         Pass
-        {           
+        {
+			ZWrite Off
+
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag               
@@ -41,7 +43,7 @@ Shader "Unlit/WorldspaceTiling"
                 o.vertex = UnityObjectToClipPos(v.vertex);
 
                 // Gets the xy position of the vertex in worldspace.
-                float2 worldXY = mul(unity_ObjectToWorld, v.vertex).xy;
+                float2 worldXY = mul(unity_ObjectToWorld, v.vertex).xy ;
                 // Use the worldspace coords instead of the mesh's UVs.
                 o.uv = TRANSFORM_TEX(worldXY, _MainTex);
 
