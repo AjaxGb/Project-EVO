@@ -79,6 +79,7 @@ public class Boss2 : BossBase {
             }
             beamObjects.Clear();
             anim.SetTrigger("Fire");
+
         } else if (actionState == State.FLYING && chargeStart == -1) {
 
             //===if its time to shoot===
@@ -97,6 +98,13 @@ public class Boss2 : BossBase {
                 targets[1] = SelectPillar(0, 4, ex);
                 chargeStart = Time.time;
                 rb.velocity = Vector2.zero;
+                //face the midpoint of the two beams
+                float midpoint = 0;
+                foreach (int i in targets) {
+                    midpoint += Pillars[i].GetComponent<Pillar>().landingZone.transform.position.x;
+                }
+                midpoint /= targets.Length;
+                sprite.flipX = transform.position.x > midpoint;
                 //INSTANTIATE BEAMS
                 Vector3 firstTargetPos = (Vector3)(Pillars[targets[0]].GetComponent<Pillar>().landingZone.transform.position);
                 Vector3 secondTargetPos = (Vector3)(Pillars[targets[1]].GetComponent<Pillar>().landingZone.transform.position);
@@ -106,11 +114,12 @@ public class Boss2 : BossBase {
                 firstTargetPos += new Vector3(0, 0.2f,0);
                 secondTargetPos += new Vector3(0, 0.2f, 0);
                 //then real beams
-                GameObject temp = Instantiate(beam, firstTargetPos, Quaternion.LookRotation(Vector3.forward, transform.position - firstTargetPos));
-                temp.transform.localScale = new Vector3(1, Vector3.Distance(transform.position, firstTargetPos)/6, 1);
+                Vector3 laserSource = transform.position + new Vector3(sprite.flipX ? -0.5f : 0.5f, 1.55f, 0);
+                GameObject temp = Instantiate(beam, firstTargetPos, Quaternion.LookRotation(Vector3.forward, laserSource - firstTargetPos)   );
+                temp.transform.localScale = new Vector3(1, Vector3.Distance(laserSource, firstTargetPos)/6, 1);
                 beamObjects.Add(temp);
-                temp = Instantiate(beam, secondTargetPos, Quaternion.LookRotation(Vector3.forward, transform.position - secondTargetPos));
-                temp.transform.localScale = new Vector3(1, Vector3.Distance(transform.position, secondTargetPos) / 6, 1);
+                temp = Instantiate(beam, secondTargetPos, Quaternion.LookRotation(Vector3.forward, laserSource - secondTargetPos));
+                temp.transform.localScale = new Vector3(1, Vector3.Distance(laserSource, secondTargetPos) / 6, 1);
                 beamObjects.Add(temp);
                 anim.SetTrigger("StartCharge");
             } else 
