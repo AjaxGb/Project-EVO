@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class Utilities {
@@ -72,4 +73,26 @@ public static class Utilities {
     {
 		return child.transform.IsChildOf(parent.transform);
     }
+	
+	public static string Readable(this TimeSpan ts) {
+		float seconds = (float)ts.TotalSeconds;
+
+		if (seconds < 60)
+			return Quantify("second", ts.Seconds);
+		else if (seconds < 60 * 60)
+			return Quantify("minute", ts.Minutes);
+		else if (seconds < 60 * 60 * 24)
+			return Quantify("hour", ts.Hours);
+		else if (seconds < 60 * 60 * 24 * 7)
+			return Quantify("day", ts.Days);
+		else
+			return Quantify("week", ts.Days / 7);
+	}
+
+	public static string Quantify(string thing, int num) {
+		if (num == 1) {
+			return string.Format("1 {0}", thing);
+		}
+		return string.Format("{0} {1}s", num, thing);
+	}
 }

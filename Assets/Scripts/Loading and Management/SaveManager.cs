@@ -9,6 +9,8 @@ using System.Collections;
 public class SaveState {
 	public string name;
 	public string timestamp;
+	[NonSerialized]
+	public float lastSaved;
 	public int currSceneBI;
 	public Vector2 posInScene;
 	public int lastBossBeaten;
@@ -73,6 +75,7 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 		currentSave.currSceneBI = SceneLoader.inst.currScene.buildIndex;
 		currentSave.posInScene = savePos - (Vector2)SceneLoader.inst.currScene.root.transform.position;
 		currentSave.lastBossBeaten = BossBase.highestKilled;
+		currentSave.lastSaved = Time.unscaledTime;
 		// Move to front
 		saveStates.Remove(currentSave);
 		saveStates.Insert(0, currentSave);
@@ -89,6 +92,7 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 		if (state == null) throw new ArgumentNullException("state");
 		BossBase.highestKilled = state.lastBossBeaten;
 		currentSave = state;
+		currentSave.lastSaved = Time.unscaledTime;
 		SceneLoader.loadSaveState = state;
 		SceneManager.LoadScene(SceneLoader.buildIndex);
 	}
