@@ -3,9 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
+public delegate void LearnSkill();
+
 public class Player : MonoBehaviour, IKillable, IDamageable {
 
-    //upgrades
+	//upgrades
+	private int _nextSkillToLearn;
     public const bool hasDoubleJump = true;
     public bool hasGlide;
     public bool hasAttack;
@@ -123,7 +126,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		if (realControls) {
 			control = new ControlsReal();
 		}
-        layerBits = 1 << LayerMask.NameToLayer("Player");
+
+		LearnSkillForBoss(BossBase.highestKilled);
+
+		layerBits = 1 << LayerMask.NameToLayer("Player");
         renderer = GetComponent<SpriteRenderer>();
 		body = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
@@ -479,8 +485,24 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         animator.SetBool("isGrab", false);
     }
 
-    //===NEW SKILL TRANSITIONS===
-    public static void LearnClaws() {
+	public static readonly LearnSkill[] learnSkills = {
+		LearnClaws, // Boss 1
+		LearnWings, // Boss 2
+		LearnTime,  // Boss 3
+	};
+
+	//===NEW SKILL TRANSITIONS===
+	public void LearnSkillForBoss(int bossID) {
+		int maxSkill = Mathf.Min(learnSkills.Length, bossID);
+		if (_nextSkillToLearn < maxSkill) {
+			for (int i = _nextSkillToLearn; i < maxSkill; i++) {
+				learnSkills[i]();
+			}
+			_nextSkillToLearn = maxSkill;
+		}
+	}
+	
+	public static void LearnClaws() {
 		Player p = SceneLoader.inst.player;
         p.hasAttack = true;
         p.animator.SetTrigger("GainClaws");
@@ -497,7 +519,6 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		//hasTime = true;
 		p.animator.SetTrigger("GainTime");
     }
-
 
     //===DAMAGE AND DEATH===
     public float TakeDamage(float d) {

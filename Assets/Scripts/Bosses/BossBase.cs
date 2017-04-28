@@ -1,16 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public delegate void LearnSkill();
-
 public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 
 	public static int highestKilled = 0;
-	public static readonly LearnSkill[] learnSkills = {
-		Player.LearnClaws, // Boss 1
-		Player.LearnWings, // Boss 2
-		Player.LearnTime,  // Boss 3
-	};
 	public abstract int BossOrderID { get; }
 
 	public float health = 140;
@@ -52,9 +45,7 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 		health = 0;
 		healthBar.Amount = health;
 		int id = BossOrderID;
-		if (id > 0 && id - 1 < learnSkills.Length) {
-			learnSkills[id - 1]();
-		}
+		SceneLoader.inst.player.LearnSkillForBoss(id);
 		if (id > highestKilled) {
 			highestKilled = id;
 		}
