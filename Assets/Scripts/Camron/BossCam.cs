@@ -13,7 +13,7 @@ public class BossCam : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		if (Time.timeScale == 0 || !SceneLoader.IsInCurrentScene(gameObject) || !player.IsAlive) return;
 		CameraFollow.inst.SetFixedAngle(
 			transform.position + (player.transform.position - transform.position) * sensivity,
