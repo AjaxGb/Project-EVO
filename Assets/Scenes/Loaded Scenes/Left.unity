@@ -670,7 +670,7 @@ Prefab:
     - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
       propertyPath: script.Array.data[0].text
-      value: nice
+      value: Hold Shift to Push and Pull Rocks
       objectReference: {fileID: 0}
     - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
         type: 2}
@@ -819,6 +819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c61856d9646b949a3a1a61259723ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dieOnFallOnly: 0
+  minFallSpeed: -2
 --- !u!61 &1276046879
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1218,7 +1220,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4696917584784130, guid: 2c2c676cb75658947a2b2a5ee28ac7d9, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 13.842344
+      value: 3.71
       objectReference: {fileID: 0}
     - target: {fileID: 4696917584784130, guid: 2c2c676cb75658947a2b2a5ee28ac7d9, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1375,7 +1377,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1970299916}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 101.95462, y: 16.567656, z: 0}
+  m_LocalPosition: {x: 126.39861, y: -27.375134, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 759678593}

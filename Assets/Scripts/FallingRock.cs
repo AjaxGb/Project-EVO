@@ -72,7 +72,7 @@ public class FallingRock : MonoBehaviour, IKillable {
 			IDamageable damageable = coll.gameObject.GetComponentInParent<IDamageable>();
 			if (damageable != null) {
 				damageable.TakeDamage(damage);
-				Kill();
+				if (destructable) Kill();
 			}
 		}
 	}
