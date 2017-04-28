@@ -208,7 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unBroken: 1
   breakDistance: 25
-  breakTime: 4
+  breakTime: 6
   unbreakTime: 6
   randomShake: 0.05
   explosionHeight: 1
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unBroken: 1
   breakDistance: 25
-  breakTime: 4
+  breakTime: 6
   unbreakTime: 6
   randomShake: 0.05
   explosionHeight: 1
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unBroken: 1
   breakDistance: 25
-  breakTime: 4
+  breakTime: 6
   unbreakTime: 6
   randomShake: 0.05
   explosionHeight: 1
@@ -2841,7 +2841,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unBroken: 1
   breakDistance: 25
-  breakTime: 4
+  breakTime: 6
   unbreakTime: 6
   randomShake: 0.05
   explosionHeight: 1
@@ -2959,7 +2959,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unBroken: 1
   breakDistance: 25
-  breakTime: 4
+  breakTime: 6
   unbreakTime: 6
   randomShake: 0.05
   explosionHeight: 1

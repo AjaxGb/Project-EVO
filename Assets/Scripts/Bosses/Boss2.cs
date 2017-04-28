@@ -114,11 +114,12 @@ public class Boss2 : BossBase {
 
             //===if its time to shoot===
             if (Time.time > lastAttack + timeBetweenAttacks) {
-                //shoot pew pews
-                //select 2 pillars.
-				for (int i = targets.Length - 1; i >= 0; i--) {
-					targets[i] = SelectPillar(0, Pillars.Length - 1, brokenPillarIndices);
-					brokenPillarIndices.AddSorted(targets[i]);
+				//shoot pew pews
+				//select 2 pillars.
+				List<int> exclude = new List<int>(brokenPillarIndices);
+				for (int i = 0; i < targets.Length; i++) {
+					targets[i] = SelectPillar(0, Pillars.Length, exclude);
+					exclude.AddSorted(targets[i]);
 				}
 				chargeStart = Time.time;
                 rb.velocity = Vector2.zero;
@@ -148,7 +149,7 @@ public class Boss2 : BossBase {
             //===if its time to land===
             if (Time.time > phaseStart + phaseDuration) {
                 //chose pillar to land on
-                landedPillar = SelectPillar(0, Pillars.Length - 1, brokenPillarIndices);
+                landedPillar = SelectPillar(0, Pillars.Length, brokenPillarIndices);
                 actionState = State.LANDINGPREP;
                 targetLoc = new Vector2(Pillars[landedPillar].landingZone.transform.position.x, Pillars[landedPillar].landingZone.transform.position.y + UnityEngine.Random.Range(4, 7));
 
@@ -199,6 +200,7 @@ public class Boss2 : BossBase {
             if (  (CurrHealth < (0.66 * maxHealth) && curPhase <= 1)  ||  (CurrHealth < (0.33 * maxHealth) && curPhase <= 2)  ) {
                 curPhase++;
                 Pillars[landedPillar].Break();
+				brokenPillarIndices.AddSorted(landedPillar);
 				lastAttack = phaseStart = Time.time;
 				actionState = State.FLYING;
                 targetLoc = waypoints[nextWP].transform.position;
@@ -215,6 +217,7 @@ public class Boss2 : BossBase {
                 p.UnBreak();
             }
         }
+		brokenPillarIndices.Clear();
         anim.SetTrigger("death");
         Destroy(gameObject, 4f);
 		noEscapeDoor.IsOpened = true;
