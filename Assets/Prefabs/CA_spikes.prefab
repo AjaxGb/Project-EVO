@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212608789276975400}
   - component: {fileID: 61311899765800252}
   - component: {fileID: 114215588725296362}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: CA_spikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}

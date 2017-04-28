@@ -129,8 +129,6 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 			control = new ControlsReal();
 		}
 
-		LearnSkillForBoss(BossBase.highestKilled);
-
 		layerBits = 1 << LayerMask.NameToLayer("Player");
         renderer = GetComponent<SpriteRenderer>();
 		body = GetComponent<Rigidbody2D>();
@@ -143,6 +141,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		MaxMana = 100f;
 		PlayerHealth = MaxHealth;
 		PlayerMana = MaxMana;
+
+		LearnSkillForBoss(BossBase.highestKilled);
 	}
 	
 	// Update is called once per frame
