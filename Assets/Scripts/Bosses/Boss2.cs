@@ -116,7 +116,7 @@ public class Boss2 : BossBase {
             if (Time.time > lastAttack + timeBetweenAttacks) {
                 //shoot pew pews
                 //select 2 pillars.
-				for (int i = targets.Length; i >= 0; i--) {
+				for (int i = targets.Length - 1; i >= 0; i--) {
 					targets[i] = SelectPillar(0, Pillars.Length - 1, brokenPillarIndices);
 					brokenPillarIndices.AddSorted(targets[i]);
 				}
