@@ -174,10 +174,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             Collider2D[] thingsHit;
             if (renderer.flipX) {
                 //attack to the left
-                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(0.75f, 0, 0), 0.5f);
+                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(-0.75f, 0, 0), 0.5f);
             } else {
                 //attack to the right
-                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(-0.75f, 0, 0), 0.5f);
+                thingsHit = Physics2D.OverlapCircleAll(transform.position + new Vector3(0.75f, 0, 0), 0.5f);
             }
             foreach (Collider2D c in thingsHit) {
                 //deal damage to anything in claw range that is damageable and is not the player

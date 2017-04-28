@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4956412498416758}
   - component: {fileID: 212368713536266010}
   - component: {fileID: 114795675202108780}
-  - component: {fileID: 50680646247223402}
   - component: {fileID: 61428715357591066}
   m_Layer: 11
   m_Name: StationaryEnemy
@@ -43,26 +42,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50680646247223402
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1960875488491706}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!61 &61428715357591066
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -104,7 +83,7 @@ MonoBehaviour:
     m_Bits: 0
   DamageStrength: 5
   maxHP: 1
-  curHP: 1
+  currHP: 1
   SightRange: 10
   ShotDelay: 1
   Projectile: {fileID: 114200209682969416, guid: f09f92091dda8d244987c9d8a35aad3a,
