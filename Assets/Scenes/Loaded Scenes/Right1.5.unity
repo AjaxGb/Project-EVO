@@ -108,6 +108,53 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &25528178
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1981308643}
+    m_Modifications:
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -78.5497
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -16.144642
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0e55c63223841954ab77a24646a3c185, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &25528179 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4839521022613332, guid: 0e55c63223841954ab77a24646a3c185,
+    type: 2}
+  m_PrefabInternal: {fileID: 25528178}
 --- !u!1 &71150515
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +660,7 @@ Transform:
   - {fileID: 1183916113}
   - {fileID: 798242541}
   - {fileID: 620085569}
+  - {fileID: 25528179}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -640,8 +688,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2014969713}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -45.5, y: -33.77765, z: 0}
-  m_LocalScale: {x: 4.8733296, y: 0.68637997, z: 1}
+  m_LocalPosition: {x: -47, y: -33.77765, z: 0}
+  m_LocalScale: {x: 1, y: 0.68637997, z: 1}
   m_Children: []
   m_Father: {fileID: 1981308643}
   m_RootOrder: 4
@@ -658,18 +706,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.1866231, y: 20.052118}
+  m_Offset: {x: 0.07307434, y: 20.052118}
   m_SpriteTilingProperty:
     border: {x: 0.38333336, y: 0.22333334, z: 0.38333336, w: 0.79}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 4.8733335, y: 1.3333334}
-    newSize: {x: 6.911103, y: 81.64969}
+    newSize: {x: 29.856712, y: 81.64969}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.050618, y: 41.437572}
+  m_Size: {x: 29.80014, y: 41.437572}
   m_EdgeRadius: 0
 --- !u!212 &2014969716
 SpriteRenderer:
@@ -702,12 +750,12 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1825987275
   m_SortingLayer: 1
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 8806095b7ccf5e44280aeefe05242403, type: 3}
   m_Color: {r: 0.7231237, g: 1, b: 0.71323526, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 6.911103, y: 81.64969}
+  m_Size: {x: 29.856712, y: 81.64969}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
