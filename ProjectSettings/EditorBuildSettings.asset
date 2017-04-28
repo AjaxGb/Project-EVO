@@ -35,3 +35,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Loaded Scenes/TestSecondBoss.unity
     guid: 8eec5ebd2ad8fe94d86a1cc96b9577cd
+  - enabled: 1
+    path: Assets/Scenes/Loaded Scenes/Right1.5.unity
+    guid: 89d50f0d792a513488a1b212c6430bc5

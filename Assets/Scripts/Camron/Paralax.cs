@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Paralax : MonoBehaviour, FadeSceneryManager.IFadeable {
 
-	public SpriteRenderer[] renderers;
+	private SpriteRenderer[] renderers;
 	public Vector2 movementScale;
 
 	new CameraFollow camera;
