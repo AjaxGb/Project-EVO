@@ -68,7 +68,9 @@ public class SceneInfo : ScriptableObject, IComparable<SceneInfo> {
 	public void OnDisable() {
 		if (buildIndex >= 0) {
 			SceneInfo val;
-			if (!scenesByBI.TryGetValue(buildIndex, out val) || val != this) {
+			if (!scenesByBI.TryGetValue(buildIndex, out val)) {
+				Debug.LogWarningFormat(this, "\"{0}\" was not enabled properly", name);
+			} else if (val != this) {
 				Debug.LogWarningFormat(this, "\"{0}\" claims to have the same buildIndex ({1}) as \"{2}\"", name, buildIndex, val.name);
 			} else {
 				scenesByBI.Remove(buildIndex);
