@@ -33,6 +33,11 @@ public class SceneLoader : MonoBehaviour {
 			currScene = SceneInfo.scenesByBI[loadSaveState.currSceneBI];
 		}
 
+		int maxSkill = Mathf.Min(BossBase.learnSkills.Length, BossBase.highestKilled);
+		for (int i = 0; i < maxSkill; i++) {
+			BossBase.learnSkills[i]();
+		}
+
 		if (currScene != null) {
 			CalculateAllScenePositions(_worldPositions, currScene);
 			SceneManager.LoadScene(currScene.buildIndex, LoadSceneMode.Additive);

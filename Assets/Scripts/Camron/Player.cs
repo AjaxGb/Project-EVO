@@ -6,7 +6,7 @@ using System;
 public class Player : MonoBehaviour, IKillable, IDamageable {
 
     //upgrades
-    public bool hasDoubleJump;
+    public const bool hasDoubleJump = true;
     public bool hasGlide;
     public bool hasAttack;
 
@@ -480,20 +480,22 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     }
 
     //===NEW SKILL TRANSITIONS===
-    public void LearnClaws() {
-        hasAttack = true;
-        animator.SetTrigger("GainClaws");
+    public static void LearnClaws() {
+		Player p = SceneLoader.inst.player;
+        p.hasAttack = true;
+        p.animator.SetTrigger("GainClaws");
     }
 
-    public void LearnWings() {
-        hasDoubleJump = true;
-        hasGlide = true;
-        animator.SetTrigger("GainWings");
+    public static void LearnWings() {
+		Player p = SceneLoader.inst.player;
+        p.hasGlide = true;
+        p.animator.SetTrigger("GainWings");
     }
 
-    public void LearnTime() {
-        //hasTime = true;
-        animator.SetTrigger("GainTime");
+    public static void LearnTime() {
+		Player p = SceneLoader.inst.player;
+		//hasTime = true;
+		p.animator.SetTrigger("GainTime");
     }
 
 
