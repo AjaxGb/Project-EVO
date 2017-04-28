@@ -119,7 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyMask:
     serializedVersion: 2
-    m_Bits: 4294964991
+    m_Bits: 4294956799
   speed: -1
   DamageStrength: 25
   maxHP: 1
