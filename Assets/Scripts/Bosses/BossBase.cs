@@ -6,7 +6,8 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 	public static int highestKilled = 0;
 	public abstract int BossOrderID { get; }
 
-	public float health = 140;
+	public float maxHealth = 140;
+    public float CurrHealth { get; private set; }
 	public UIAttributeBar healthBar;
 
     public AudioSource audioSource;
@@ -14,6 +15,9 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
     public AudioClip hurtSound;
 
     private void Start() {
+        healthBar.MaxAmount = maxHealth;
+        CurrHealth = maxHealth;
+        healthBar.Amount = CurrHealth;
 		if (highestKilled < BossOrderID) {
 			StartAlive();
 		} else {
@@ -25,15 +29,15 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 	public abstract void StartDead();
 
 	public float TakeDamage(float amount) {
-		if (amount > health) {
-			amount = health;
+		if (amount > CurrHealth) {
+			amount = CurrHealth;
 		}
-		health -= amount;
-		healthBar.Amount = health;
+		CurrHealth -= amount;
+		healthBar.Amount = CurrHealth;
         audioSource.clip = hurtSound;
         audioSource.Play();
         OnDamaged();
-		if (health <= 0) {
+		if (CurrHealth <= 0) {
 			Kill();
 		}
 		return amount;
@@ -42,8 +46,8 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 	public virtual void OnDamaged() {}
 
 	public void Kill() {
-		health = 0;
-		healthBar.Amount = health;
+		CurrHealth = 0;
+		healthBar.Amount = CurrHealth;
 		int id = BossOrderID;
 		SceneLoader.inst.player.LearnSkillForBoss(id);
 		if (id > highestKilled) {

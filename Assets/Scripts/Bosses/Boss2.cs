@@ -8,8 +8,6 @@ public class Boss2 : BossBase {
     public override int BossOrderID { get { return 2; } }
 
     public Pillar[] Pillars = new Pillar[5];
-    public int maxHP;
-    public float curHP;
     public float moveSpeed;
     public float landingSpeed;
 
@@ -177,21 +175,22 @@ public class Boss2 : BossBase {
         }
     }
 
-    public void OnDamage() {
+    public override void OnDamaged() {
         //phase change checks
         if (actionState == State.LANDED) {
-            if (  (curHP < (0.66 * maxHP) && curPhase <= 1)  ||  (curHP < (0.33 * maxHP) && curPhase <= 2)  ) {
+            if (  (CurrHealth < (0.66 * maxHealth) && curPhase <= 1)  ||  (CurrHealth < (0.33 * maxHealth) && curPhase <= 2)  ) {
                 curPhase++;
                 Pillars[landedPillar].Break();
                 phaseStart = Time.time;
                 actionState = State.FLYING;
+                targetLoc = waypoints[nextWP].transform.position;
                 landedPillar = -1;
                 anim.SetBool("isLanding", false);
             } 
         }
     }
     
-    public void OnKill() {
+    public override void OnKilled() {
         //repair pillars on death
         foreach (Pillar p in Pillars) {
             if (!p.active) {
@@ -199,8 +198,8 @@ public class Boss2 : BossBase {
             }
         }
         anim.SetTrigger("death");
-        Destroy(transform.gameObject, 4f);
-        deathDoor.IsOpened = true;
+        Destroy(gameObject, 4f);
+        //deathDoor.IsOpened = true;
         collider.enabled = false;
     }
 
