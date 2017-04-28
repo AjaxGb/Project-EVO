@@ -22,6 +22,7 @@ public class SaveSpot : Activatable {
 
 	public override void Activate(Player p) {
 		p.PlayerHealth = p.MaxHealth;
+		p.PlayerMana = p.MaxMana;
 		SaveManager.inst.UpdateSave(transform.position);
 		particles.Play();
 		currFadeTimer = textFadeTime;
