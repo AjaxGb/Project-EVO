@@ -41,7 +41,7 @@ public class Paralax : MonoBehaviour, FadeSceneryManager.IFadeable {
 	// Update is called once per frame
 	void LateUpdate () {
         transform.position = new Vector2(
-			(camera.transform.position.x - startPos.x) * movementScale.x,
-			(camera.transform.position.y - startPos.y) * movementScale.y);
+			startPos.x + (camera.transform.position.x - startPos.x) * movementScale.x,
+			startPos.y + (camera.transform.position.y - startPos.y) * movementScale.y);
     }
 }
