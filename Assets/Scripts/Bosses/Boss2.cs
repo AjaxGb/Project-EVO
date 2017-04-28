@@ -5,10 +5,20 @@ using UnityEngine;
 
 public class Boss2 : BossBase {
 
+	struct Beam {
+		public GameObject beam;
+		public GameObject beamHit;
+		public Beam(GameObject beam, GameObject beamHit) {
+			this.beam = beam;
+			this.beamHit = beamHit;
+		}
+	}
+
     public override int BossOrderID { get { return 2; } }
 
     public Pillar[] Pillars = new Pillar[5];
-    public float moveSpeed;
+	List<int> brokenPillarIndices = new List<int>();
+	public float moveSpeed;
     public float landingSpeed;
 
     //phases
@@ -24,7 +34,7 @@ public class Boss2 : BossBase {
     public float damage = 45;
     public GameObject beam;
     public GameObject beamHit;
-    private List<GameObject> beamObjects = new List<GameObject>(4);
+    private List<Beam> beamObjects = new List<Beam>(2);
     float chargeStart = -1;
 
     //movement
@@ -58,7 +68,20 @@ public class Boss2 : BossBase {
         //deathDoor.SkipAnimation();
     }
 
-    void FixedUpdate () {
+	private void Update() {
+		float t = Time.time - chargeStart / chargeTime;
+		foreach (Beam b in beamObjects) {
+			Vector2 currScale = b.beam.transform.localScale;
+			currScale.x = t;
+			b.beam.transform.localScale = currScale;
+
+			currScale = b.beamHit.transform.localScale;
+			currScale.x = t;
+			b.beamHit.transform.localScale = currScale;
+		}
+	}
+
+	void FixedUpdate () {
 		if (!fightStarted) {
 			if (SceneLoader.IsInCurrentScene(gameObject)) {
 				fightStarted = true;
@@ -80,9 +103,10 @@ public class Boss2 : BossBase {
             //stop charging lasers
             chargeStart = -1;
             lastAttack = Time.time;
-            foreach (GameObject g in beamObjects) {
-                Destroy(g);
-            }
+            foreach (Beam b in beamObjects) {
+				Destroy(b.beam);
+				Destroy(b.beamHit);
+			}
             beamObjects.Clear();
             anim.SetTrigger("Fire");
 
@@ -92,53 +116,39 @@ public class Boss2 : BossBase {
             if (Time.time > lastAttack + timeBetweenAttacks) {
                 //shoot pew pews
                 //select 2 pillars.
-                List<int> ex = new List<int>(curPhase - 1);
-                for (int i = 0; i < 5; i++) {
-                    if (!Pillars[i].unBroken) {
-                        ex.Add(i);
-                    }
-                }
-                targets[0] = SelectPillar(0, 4, ex);
-                ex.Add(targets[0]);
-                //2nd unique pillar
-                targets[1] = SelectPillar(0, 4, ex);
-                chargeStart = Time.time;
+				for (int i = targets.Length; i >= 0; i--) {
+					targets[i] = SelectPillar(0, Pillars.Length - 1, brokenPillarIndices);
+					brokenPillarIndices.AddSorted(targets[i]);
+				}
+				chargeStart = Time.time;
                 rb.velocity = Vector2.zero;
                 //face the midpoint of the two beams
                 float midpoint = 0;
                 foreach (int i in targets) {
-                    midpoint += Pillars[i].GetComponent<Pillar>().landingZone.transform.position.x;
+                    midpoint += Pillars[i].landingZone.transform.position.x;
                 }
                 midpoint /= targets.Length;
                 sprite.flipX = transform.position.x > midpoint;
-                //INSTANTIATE BEAMS
-                Vector3 firstTargetPos = (Vector3)(Pillars[targets[0]].GetComponent<Pillar>().landingZone.transform.position);
-                Vector3 secondTargetPos = (Vector3)(Pillars[targets[1]].GetComponent<Pillar>().landingZone.transform.position);
-                //beamhits first
-                beamObjects.Add(  Instantiate(beamHit, firstTargetPos, Quaternion.identity)  );
-                beamObjects.Add(  Instantiate(beamHit, secondTargetPos, Quaternion.identity)  );
-                firstTargetPos += new Vector3(0, 0.2f,0);
-                secondTargetPos += new Vector3(0, 0.2f, 0);
-                //then real beams
-                Vector3 laserSource = transform.position + new Vector3(sprite.flipX ? -0.5f : 0.5f, 1.55f, 0);
-                GameObject temp = Instantiate(beam, firstTargetPos, Quaternion.LookRotation(Vector3.forward, laserSource - firstTargetPos)   );
-                temp.transform.localScale = new Vector3(1, Vector3.Distance(laserSource, firstTargetPos)/6, 1);
-                beamObjects.Add(temp);
-                temp = Instantiate(beam, secondTargetPos, Quaternion.LookRotation(Vector3.forward, laserSource - secondTargetPos));
-                temp.transform.localScale = new Vector3(1, Vector3.Distance(laserSource, secondTargetPos) / 6, 1);
-                beamObjects.Add(temp);
+
+				Vector3 laserSource = transform.position + new Vector3(sprite.flipX ? -0.5f : 0.5f, 1.55f, 0);
+				foreach (int i in targets) {
+					//INSTANTIATE BEAMS
+					Vector3 targetPos = (Pillars[i].landingZone.transform.position);
+					//beamhits first
+					GameObject beamHitInst = Instantiate(beamHit, targetPos, Quaternion.identity);
+					targetPos.y += 0.2f;
+					//then real beams
+					GameObject beamInst = Instantiate(beam, targetPos, Quaternion.LookRotation(Vector3.forward, laserSource - targetPos));
+					beamInst.transform.localScale = new Vector3(0, Vector3.Distance(laserSource, targetPos) / 6, 1);
+
+					beamObjects.Add(new Beam(beamInst, beamHitInst));
+				}
                 anim.SetTrigger("StartCharge");
             } else 
             //===if its time to land===
             if (Time.time > phaseStart + phaseDuration) {
                 //chose pillar to land on
-                List<int> ex = new List<int>(curPhase - 1);
-                for (int i = 0; i < 5; i++) {
-                    if (!Pillars[i].unBroken) {
-                        ex.Add(i);
-                    }
-                }
-                landedPillar = SelectPillar(0, 4, ex);
+                landedPillar = SelectPillar(0, Pillars.Length - 1, brokenPillarIndices);
                 actionState = State.LANDINGPREP;
                 targetLoc = new Vector2(Pillars[landedPillar].landingZone.transform.position.x, Pillars[landedPillar].landingZone.transform.position.y + UnityEngine.Random.Range(4, 7));
 
@@ -189,8 +199,8 @@ public class Boss2 : BossBase {
             if (  (CurrHealth < (0.66 * maxHealth) && curPhase <= 1)  ||  (CurrHealth < (0.33 * maxHealth) && curPhase <= 2)  ) {
                 curPhase++;
                 Pillars[landedPillar].Break();
-                phaseStart = Time.time;
-                actionState = State.FLYING;
+				lastAttack = phaseStart = Time.time;
+				actionState = State.FLYING;
                 targetLoc = waypoints[nextWP].transform.position;
                 landedPillar = -1;
                 anim.SetBool("isLanding", false);
@@ -214,7 +224,7 @@ public class Boss2 : BossBase {
 
     //selects a pillar. Exlude must not be larger than the available numbers. Exclude must be sorted
     public int SelectPillar(int min, int max, List<int> exclude) {
-        int targetNum = (int)UnityEngine.Random.Range(min, max - exclude.Count);
+        int targetNum = UnityEngine.Random.Range(min, max - exclude.Count);
         foreach (int ex in exclude) {
             if (targetNum >= ex) {
                 targetNum++;
