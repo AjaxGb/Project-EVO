@@ -77,6 +77,19 @@ public class FallingRock : MonoBehaviour, IKillable {
 		}
 	}
 
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (state == State.GROUNDED) return;
+		Vector2 otherVelocity = coll.attachedRigidbody == null ? Vector2.zero : coll.attachedRigidbody.velocity;
+		Vector2 relativeVelocity = otherVelocity - rb.velocity;
+		if (relativeVelocity.y > minFallSpeed && coll.transform.position.y < this.transform.position.y) {
+			IDamageable damageable = coll.gameObject.GetComponentInParent<IDamageable>();
+			if (damageable != null) {
+				damageable.TakeDamage(damage);
+				if (destructable) Kill();
+			}
+		}
+	}
+
 	public void Kill() {
 		Destroy(transform.gameObject);
 	}
