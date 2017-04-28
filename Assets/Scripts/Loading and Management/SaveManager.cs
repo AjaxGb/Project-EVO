@@ -95,6 +95,11 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 		currentSave.lastSaved = Time.unscaledTime;
 		SceneLoader.loadSaveState = state;
 		SceneManager.LoadScene(SceneLoader.buildIndex);
+		// Move to front
+		if (saveStates.Remove(currentSave)) {
+			saveStates.Insert(0, currentSave);
+			SaveToFile();
+		}
 	}
 
 	public void LoadCurrentSave() {
