@@ -26,6 +26,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float offWallJumpDelay = 0.4f;
     private float lastJumpTime = 0.0f;
     public float damage = 25;
+    public float timeBetweenAttack = 1.0f;
+    float attackTimer;
 
     //checks around player and related
     public GroundCheck groundCheck;
@@ -149,11 +151,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 				DeadUpdate();
 			}
 		}
-        //===INVINCIBILITY TIMER===
+        //===TIMER===
         if (Time.time < lastDamageTaken + invTime) {
             renderer.color = new Color(1, 1, 1, (float)(Math.Sin(Time.time * invFlashSpeed) + 1) * (1 - invMinAlpha) / 2f + invMinAlpha);
         } else {
             renderer.color = Color.white;
+        }
+        if (attackTimer > 0) {
+            attackTimer -= Time.deltaTime;
         }
 
 		//===ACTIVATE OBJECTS===
@@ -166,10 +171,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		}
 
         //===ATTACK===
-        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack && !InAir && actionState == States.NEUTRAL) {
+        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack && !InAir && actionState == States.NEUTRAL && attackTimer <= 0) {
             //attack here
             animator.SetTrigger("Attack");
-
+            attackTimer = timeBetweenAttack;
             
             Collider2D[] thingsHit;
             if (renderer.flipX) {
