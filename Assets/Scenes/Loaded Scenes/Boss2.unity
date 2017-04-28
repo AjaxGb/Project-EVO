@@ -207,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14192285948a58847a65784fa2f68a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  unBroken: 1
   breakDistance: 25
   breakSpeed: 4
   randomShake: 0
@@ -414,7 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14192285948a58847a65784fa2f68a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  unBroken: 1
   breakDistance: 25
   breakSpeed: 4
   randomShake: 0
@@ -552,7 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14192285948a58847a65784fa2f68a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  unBroken: 1
   breakDistance: 25
   breakSpeed: 4
   randomShake: 0
@@ -2254,7 +2254,7 @@ MonoBehaviour:
   phaseDuration: 20
   timeBetweenAttacks: 2
   targets: 0000000000000000
-  chargeTime: 2
+  chargeTime: 1
   damage: 45
   beam: {fileID: 1939821163163678, guid: 7f9062c22ac148d4abde99d006d220ee, type: 2}
   beamHit: {fileID: 1281662266024650, guid: dc996973c7d7bf147b47b4a28fec068f, type: 2}
@@ -2900,7 +2900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14192285948a58847a65784fa2f68a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  unBroken: 1
   breakDistance: 25
   breakSpeed: 4
   randomShake: 0
@@ -3038,7 +3038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14192285948a58847a65784fa2f68a54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  unBroken: 1
   breakDistance: 25
   breakSpeed: 4
   randomShake: 0

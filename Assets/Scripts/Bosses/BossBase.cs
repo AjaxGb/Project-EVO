@@ -24,6 +24,7 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 		} else {
 			StartDead();
 		}
+		SceneLoader.inst.player.LearnSkillForBoss(BossOrderID - 1);
 	}
 
 	public abstract void StartAlive();
