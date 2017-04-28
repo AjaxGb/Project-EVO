@@ -16,11 +16,11 @@ MonoBehaviour:
   bounds:
     serializedVersion: 2
     x: -22.809341
-    y: -51.31826
-    width: 135.9108
-    height: 64.497444
+    y: -51.318264
+    width: 148.38892
+    height: 140.48032
   adjacentScenes:
   - toBI: 7
     connectionPoint: {x: -16.637878, y: -1.6837616}
   - toBI: 9
-    connectionPoint: {x: 104.58747, y: 66.376884}
+    connectionPoint: {x: 120.72639, y: 65.69735}
