@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pillar : MonoBehaviour {
 
-    public bool active = true;
+    public bool unBroken = true;
     public float breakDistance = 25;
     public float breakSpeed;
     public float randomShake;
@@ -14,11 +14,13 @@ public class Pillar : MonoBehaviour {
     bool needToMove = false;
     public GameObject landingZone;
 
+	private Rigidbody2D rb;
+
     Vector2 curV;
     Vector2 dest;
     // Use this for initialization
 	void Start () {
-		
+		rb = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
@@ -27,18 +29,20 @@ public class Pillar : MonoBehaviour {
         if (Vector2.Distance(transform.position, dest) < 0.25 && needToMove) {
             needToMove = false;
         } else if (needToMove) {
-            GetComponent<Rigidbody2D>().velocity = ((dest - (Vector2)transform.position).normalized * breakSpeed) + new Vector2(0, Random.Range(-randomShake, randomShake)) ;
+           rb.velocity = ((dest - (Vector2)transform.position).normalized * breakSpeed) + new Vector2(0, Random.Range(-randomShake, randomShake)) ;
         }
 	}
 
     public void UnBreak() {
-        active = true;
+		if (unBroken) return;
+        unBroken = true;
         needToMove = true;
         dest = new Vector2(transform.position.x, transform.position.y + breakDistance);
     }
 
     public void Break() {
-        active = false;
+		if (!unBroken) return;
+        unBroken = false;
         needToMove = true;
         dest = new Vector2(transform.position.x, transform.position.y - breakDistance);
     }
@@ -53,7 +57,6 @@ public class Pillar : MonoBehaviour {
                 c.gameObject.GetComponent<Player>().TakeDamage(damage);
             }
         }
-
     }
 
 }

@@ -8,6 +8,7 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 
 	public float maxHealth = 140;
     public float CurrHealth { get; private set; }
+	public bool IsDead { get; private set; }
 	public UIAttributeBar healthBar;
 
     public AudioSource audioSource;
@@ -46,6 +47,8 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 	public virtual void OnDamaged() {}
 
 	public void Kill() {
+		if (IsDead) return;
+		IsDead = true;
 		CurrHealth = 0;
 		healthBar.Amount = CurrHealth;
 		int id = BossOrderID;

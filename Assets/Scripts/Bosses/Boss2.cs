@@ -94,7 +94,7 @@ public class Boss2 : BossBase {
                 //select 2 pillars.
                 List<int> ex = new List<int>(curPhase - 1);
                 for (int i = 0; i < 5; i++) {
-                    if (!Pillars[i].active) {
+                    if (!Pillars[i].unBroken) {
                         ex.Add(i);
                     }
                 }
@@ -134,7 +134,7 @@ public class Boss2 : BossBase {
                 //chose pillar to land on
                 List<int> ex = new List<int>(curPhase - 1);
                 for (int i = 0; i < 5; i++) {
-                    if (!Pillars[i].active) {
+                    if (!Pillars[i].unBroken) {
                         ex.Add(i);
                     }
                 }
@@ -201,7 +201,7 @@ public class Boss2 : BossBase {
     public override void OnKilled() {
         //repair pillars on death
         foreach (Pillar p in Pillars) {
-            if (!p.active) {
+            if (!p.unBroken) {
                 p.UnBreak();
             }
         }
