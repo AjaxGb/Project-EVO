@@ -9,18 +9,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77d5e1be52cc06b40a0735f9cb7124a9, type: 3}
-  m_Name: Right2
+  m_Name: Right1.5
   m_EditorClassIdentifier: 
-  sceneName: Right 2
-  buildIndex: 5
+  sceneName: Past Pillar
+  buildIndex: 10
   bounds:
     serializedVersion: 2
-    x: -10.413803
-    y: -37.586075
-    width: 215.63042
-    height: 63.277008
+    x: -90.44412
+    y: -34.471664
+    width: 66.414215
+    height: 60.523026
   adjacentScenes:
-  - toBI: 6
-    connectionPoint: {x: 24.5833, y: -27.032051}
-  - toBI: 10
-    connectionPoint: {x: -4.4440002, y: -2.8507423}
+  - toBI: 4
+    connectionPoint: {x: -83.217834, y: -1.1611824}
+  - toBI: 5
+    connectionPoint: {x: -27.33136, y: -2.0818405}
