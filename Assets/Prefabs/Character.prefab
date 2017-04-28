@@ -381,9 +381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943eedbbbf5a27346b88de05cf55577d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasDoubleJump: 1
-  hasGlide: 1
-  hasAttack: 1
+  hasGlide: 0
+  hasAttack: 0
   inAirSlow: 0.68
   boulderPushSlow: 0.2
   glideSlow: 1
@@ -396,17 +395,18 @@ MonoBehaviour:
   climbSpeed: 2
   offWallJumpDelay: 0.4
   damage: 10
+  timeBetweenAttack: 1
   groundCheck: {fileID: 114196405217533514}
   leftCheck: {fileID: 114226988767314872}
   rightCheck: {fileID: 114186401735270222}
-  maxPullForce: 70
+  maxPullForce: 100
   PlatformDisableTime: 0.3
   realControls: 1
   canJump: 1
   actionState: 0
   deathPhysMaterial: {fileID: 6200000, guid: ddb78e960fca4364f98e49f9220f7053, type: 2}
-  invTime: 0.5
-  invFlashSpeed: 2
+  invTime: 1.2435215
+  invFlashSpeed: 30
   invMinAlpha: 0.2
   HealthBar: {fileID: 0}
   ManaBar: {fileID: 0}
