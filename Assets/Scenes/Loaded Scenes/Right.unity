@@ -108,6 +108,92 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &126758901
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1497049943}
+    m_Modifications:
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 6.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.385
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[2].text
+      value: This is just an Alpha.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[2].duration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[0].text
+      value: Press up to use save points and heal.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[1].text
+      value: Then use up and down to climb.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[1].duration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: highlightDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1752726595771298, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_Name
+      value: Text Spot (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &126758902 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd,
+    type: 2}
+  m_PrefabInternal: {fileID: 126758901}
 --- !u!1 &282418517
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,7 +598,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1497049941}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.379196, y: 121.936966, z: 0}
+  m_LocalPosition: {x: 171.29556, y: -27.18135, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 282418518}
@@ -521,6 +607,7 @@ Transform:
   - {fileID: 904668164}
   - {fileID: 722786045}
   - {fileID: 577929247}
+  - {fileID: 126758902}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

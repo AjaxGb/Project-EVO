@@ -21,6 +21,7 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float maxSpeed = 10f;
     public float walkingAcceleration;
     public float walkingDecceleration;
+    public float airDecceleration;
     public float climbSpeed;
     public float offWallJumpDelay = 0.4f;
     private float lastJumpTime = 0.0f;
@@ -309,18 +310,18 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
             }
         }
 
-        if (control.GetAxis(AxisId.HORIZONTAL) == 0 && !InAir) {
+        if (control.GetAxis(AxisId.HORIZONTAL) == 0) {
             animator.SetInteger("pushDirection", 0);
             animator.SetBool("isidle", true);
             //if player is moving left, add velocity to the right, but stop at 0
             if (body.velocity.x < 0) {
-                body.velocity = new Vector2(body.velocity.x + walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
+                body.velocity = new Vector2(body.velocity.x + (InAir ? airDecceleration : walkingDecceleration) * Time.fixedDeltaTime, body.velocity.y);
                 if (body.velocity.x > 0) {
                     body.velocity = new Vector2(0, body.velocity.y);
                 }
                 //if player is moving right, add velocity to the left, but stop at 0
             } else if (body.velocity.x > 0) {
-                body.velocity = new Vector2(body.velocity.x - walkingDecceleration * Time.fixedDeltaTime, body.velocity.y);
+                body.velocity = new Vector2(body.velocity.x - (InAir ? airDecceleration : walkingDecceleration) * Time.fixedDeltaTime, body.velocity.y);
                 if (body.velocity.x < 0) {
                     body.velocity = new Vector2(0, body.velocity.y);
                 }

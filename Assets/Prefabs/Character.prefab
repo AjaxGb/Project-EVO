@@ -392,6 +392,7 @@ MonoBehaviour:
   maxSpeed: 5
   walkingAcceleration: 40
   walkingDecceleration: 40
+  airDecceleration: 5
   climbSpeed: 2
   offWallJumpDelay: 0.4
   damage: 25
