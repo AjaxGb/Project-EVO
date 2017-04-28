@@ -3,10 +3,13 @@ using System.Linq;
 using System.Collections.Generic;
 using System;
 
+public delegate void LearnSkill();
+
 public class Player : MonoBehaviour, IKillable, IDamageable {
 
-    //upgrades
-    public bool hasDoubleJump;
+	//upgrades
+	private int _nextSkillToLearn;
+    public const bool hasDoubleJump = true;
     public bool hasGlide;
     public bool hasAttack;
 
@@ -26,6 +29,8 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
     public float offWallJumpDelay = 0.4f;
     private float lastJumpTime = 0.0f;
     public float damage = 25;
+    public float timeBetweenAttack = 1.0f;
+    float attackTimer;
 
     //checks around player and related
     public GroundCheck groundCheck;
@@ -123,7 +128,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		if (realControls) {
 			control = new ControlsReal();
 		}
-        layerBits = 1 << LayerMask.NameToLayer("Player");
+
+		LearnSkillForBoss(BossBase.highestKilled);
+
+		layerBits = 1 << LayerMask.NameToLayer("Player");
         renderer = GetComponent<SpriteRenderer>();
 		body = GetComponent<Rigidbody2D>();
 		collider = GetComponent<Collider2D>();
@@ -149,11 +157,14 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 				DeadUpdate();
 			}
 		}
-        //===INVINCIBILITY TIMER===
+        //===TIMER===
         if (Time.time < lastDamageTaken + invTime) {
             renderer.color = new Color(1, 1, 1, (float)(Math.Sin(Time.time * invFlashSpeed) + 1) * (1 - invMinAlpha) / 2f + invMinAlpha);
         } else {
             renderer.color = Color.white;
+        }
+        if (attackTimer > 0) {
+            attackTimer -= Time.deltaTime;
         }
 
 		//===ACTIVATE OBJECTS===
@@ -166,10 +177,10 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
 		}
 
         //===ATTACK===
-        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack && !InAir && actionState == States.NEUTRAL) {
+        if (control.GetButtonDown(ButtonId.ATTACK) && hasAttack && !InAir && actionState == States.NEUTRAL && attackTimer <= 0) {
             //attack here
             animator.SetTrigger("Attack");
-
+            attackTimer = timeBetweenAttack;
             
             Collider2D[] thingsHit;
             if (renderer.flipX) {
@@ -479,23 +490,40 @@ public class Player : MonoBehaviour, IKillable, IDamageable {
         animator.SetBool("isGrab", false);
     }
 
-    //===NEW SKILL TRANSITIONS===
-    public void LearnClaws() {
-        hasAttack = true;
-        animator.SetTrigger("GainClaws");
+	public static readonly LearnSkill[] learnSkills = {
+		LearnClaws, // Boss 1
+		LearnWings, // Boss 2
+		LearnTime,  // Boss 3
+	};
+
+	//===NEW SKILL TRANSITIONS===
+	public void LearnSkillForBoss(int bossID) {
+		int maxSkill = Mathf.Min(learnSkills.Length, bossID);
+		if (_nextSkillToLearn < maxSkill) {
+			for (int i = _nextSkillToLearn; i < maxSkill; i++) {
+				learnSkills[i]();
+			}
+			_nextSkillToLearn = maxSkill;
+		}
+	}
+	
+	public static void LearnClaws() {
+		Player p = SceneLoader.inst.player;
+        p.hasAttack = true;
+        p.animator.SetTrigger("GainClaws");
     }
 
-    public void LearnWings() {
-        hasDoubleJump = true;
-        hasGlide = true;
-        animator.SetTrigger("GainWings");
+    public static void LearnWings() {
+		Player p = SceneLoader.inst.player;
+        p.hasGlide = true;
+        p.animator.SetTrigger("GainWings");
     }
 
-    public void LearnTime() {
-        //hasTime = true;
-        animator.SetTrigger("GainTime");
+    public static void LearnTime() {
+		Player p = SceneLoader.inst.player;
+		//hasTime = true;
+		p.animator.SetTrigger("GainTime");
     }
-
 
     //===DAMAGE AND DEATH===
     public float TakeDamage(float d) {

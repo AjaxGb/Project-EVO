@@ -395,7 +395,7 @@ MonoBehaviour:
   airDecceleration: 5
   climbSpeed: 2
   offWallJumpDelay: 0.4
-  damage: 25
+  damage: 10
   groundCheck: {fileID: 114196405217533514}
   leftCheck: {fileID: 114226988767314872}
   rightCheck: {fileID: 114186401735270222}
