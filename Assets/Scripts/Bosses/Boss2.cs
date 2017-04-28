@@ -35,8 +35,10 @@ public class Boss2 : BossBase {
     public State actionState = State.FLYING;
     private int landedPillar = -1; //-1 if in air, pillar number if landed
 
-    public MovingDoor deathDoor;
-    private Rigidbody2D rb;
+	private bool fightStarted = false;
+	public MovingDoor noEscapeDoor;
+	public MovingDoor noEscapeLedge;
+	private Rigidbody2D rb;
     private new Collider2D collider;
     public SpriteRenderer sprite;
     public Animator anim;
@@ -52,16 +54,22 @@ public class Boss2 : BossBase {
 
     public override void StartDead() {
         Destroy(gameObject);
-        deathDoor.IsOpened = true;
-        deathDoor.SkipAnimation();
+        //deathDoor.IsOpened = true;
+        //deathDoor.SkipAnimation();
     }
 
-    // Update is called once per frame
-    void Update () {
-        
-	}
-
     void FixedUpdate () {
+		if (!fightStarted) {
+			if (SceneLoader.IsInCurrentScene(gameObject)) {
+				fightStarted = true;
+				noEscapeDoor.IsOpened = false;
+				noEscapeLedge.IsOpened = false;
+			} else {
+				// Do not move until player enters room.
+				return;
+			}
+		}
+
         //if targets have already been selected and the attack is charged, attack em
         if (chargeStart != -1 && Time.time > chargeStart + chargeTime) {
 
@@ -199,8 +207,9 @@ public class Boss2 : BossBase {
         }
         anim.SetTrigger("death");
         Destroy(gameObject, 4f);
-        //deathDoor.IsOpened = true;
-        collider.enabled = false;
+		noEscapeDoor.IsOpened = true;
+		noEscapeLedge.IsOpened = true;
+		collider.enabled = false;
     }
 
     //selects a pillar. Exlude must not be larger than the available numbers. Exclude must be sorted
