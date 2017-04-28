@@ -52,13 +52,11 @@ public class Boss2 : BossBase {
     private new Collider2D collider;
     public SpriteRenderer sprite;
     public Animator anim;
-    private Vector2 curV;
 
     // Use this for initialization
     public override void StartAlive() {
         targetLoc = waypoints[0].transform.position;
         rb = GetComponent<Rigidbody2D>();
-        phaseStart = Time.time;
         collider = GetComponent<Collider2D>();
     }
 
@@ -85,6 +83,7 @@ public class Boss2 : BossBase {
 		if (!fightStarted) {
 			if (SceneLoader.IsInCurrentScene(gameObject)) {
 				fightStarted = true;
+				phaseStart = Time.time;
 				noEscapeDoor.IsOpened = false;
 				noEscapeLedge.IsOpened = false;
 			} else {
