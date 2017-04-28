@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77d5e1be52cc06b40a0735f9cb7124a9, type: 3}
   m_Name: Boss1
   m_EditorClassIdentifier: 
-  sceneName: Boss 1
+  sceneName: The Claw
   buildIndex: 6
   bounds:
     serializedVersion: 2
