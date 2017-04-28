@@ -84,6 +84,7 @@ public class SceneLoader : MonoBehaviour {
 		if (loadSaveState != null && currScene.root) {
 			player.transform.position = (Vector2)currScene.root.transform.position + loadSaveState.posInScene;
 			cameraFollow.WarpToTarget();
+			FadeSceneryManager.Inst.SkipFades();
 			loadSaveState = null;
 		}
 		EnsureAdjacency();

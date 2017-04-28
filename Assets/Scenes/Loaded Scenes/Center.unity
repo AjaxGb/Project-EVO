@@ -613,7 +613,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1037809190}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.1532135, y: -2.3929615, z: 0}
+  m_LocalPosition: {x: -1.7, y: -2.3929615, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2142734054}
@@ -634,10 +634,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0981e48a67d294d8b59618293940d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useXY: 1
-  scale: 0.8
-  scaleX: 0.8
-  scaleY: 0.5
+  renderers: []
+  movementScale: {x: 0.8, y: 0.5}
+  uniqueToSceneID: 1
 --- !u!1 &1084267205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1091,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1834479110}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6.1532135, y: -2.3929615, z: 0}
+  m_LocalPosition: {x: -1.1, y: -2.3929615, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 311789927}
@@ -1112,10 +1111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0981e48a67d294d8b59618293940d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useXY: 1
-  scale: 0
-  scaleX: 0.92
-  scaleY: 0.6
+  renderers: []
+  movementScale: {x: 0.92, y: 0.6}
+  uniqueToSceneID: 2
 --- !u!1 &1879510048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,6 +1236,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33c61856d9646b949a3a1a61259723ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dieOnFallOnly: 0
+  minFallSpeed: -2
 --- !u!61 &1950477073
 BoxCollider2D:
   m_ObjectHideFlags: 0
