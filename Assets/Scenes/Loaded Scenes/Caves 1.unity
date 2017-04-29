@@ -328,6 +328,78 @@ Transform:
   m_PrefabParentObject: {fileID: 4752046673342634, guid: e80febc0149b7ac4abbc9499e46df917,
     type: 2}
   m_PrefabInternal: {fileID: 185120829}
+--- !u!1001 &208852049
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 999077975}
+    m_Modifications:
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 27.662659
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -2.4485703
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[2].text
+      value: This is just an Alpha.
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[2].duration
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[0].text
+      value: Now that you've defeated that boss, you have a claw attack!
+      objectReference: {fileID: 0}
+    - target: {fileID: 114394548681892288, guid: 99f849a76a952ce46bf64fd02959d4bd,
+        type: 2}
+      propertyPath: script.Array.data[1].text
+      value: Use left click to attack.
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 99f849a76a952ce46bf64fd02959d4bd, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &208852050 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4254334231926250, guid: 99f849a76a952ce46bf64fd02959d4bd,
+    type: 2}
+  m_PrefabInternal: {fileID: 208852049}
 --- !u!1 &295688935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,6 +1164,7 @@ Transform:
   - {fileID: 597659118}
   - {fileID: 336720133}
   - {fileID: 538143797}
+  - {fileID: 208852050}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
