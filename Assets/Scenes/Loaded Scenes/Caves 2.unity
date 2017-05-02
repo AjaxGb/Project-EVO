@@ -7723,7 +7723,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: 7155ff5779ef4a445ad39cd8f8c07601, type: 2}
-  respawnPoint: {x: -9.717316, y: -10.274353}
+  respawnPoint: {x: 65.73305, y: 22.959732}
 --- !u!4 &1106123419
 Transform:
   m_ObjectHideFlags: 0
@@ -9350,6 +9350,11 @@ Prefab:
         type: 2}
       propertyPath: destructable
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114169780812866044, guid: 2c2c676cb75658947a2b2a5ee28ac7d9,
+        type: 2}
+      propertyPath: minFallSpeed
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2c2c676cb75658947a2b2a5ee28ac7d9, type: 2}
