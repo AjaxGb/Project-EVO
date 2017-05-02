@@ -216,6 +216,10 @@ MonoBehaviour:
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 726047228}
   flashTime: 0.7
+  maxFlashAmount: 0.5
+  renderers:
+  - {fileID: 32724954}
+  - {fileID: 1513637653}
 --- !u!61 &32724953
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -404,6 +408,10 @@ MonoBehaviour:
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1951608749}
   flashTime: 0.7
+  maxFlashAmount: 0.5
+  renderers:
+  - {fileID: 52990455}
+  - {fileID: 1178994546}
 --- !u!61 &52990454
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -523,6 +531,10 @@ MonoBehaviour:
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1158384435}
   flashTime: 0.7
+  maxFlashAmount: 0.5
+  renderers:
+  - {fileID: 65829042}
+  - {fileID: 1425376810}
 --- !u!61 &65829041
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2198,7 +2210,8 @@ MonoBehaviour:
   timeBetweenAttacks: 2
   targets: 0000000000000000
   chargeTime: 1
-  damage: 45
+  damageExplosion: 30
+  damageSecondary: 20
   beam: {fileID: 1939821163163678, guid: 7f9062c22ac148d4abde99d006d220ee, type: 2}
   beamHit: {fileID: 1281662266024650, guid: dc996973c7d7bf147b47b4a28fec068f, type: 2}
   waypoints:
@@ -2852,6 +2865,10 @@ MonoBehaviour:
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1366533479}
   flashTime: 0.7
+  maxFlashAmount: 0.5
+  renderers:
+  - {fileID: 1657141320}
+  - {fileID: 1290621820}
 --- !u!61 &1657141319
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2971,6 +2988,10 @@ MonoBehaviour:
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1830314798}
   flashTime: 0.7
+  maxFlashAmount: 0.5
+  renderers:
+  - {fileID: 1675732010}
+  - {fileID: 2213409}
 --- !u!61 &1675732009
 BoxCollider2D:
   m_ObjectHideFlags: 0

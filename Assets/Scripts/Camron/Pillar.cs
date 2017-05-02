@@ -87,23 +87,27 @@ public class Pillar : MonoBehaviour {
 		moveEndTime = Time.time + breakTime;
     }
 
-    public void Blast(float damage) {
+    public void Blast(float explosionDamage, float contactDamage) {
         //blast everything on the pillar
         Destroy(Instantiate(explosion, landingZone.transform).gameObject, 4);
+		flashEndTime = Time.time + flashTime;
 
-        List<Collider2D> thingsHit = new List<Collider2D>(
-			Physics2D.OverlapCircleAll(landingZone.transform.position + new Vector3(0, explosionHeight, 0), explosionRadius));
-		Vector2 touchingRange = new Vector2(0.05f, 0.05f);
-		thingsHit.AddRange(
-			Physics2D.OverlapAreaAll((Vector2)collider.bounds.min - touchingRange, (Vector2)collider.bounds.max + touchingRange));
-
-        foreach (Collider2D c in thingsHit) {
+		Collider2D[] caughtInExplosion = Physics2D.OverlapCircleAll(landingZone.transform.position + new Vector3(0, explosionHeight, 0), explosionRadius);
+		foreach (Collider2D c in caughtInExplosion) {
             if (c.gameObject.CompareTag("Player")) {
-                c.gameObject.GetComponent<Player>().TakeDamage(damage);
+                c.gameObject.GetComponent<Player>().TakeDamage(explosionDamage);
+				return;
             }
         }
 
-		flashEndTime = Time.time + flashTime;
-    }
+		Vector2 touchingRange = new Vector2(0.05f, 0.05f);
+		Collider2D[] touchingPillar = Physics2D.OverlapAreaAll((Vector2)collider.bounds.min - touchingRange, (Vector2)collider.bounds.max + touchingRange);
+		foreach (Collider2D c in touchingPillar) {
+			if (c.gameObject.CompareTag("Player")) {
+				c.gameObject.GetComponent<Player>().TakeDamage(contactDamage);
+				return;
+			}
+		}
+	}
 
 }

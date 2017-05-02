@@ -31,7 +31,8 @@ public class Boss2 : BossBase {
     float lastAttack;
     public int[] targets = new int[2];
     public float chargeTime;
-    public float damage = 45;
+    public float damageExplosion = 30;
+	public float damageSecondary = 20;
     public GameObject beam;
     public GameObject beamHit;
     private List<Beam> beamObjects = new List<Beam>(2);
@@ -97,7 +98,7 @@ public class Boss2 : BossBase {
 
             //pew pew
             foreach (int t in targets) {
-                Pillars[t].Blast(damage);
+                Pillars[t].Blast(damageExplosion, damageSecondary);
             }
             //stop charging lasers
             chargeStart = -1;
