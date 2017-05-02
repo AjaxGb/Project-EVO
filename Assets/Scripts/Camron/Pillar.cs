@@ -14,12 +14,24 @@ public class Pillar : MonoBehaviour {
     public GameObject explosion;
     bool needToMove = false;
     public GameObject landingZone;
+
+	public float flashTime = 0.7f;
+	public float maxFlashAmount = 0.5f;
+	private float flashEndTime;
+	private int flashPropID;
+
+	public SpriteRenderer[] renderers;
+	private new Collider2D collider;
 	
 	Vector2 startPos;
 	float moveEndTime;
     // Use this for initialization
 	void Start () {
 		startPos = transform.position;
+		if (renderers == null || renderers.Length == 0) renderers = GetComponentsInChildren<SpriteRenderer>();
+		collider = GetComponent<Collider2D>();
+		flashEndTime = float.NegativeInfinity;
+		flashPropID = Shader.PropertyToID("_FlashAmount");
 	}
 	
 	// Update is called once per frame
@@ -36,6 +48,29 @@ public class Pillar : MonoBehaviour {
 				startPos.x + Random.Range(-randomShake, randomShake),
 				Mathf.Lerp(startPos.y - breakDistance, startPos.y, percentHeight));
         }
+
+		if (flashEndTime > float.NegativeInfinity) {
+
+			MaterialPropertyBlock block = new MaterialPropertyBlock();
+
+			if (flashEndTime > Time.time) {
+				float flashAmount = (flashEndTime - Time.time) / flashTime * maxFlashAmount;
+
+				foreach (SpriteRenderer r in renderers) {
+					r.GetPropertyBlock(block);
+					block.SetFloat(flashPropID, flashAmount);
+					r.SetPropertyBlock(block);
+				}
+			} else {
+				foreach (SpriteRenderer r in renderers) {
+					r.GetPropertyBlock(block);
+					block.SetFloat(flashPropID, 0);
+					r.SetPropertyBlock(block);
+				}
+
+				flashEndTime = float.NegativeInfinity;
+			}
+		}
 	}
 
     public void UnBreak() {
@@ -54,14 +89,21 @@ public class Pillar : MonoBehaviour {
 
     public void Blast(float damage) {
         //blast everything on the pillar
-        Collider2D[] thingsHit;
         Destroy(Instantiate(explosion, landingZone.transform).gameObject, 4);
-        thingsHit = Physics2D.OverlapCircleAll(landingZone.transform.position + new Vector3(0, explosionHeight, 0), explosionRadius);
+
+        List<Collider2D> thingsHit = new List<Collider2D>(
+			Physics2D.OverlapCircleAll(landingZone.transform.position + new Vector3(0, explosionHeight, 0), explosionRadius));
+		Vector2 touchingRange = new Vector2(0.05f, 0.05f);
+		thingsHit.AddRange(
+			Physics2D.OverlapAreaAll((Vector2)collider.bounds.min - touchingRange, (Vector2)collider.bounds.max + touchingRange));
+
         foreach (Collider2D c in thingsHit) {
             if (c.gameObject.CompareTag("Player")) {
                 c.gameObject.GetComponent<Player>().TakeDamage(damage);
             }
         }
+
+		flashEndTime = Time.time + flashTime;
     }
 
 }

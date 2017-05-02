@@ -150,7 +150,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -215,6 +215,7 @@ MonoBehaviour:
   explosionRadius: 1.5
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 726047228}
+  flashTime: 0.7
 --- !u!61 &32724953
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -253,7 +254,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -402,6 +403,7 @@ MonoBehaviour:
   explosionRadius: 1.5
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1951608749}
+  flashTime: 0.7
 --- !u!61 &52990454
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -440,7 +442,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -520,6 +522,7 @@ MonoBehaviour:
   explosionRadius: 1.5
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1158384435}
+  flashTime: 0.7
 --- !u!61 &65829041
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -558,7 +561,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1929,7 +1932,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2118,7 +2121,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2505,7 +2508,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2643,7 +2646,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2848,6 +2851,7 @@ MonoBehaviour:
   explosionRadius: 1.5
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1366533479}
+  flashTime: 0.7
 --- !u!61 &1657141319
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2886,7 +2890,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2966,6 +2970,7 @@ MonoBehaviour:
   explosionRadius: 1.5
   explosion: {fileID: 1350648332468644, guid: a65be3182d08f964c92faed1dca05436, type: 2}
   landingZone: {fileID: 1830314798}
+  flashTime: 0.7
 --- !u!61 &1675732009
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3004,7 +3009,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 48cc24b60b8878248a297d5cc04c377a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

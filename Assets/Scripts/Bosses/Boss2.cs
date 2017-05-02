@@ -117,7 +117,7 @@ public class Boss2 : BossBase {
 				//select 2 pillars.
 				List<int> exclude = new List<int>(brokenPillarIndices);
 				for (int i = 0; i < targets.Length; i++) {
-					targets[i] = SelectPillar(0, Pillars.Length, exclude);
+					targets[i] = SelectPillar(Pillars.Length, exclude);
 					exclude.AddSorted(targets[i]);
 				}
 				chargeStart = Time.time;
@@ -148,7 +148,7 @@ public class Boss2 : BossBase {
             //===if its time to land===
             if (Time.time > phaseStart + phaseDuration) {
                 //chose pillar to land on
-                landedPillar = SelectPillar(0, Pillars.Length, brokenPillarIndices);
+                landedPillar = SelectPillar(Pillars.Length, brokenPillarIndices);
                 actionState = State.LANDINGPREP;
                 targetLoc = new Vector2(Pillars[landedPillar].landingZone.transform.position.x, Pillars[landedPillar].landingZone.transform.position.y + UnityEngine.Random.Range(4, 7));
 
@@ -224,9 +224,10 @@ public class Boss2 : BossBase {
 		collider.enabled = false;
     }
 
-    //selects a pillar. Exlude must not be larger than the available numbers. Exclude must be sorted
-    public int SelectPillar(int min, int max, List<int> exclude) {
-        int targetNum = UnityEngine.Random.Range(min, max - exclude.Count);
+    //selects a pillar. Exlude must not be larger than the available numbers. Exclude and avoid must be sorted
+    public int SelectPillar(int count, List<int> exclude) {
+		int realCount = count - exclude.Count;
+        int targetNum = UnityEngine.Random.Range(0, realCount);
         foreach (int ex in exclude) {
             if (targetNum >= ex) {
                 targetNum++;

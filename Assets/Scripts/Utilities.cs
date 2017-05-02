@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +15,17 @@ public static class Utilities {
 		Debug.DrawLine(topL, botL, color);
 		Debug.DrawLine(topR, botR, color);
 		Debug.DrawLine(botL, botR, color);
+	}
+
+	public static int RandomWeighted(float[] weights) {
+		float randTarget = UnityEngine.Random.Range(0f, weights.Sum());
+		float total = 0;
+		int result;
+		for (result = 0; result < weights.Length; result++) {
+			total += weights[result];
+			if (total >= randTarget) break;
+		}
+		return result;
 	}
 
 	public static Rect TransformRect(this Vector3 origin, Rect rect) {
