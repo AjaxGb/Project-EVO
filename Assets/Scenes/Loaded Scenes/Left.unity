@@ -1348,6 +1348,8 @@ MonoBehaviour:
     duration: 3
   - text: Whatever this is, it can't be good.
     duration: 2
+  - text: I'd better go see if anyone needs help.
+    duration: 3
 --- !u!4 &1444518285
 Transform:
   m_ObjectHideFlags: 0
