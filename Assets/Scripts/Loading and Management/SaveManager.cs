@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Linq;
 
 [Serializable]
 public class SaveState {
@@ -14,6 +15,7 @@ public class SaveState {
 	public int currSceneBI;
 	public Vector2 posInScene;
 	public int lastBossBeaten;
+	public int[] scenesVisited = new int[0];
 
 	public static string CurrentDateTimeString {
 		get { return DateTime.Now.ToString("MMMM dd, yyyy\nhh:mm:ss tt"); }
@@ -55,7 +57,7 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 
 		try {
 			JsonUtility.FromJsonOverwrite(File.ReadAllText(savePath), this);
-		} catch {
+		} catch (FileNotFoundException) {
 			saveStates = new List<SaveState>();
 			SaveToFile();
 		}
@@ -76,6 +78,7 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 		currentSave.posInScene = savePos - (Vector2)SceneLoader.inst.currScene.root.transform.position;
 		currentSave.lastBossBeaten = BossBase.highestKilled;
 		currentSave.lastSaved = Time.unscaledTime;
+		currentSave.scenesVisited = SceneLoader.scenesVisited.OrderBy(i => i).ToArray();
 		// Move to front
 		saveStates.Remove(currentSave);
 		saveStates.Insert(0, currentSave);
@@ -91,6 +94,8 @@ public sealed class SaveManager : IEnumerable<SaveState> {
 	public void LoadState(SaveState state) {
 		if (state == null) throw new ArgumentNullException("state");
 		BossBase.highestKilled = state.lastBossBeaten;
+		SceneLoader.scenesVisited.Clear();
+		SceneLoader.scenesVisited.UnionWith(state.scenesVisited);
 		currentSave = state;
 		currentSave.lastSaved = Time.unscaledTime;
 		SceneLoader.loadSaveState = state;

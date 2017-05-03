@@ -37,6 +37,8 @@ public class SceneRootEditor : Editor {
 	SerializedProperty sceneNameProp;
 	SerializedProperty buildIndexProp;
 	SerializedProperty boundsProp;
+	SerializedProperty playerEnterProp;
+	SerializedProperty playerLeftProp;
 	List<SceneAdjacency> adjacentScenesList;
 
 	void OnEnable() {
@@ -45,6 +47,8 @@ public class SceneRootEditor : Editor {
 
 		sceneInfoProp = serializedObject.FindProperty("sceneInfo");
 		respawnPointProp = serializedObject.FindProperty("respawnPoint");
+		playerEnterProp = serializedObject.FindProperty("playerEntered");
+		playerLeftProp = serializedObject.FindProperty("playerLeft");
 
 		serializedObject.Update();
 		if (sceneInfoProp.objectReferenceValue) {
@@ -98,6 +102,9 @@ public class SceneRootEditor : Editor {
 			boundsProp.rectValue = EditorGUILayout.RectField(boundsProp.rectValue);
 		}
 		EditorGUILayout.EndHorizontal();
+
+		EditorGUILayout.PropertyField(playerEnterProp);
+		EditorGUILayout.PropertyField(playerLeftProp);
 
 		EditorGUILayout.LabelField("Adjacent Scenes");
 		SceneAdjacency testAdj = new SceneAdjacency(0, Vector2.zero);

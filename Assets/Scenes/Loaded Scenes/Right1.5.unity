@@ -678,7 +678,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4021070758507408, guid: 0fd6577adc395ce409dbaf1c4cf12c74, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -5.687393
+      value: -5.8
       objectReference: {fileID: 0}
     - target: {fileID: 4021070758507408, guid: 0fd6577adc395ce409dbaf1c4cf12c74, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1477,7 +1477,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: 8bbbc8d150b560d428a6745553258c24, type: 2}
-  respawnPoint: {x: -87.43277, y: -3.4997597}
+  respawnPoint: {x: -47.543762, y: 5.5977306}
+  playerEntered:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneRoot+SceneEnteredEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  playerLeft:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneRoot+SceneLeftEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!4 &1981308643
 Transform:
   m_ObjectHideFlags: 0

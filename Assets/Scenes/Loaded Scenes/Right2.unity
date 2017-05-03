@@ -624,6 +624,48 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6011505, y: 2.3295097}
   m_EdgeRadius: 0
+--- !u!1 &512049188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 512049189}
+  - component: {fileID: 512049190}
+  m_Layer: 0
+  m_Name: Thoughts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &512049189
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 512049188}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1224205357}
+  m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &512049190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 512049188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1645e67336befb42ac1caedb838f0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text:
+  - No...
 --- !u!1 &552662850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,6 +1227,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: 87c1956145b26a04aa370f17d5277d69, type: 2}
   respawnPoint: {x: 21.668848, y: 2.5252151}
+  playerEntered:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 512049190}
+        m_MethodName: OnSceneEntered
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SceneRoot+SceneEnteredEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  playerLeft:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneRoot+SceneLeftEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!4 &1224205357
 Transform:
   m_ObjectHideFlags: 0
@@ -1216,6 +1279,7 @@ Transform:
   - {fileID: 101283310}
   - {fileID: 1636516846}
   - {fileID: 1492836602}
+  - {fileID: 512049189}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

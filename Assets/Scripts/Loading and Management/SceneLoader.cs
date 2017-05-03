@@ -12,11 +12,14 @@ public class SceneLoader : MonoBehaviour {
 	public Player player;
 	public CameraFollow cameraFollow;
 	public SceneInfo currScene;
+	public SceneInfo oldCurrScene;
 
 	private bool currSceneLoaded = false;
 	private HashSet<SceneInfo> _activeScenes = new HashSet<SceneInfo>();
 	private Dictionary<SceneInfo, Vector2> _worldPositions = new Dictionary<SceneInfo, Vector2>();
 	private HashSet<SceneInfo> _justLoaded   = new HashSet<SceneInfo>();
+
+	public static HashSet<int> scenesVisited = new HashSet<int>();
 
 	// START
 	private void Start() {
@@ -63,7 +66,7 @@ public class SceneLoader : MonoBehaviour {
 		}
 
 		if (currScene == null) return;
-		currScene = GetCurrScene();
+		if (currSceneLoaded) currScene = GetCurrScene();
 
 		if (!currSceneLoaded && currScene.file.isLoaded) {
 			// Was in unloaded scene, now loaded
@@ -79,6 +82,15 @@ public class SceneLoader : MonoBehaviour {
 				_activeScenes.Add(currScene);
 			}
 			return;
+		}
+
+		if (currScene != oldCurrScene && currScene.root) {
+			if (oldCurrScene != null && oldCurrScene.root != null) {
+				oldCurrScene.root.playerLeft.Invoke(currScene);
+			}
+			bool isNewVisit = scenesVisited.Add(currScene.buildIndex);
+			currScene.root.playerEntered.Invoke(oldCurrScene, isNewVisit);
+			oldCurrScene = currScene;
 		}
 
 		if (loadSaveState != null && currScene.root) {
@@ -101,6 +113,10 @@ public class SceneLoader : MonoBehaviour {
 			_justLoaded.Add(si);
 			si.file = scene;
 		}
+	}
+
+	public bool IsSceneVisited(int buildIndex) {
+		return scenesVisited.Contains(buildIndex);
 	}
 
 	private SceneInfo GetCurrScene() {
