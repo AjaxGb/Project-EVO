@@ -9,6 +9,7 @@ public class MainMenuManager : MonoBehaviour {
 		MAIN = 0,
 		LOAD = 1,
 		NAME_GAME = 2,
+		CREDITS = 3,
 	}
 
 	public Animator menuAnimator;
@@ -47,6 +48,10 @@ public class MainMenuManager : MonoBehaviour {
 
 	public void OpenGameNamingMenu() {
 		menuAnimator.SetInteger(menuStateID, (int)MenuState.NAME_GAME);
+	}
+
+	public void OpenCreditsMenu() {
+		menuAnimator.SetInteger(menuStateID, (int)MenuState.CREDITS);
 	}
 
 	public void QuitGame() {
