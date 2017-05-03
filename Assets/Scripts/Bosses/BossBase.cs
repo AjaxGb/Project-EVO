@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
 
@@ -14,6 +15,7 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
     public AudioSource audioSource;
     public AudioClip deathSound;
     public AudioClip hurtSound;
+	public UnityEvent deathEvent = new UnityEvent();
 
     private void Start() {
         healthBar.MaxAmount = maxHealth;
@@ -60,6 +62,7 @@ public abstract class BossBase : MonoBehaviour, IDamageable, IKillable {
         audioSource.clip = deathSound;
         audioSource.Play();
         OnKilled();
+		deathEvent.Invoke();
 	}
 
 	public virtual void OnKilled() {}

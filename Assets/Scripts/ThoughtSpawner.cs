@@ -2,13 +2,17 @@
 
 public class ThoughtSpawner : MonoBehaviour {
 
-	public string[] text;
+	public Thought[] text;
 
 	public void OnSceneEntered(SceneInfo old, bool firstVisit) {
 		if (firstVisit) {
-			foreach (string t in text) {
-				ThoughtManager.Inst.AddThought(t);
-			}
+			PlayThought();
+		}
+	}
+
+	public void PlayThought() {
+		foreach (Thought t in text) {
+			ThoughtManager.Inst.AddThought(t);
 		}
 	}
 }

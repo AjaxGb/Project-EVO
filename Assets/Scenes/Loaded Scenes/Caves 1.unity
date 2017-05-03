@@ -206,6 +206,59 @@ Transform:
   m_PrefabParentObject: {fileID: 4752046673342634, guid: e80febc0149b7ac4abbc9499e46df917,
     type: 2}
   m_PrefabInternal: {fileID: 138065451}
+--- !u!1 &143125636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 143125637}
+  - component: {fileID: 143125638}
+  m_Layer: 0
+  m_Name: Thoughts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &143125637
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 143125636}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 999077975}
+  m_RootOrder: 19
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &143125638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 143125636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1645e67336befb42ac1caedb838f0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text:
+  - text: Ever since I was little I was able to imitate other creatures in the village
+      by copying their looks or talents.
+    duration: 3
+  - text: I always thought it was funny, but it always seemed to make the rest of
+      the village uneasy, and even angry.
+    duration: 3
+  - text: "So I stopped\u2026 But this is different now. I need these traits. I need
+      to hold onto them."
+    duration: 3
+  - text: "If the increasing amount of destruction along the path is any indication,
+      there\u2019s plenty more where this first batch of monsters came from."
+    duration: 4
 --- !u!4 &145388972 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4206054348108490, guid: 778d56fd87fd4b9458099d7ed9e45d2f,
@@ -1136,6 +1189,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: ecf13c9c38f8a4447b92eda097b6154d, type: 2}
   respawnPoint: {x: 53.33432, y: -1.5834122}
+  playerEntered:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 143125638}
+        m_MethodName: OnSceneEntered
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: SceneRoot+SceneEnteredEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  playerLeft:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneRoot+SceneLeftEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!4 &999077975
 Transform:
   m_ObjectHideFlags: 0
@@ -1165,6 +1239,7 @@ Transform:
   - {fileID: 336720133}
   - {fileID: 538143797}
   - {fileID: 208852050}
+  - {fileID: 143125637}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

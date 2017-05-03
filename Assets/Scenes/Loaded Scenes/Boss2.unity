@@ -2197,6 +2197,22 @@ MonoBehaviour:
   audioSource: {fileID: 1323451910}
   deathSound: {fileID: 8300000, guid: 68fcbdb9aad6b744da99785a27a0985e, type: 3}
   hurtSound: {fileID: 8300000, guid: e68c2c5a369c5214398a865b8c12704e, type: 3}
+  deathEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1856232924}
+        m_MethodName: PlayThought
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
   Pillars:
   - {fileID: 32724952}
   - {fileID: 1657141318}
@@ -3217,6 +3233,57 @@ Transform:
   m_Father: {fileID: 1675732011}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1856232922
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1856232923}
+  - component: {fileID: 1856232924}
+  m_Layer: 0
+  m_Name: Thoughts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1856232923
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1856232922}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1925766542}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1856232924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1856232922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1645e67336befb42ac1caedb838f0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text:
+  - text: "Two down. I\u2019ve found myself growing conflicted about all of this."
+    duration: 3
+  - text: "Deep down I know it\u2019s for the greater good. It has to be."
+    duration: 3
+  - text: "I\u2019m beginning to feel different. I can\u2019t shake the feeling that
+      holding on to these transformations is changing me in more ways than one."
+    duration: 3
+  - text: "I\u2019ve never intentionally held on to one more than a few minutes at
+      a time, let alone two!"
+    duration: 0
 --- !u!1 &1908446180
 GameObject:
   m_ObjectHideFlags: 0
@@ -3325,6 +3392,7 @@ Transform:
   - {fileID: 1689397960}
   - {fileID: 1134466477}
   - {fileID: 1536569362}
+  - {fileID: 1856232923}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3341,6 +3409,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneInfo: {fileID: 11400000, guid: 617a563276c8e044da46437b85bbf9b3, type: 2}
   respawnPoint: {x: -1.0287247, y: 0.51436424}
+  playerEntered:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneRoot+SceneEnteredEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  playerLeft:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: SceneRoot+SceneLeftEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
 --- !u!1 &1951608749
 GameObject:
   m_ObjectHideFlags: 0

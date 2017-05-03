@@ -1,18 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public struct Thought {
+	public string text;
+	public float duration;
+	public Thought(string t, float d) {
+		text = t;
+		duration = d;
+	}
+}
+
 public class ThoughtManager : MonoBehaviour {
 	public static ThoughtManager Inst { get; private set; }
-
-	struct Thought {
-		public string text;
-		public float duration;
-		public Thought(string t, float d) {
-			text = t;
-			duration = d;
-		}
-	}
 
 	enum State { BLANK, FADE_IN, STAY, FADE_OUT };
 
@@ -73,8 +75,12 @@ public class ThoughtManager : MonoBehaviour {
 		}
 	}
 
+	public void AddThought(Thought t) {
+		waitingThoughts.Enqueue(t);
+	}
+
 	public void AddThought(string text, float duration) {
-		waitingThoughts.Enqueue(new Thought(text, duration));
+		AddThought(new Thought(text, duration));
 	}
 
 	public void AddThought(string text) {
